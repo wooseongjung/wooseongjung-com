@@ -9,7 +9,7 @@ export default function MusicPlayer({ user }) {
     const [activePlaylistId, setActivePlaylistId] = useState(null);
 
     // Playback state
-    const [playerInfo, setPlayerInfo] = useState({ isPlaying: false, currentVidIndex: 0 });
+    const [playerInfo, setPlayerInfo] = useState({ isPlaying: false, currentVidIndex: 0, duration: 0, currentTime: 0 });
     const [playerState, setPlayerState] = useState(null); // The youtube player target
     const [newPlaylistName, setNewPlaylistName] = useState('');
     const [newVideoUrl, setNewVideoUrl] = useState('');
@@ -88,18 +88,49 @@ export default function MusicPlayer({ user }) {
         await updateDoc(doc(db, 'users', user.uid, 'playlists', activePlaylist.id), {
             songs: arrayRemove(song)
         });
+    }
+
+    const currentSong = activePlaylist?.songs?.[playerInfo.currentVidIndex] || null;
+
+    useEffect(() => {
+        let interval;
+        if (playerInfo.isPlaying && playerState) {
+            interval = setInterval(async () => {
+                const time = await playerState.getCurrentTime();
+                setPlayerInfo(p => ({ ...p, currentTime: time || 0 }));
+            }, 1000);
+        }
+        return () => clearInterval(interval);
+    }, [playerInfo.isPlaying, playerState]);
+
+    const formatTime = (seconds) => {
+        if (!seconds) return "0:00";
+        const m = Math.floor(seconds / 60);
+        const s = Math.floor(seconds % 60);
+        return `${m}:${s < 10 ? '0' : ''}${s}`;
     };
 
-    // --- Playback Controls ---
-    const currentSong = activePlaylist?.songs?.[playerInfo.currentVidIndex];
+    const updateSongDurationInDB = async (durationSecs) => {
+        if (!currentSong || !activePlaylist || !user || currentSong.duration) return;
+        const updatedSongs = [...activePlaylist.songs];
+        updatedSongs[playerInfo.currentVidIndex] = { ...currentSong, duration: durationSecs };
+        await updateDoc(doc(db, 'users', user.uid, 'playlists', activePlaylist.id), {
+            songs: updatedSongs
+        });
+    };
 
     const onPlayerReady = (event) => {
         setPlayerState(event.target);
     };
 
-    const onPlayerStateChange = (event) => {
-        // 1 = playing, 2 = paused, 0 = ended
-        if (event.data === 1) setPlayerInfo(p => ({ ...p, isPlaying: true }));
+    const onPlayerStateChange = async (event) => {
+        // 1 = playing, 2 = paused, 0 = ended, 5 = cued
+        const target = event.target;
+        if (event.data === 1) {
+            const dur = await target.getDuration();
+            setPlayerInfo(p => ({ ...p, isPlaying: true, duration: dur }));
+            if (dur && activePlaylist) updateSongDurationInDB(dur);
+        }
         if (event.data === 2) setPlayerInfo(p => ({ ...p, isPlaying: false }));
         if (event.data === 0) handleNext(); // Auto play next when ended
     };
@@ -173,7 +204,7 @@ export default function MusicPlayer({ user }) {
                                 className={`flex items-center justify-between p-2 rounded text-sm cursor-pointer transition-colors ${activePlaylistId === pl.id ? 'bg-zinc-900 text-white' : 'hover:bg-zinc-100 text-zinc-600'}`}
                                 onClick={() => {
                                     setActivePlaylistId(pl.id);
-                                    setPlayerInfo({ isPlaying: false, currentVidIndex: 0 }); // reset playback
+                                    setPlayerInfo({ isPlaying: false, currentVidIndex: 0, duration: 0, currentTime: 0 }); // reset playback
                                 }}
                             >
                                 <span className="truncate">{pl.name}</span>
@@ -220,13 +251,16 @@ export default function MusicPlayer({ user }) {
                                         key={idx}
                                         className={`flex items-center justify-between text-sm p-2 group hover:bg-zinc-50 border-l-2 transition-colors ${playerInfo.currentVidIndex === idx ? 'border-zinc-900 bg-zinc-50 font-medium text-zinc-900' : 'border-transparent text-zinc-500 font-light'}`}
                                     >
-                                        <div className="flex items-center gap-3 cursor-pointer flex-1" onClick={() => selectSong(idx)}>
-                                            <span className="text-xs text-zinc-400 w-4 text-right">{idx + 1}</span>
+                                        <div className="flex items-center gap-3 cursor-pointer flex-1 min-w-0 pr-4" onClick={() => selectSong(idx)}>
+                                            <span className="text-xs text-zinc-400 w-4 text-right flex-shrink-0">{idx + 1}</span>
                                             <span className="truncate">{song.title}</span>
                                         </div>
-                                        <button onClick={() => handleRemoveSong(song)} className="opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-red-500 transition-opacity p-1">
-                                            <X size={14} />
-                                        </button>
+                                        <div className="flex items-center gap-3 flex-shrink-0">
+                                            <span className="text-xs text-zinc-400">{song.duration ? formatTime(song.duration) : '--:--'}</span>
+                                            <button onClick={() => handleRemoveSong(song)} className="opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-red-500 transition-opacity p-1">
+                                                <X size={14} />
+                                            </button>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
@@ -247,30 +281,50 @@ export default function MusicPlayer({ user }) {
                         </div>
 
                         {/* Bottom Player Controls */}
-                        <div className="bg-zinc-900 text-white p-4 flex items-center justify-between">
-                            <div className="flex flex-col truncate w-1/3">
-                                <span className="text-xs text-zinc-400 font-light uppercase tracking-wider mb-0.5">Now Playing</span>
-                                <span className="text-sm font-medium truncate">
-                                    {currentSong ? currentSong.title : '---'}
-                                </span>
-                            </div>
+                        <div className="bg-zinc-900 text-white p-4 flex flex-col justify-between">
 
-                            <div className="flex items-center gap-6 justify-center w-1/3">
-                                <button onClick={handlePrev} className="text-zinc-400 hover:text-white transition-colors"><SkipBack size={18} fill="currentColor" /></button>
-                                <button onClick={togglePlay} className="text-white hover:text-zinc-200 transition-colors hover:scale-105 transform">
-                                    {playerInfo.isPlaying ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" />}
-                                </button>
-                                <button onClick={handleNext} className="text-zinc-400 hover:text-white transition-colors"><SkipForward size={18} fill="currentColor" /></button>
-                            </div>
-
-                            <div className="w-1/3 flex justify-end">
-                                {/* Visualizer bars just for aesthetics */}
-                                <div className={`flex items-end gap-[2px] h-4 ${playerInfo.isPlaying ? '' : 'opacity-30'}`}>
-                                    <div className="w-1 bg-white h-2 animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                                    <div className="w-1 bg-white h-4 animate-bounce" style={{ animationDelay: '100ms' }}></div>
-                                    <div className="w-1 bg-white h-3 animate-bounce" style={{ animationDelay: '200ms' }}></div>
-                                    <div className="w-1 bg-white h-1 animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                            <div className="flex items-center justify-between mb-3">
+                                <div className="flex flex-col truncate w-1/3">
+                                    <span className="text-xs text-zinc-400 font-light uppercase tracking-wider mb-0.5">Now Playing</span>
+                                    <span className="text-sm font-medium truncate">
+                                        {currentSong ? currentSong.title : '---'}
+                                    </span>
                                 </div>
+
+                                <div className="flex items-center gap-6 justify-center w-1/3">
+                                    <button onClick={handlePrev} className="text-zinc-400 hover:text-white transition-colors"><SkipBack size={18} fill="currentColor" /></button>
+                                    <button onClick={togglePlay} className="text-white hover:text-zinc-200 transition-colors hover:scale-105 transform">
+                                        {playerInfo.isPlaying ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" />}
+                                    </button>
+                                    <button onClick={handleNext} className="text-zinc-400 hover:text-white transition-colors"><SkipForward size={18} fill="currentColor" /></button>
+                                </div>
+
+                                <div className="w-1/3 flex justify-end">
+                                    {/* Visualizer bars just for aesthetics */}
+                                    <div className={`flex items-end gap-[2px] h-4 ${playerInfo.isPlaying ? '' : 'opacity-30'}`}>
+                                        <div className="w-1 bg-white h-2 animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                                        <div className="w-1 bg-white h-4 animate-bounce" style={{ animationDelay: '100ms' }}></div>
+                                        <div className="w-1 bg-white h-3 animate-bounce" style={{ animationDelay: '200ms' }}></div>
+                                        <div className="w-1 bg-white h-1 animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Progress bar */}
+                            <div className="w-full flex items-center gap-3 text-xs text-zinc-400 font-light">
+                                <span>{formatTime(playerInfo.currentTime)}</span>
+                                <div className="flex-1 h-1 bg-zinc-700 rounded-full overflow-hidden relative" onClick={(e) => {
+                                    if (!playerState || !playerInfo.duration) return;
+                                    const rect = e.currentTarget.getBoundingClientRect();
+                                    const percent = (e.clientX - rect.left) / rect.width;
+                                    playerState.seekTo(percent * playerInfo.duration);
+                                }}>
+                                    <div
+                                        className="absolute top-0 left-0 h-full bg-white z-10"
+                                        style={{ width: `${playerInfo.duration ? (playerInfo.currentTime / playerInfo.duration) * 100 : 0}%` }}
+                                    ></div>
+                                </div>
+                                <span>{formatTime(playerInfo.duration)}</span>
                             </div>
                         </div>
                     </>
