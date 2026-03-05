@@ -62,7 +62,18 @@ export default function MusicPlayer({ user }) {
             return;
         }
 
-        const newSong = { videoId: vidId, title: `Track (${vidId})`, addedAt: Date.now() };
+        let songTitle = `Track (${vidId})`;
+        try {
+            const res = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${vidId}&format=json`);
+            if (res.ok) {
+                const data = await res.json();
+                songTitle = `${data.title} - ${data.author_name}`;
+            }
+        } catch (e) {
+            console.error("Failed to fetch song metadata", e);
+        }
+
+        const newSong = { videoId: vidId, title: songTitle, addedAt: Date.now() };
 
         // Ensure the doc exists and update the array
         await setDoc(doc(db, 'users', user.uid, 'playlists', activePlaylist.id), {
