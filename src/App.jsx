@@ -20,7 +20,10 @@ import {
   Power,
   Cpu,
   LogIn,
-  LogOut
+  LogOut,
+  ArrowRight,
+  Loader2,
+  Plug
 } from 'lucide-react';
 
 const firebaseConfig = {
