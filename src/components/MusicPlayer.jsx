@@ -66,13 +66,13 @@ export default function MusicPlayer({ user }) {
             return;
         }
 
-        // In a real app we'd fetch the YT title using the Data API, but without a key, 
-        // we just use a placeholder or let the user name it. For minimalism, we use the ID as title placeholder.
         const newSong = { videoId: vidId, title: `Track (${vidId})`, addedAt: Date.now() };
 
-        await updateDoc(doc(db, 'users', user.uid, 'playlists', activePlaylist.id), {
+        // Ensure the doc exists and update the array
+        await setDoc(doc(db, 'users', user.uid, 'playlists', activePlaylist.id), {
             songs: arrayUnion(newSong)
-        });
+        }, { merge: true });
+
         setNewVideoUrl('');
     };
 
