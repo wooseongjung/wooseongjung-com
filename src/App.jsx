@@ -469,23 +469,23 @@ export default function App() {
         <div className="bg-minimal-circuit absolute inset-0 pointer-events-none fixed"></div>
       )}
 
-      <header className={`sticky top-0 z-50 bg-[#fafafa]/90 backdrop-blur-md overflow-hidden ${activePath === 'record' ? 'hidden' : ''}`}>
-        <div className="absolute bottom-0 left-0 w-full h-[1.5px] bg-zinc-200 z-0 pointer-events-none"></div>
+      <header className={`sticky top-0 z-50 backdrop-blur-md overflow-hidden ${activePath === 'record' ? 'bg-black text-white border-b border-[#282828]' : 'bg-[#fafafa]/90'}`}>
+        <div className={`absolute bottom-0 left-0 w-full h-[1.5px] z-0 pointer-events-none ${activePath === 'record' ? 'bg-[#282828]' : 'bg-zinc-200'}`}></div>
 
         <div className="max-w-5xl mx-auto px-6 md:px-12 h-14 flex items-center justify-between">
 
           <Link to="/about" className="flex flex-col relative group cursor-pointer">
-            <h1 className="text-lg font-bold tracking-tight text-zinc-900 leading-none flex items-center gap-2">
-              <Zap size={16} className="text-zinc-900" fill="currentColor" />
+            <h1 className={`text-lg font-bold tracking-tight leading-none flex items-center gap-2 ${activePath === 'record' ? 'text-white' : 'text-zinc-900'}`}>
+              <Zap size={16} fill="currentColor" />
               Wooseong Jung
             </h1>
-            <p className="text-[10px] text-zinc-500 font-light mt-1 ml-6">Software Engineer & Creative</p>
+            <p className={`text-[10px] font-light mt-1 ml-6 ${activePath === 'record' ? 'text-zinc-500' : 'text-zinc-500'}`}>Software Engineer & Creative</p>
           </Link>
 
           <div className="flex items-center gap-8 h-full">
             <nav id="nav-container" className="hidden md:flex items-center gap-2 h-full relative pl-2">
               <div
-                className="absolute bottom-0 left-[-2000px] h-[1.5px] bg-zinc-900 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] z-10 pointer-events-none"
+                className={`absolute bottom-0 left-[-2000px] h-[1.5px] transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] z-10 pointer-events-none ${activePath === 'record' ? 'bg-white' : 'bg-zinc-900'}`}
                 style={{ width: `calc(2000px + ${wireLength}px)` }}
               ></div>
 
@@ -495,8 +495,8 @@ export default function App() {
                   id={`nav-${item.id}`}
                   to={item.path}
                   className={`flex items-center gap-2 text-sm transition-colors relative h-full px-5 z-20 group ${activeTab === item.id
-                    ? 'text-zinc-900 font-medium'
-                    : 'text-zinc-500 hover:text-zinc-900 font-light'
+                    ? (activePath === 'record' ? 'text-white font-medium' : 'text-zinc-900 font-medium')
+                    : (activePath === 'record' ? 'text-zinc-500 hover:text-white font-light' : 'text-zinc-500 hover:text-zinc-900 font-light')
                     }`}
                 >
                   {item.label}
@@ -505,10 +505,10 @@ export default function App() {
                     style={{ bottom: '-4.25px' }}
                   >
                     <div className={`w-2.5 h-2.5 rounded-full border-[1.5px] flex items-center justify-center transition-colors duration-300 ${activeTab === item.id
-                      ? 'border-zinc-900 bg-[#fafafa]'
-                      : 'border-zinc-200 bg-[#fafafa] group-hover:border-zinc-400'
+                      ? (activePath === 'record' ? 'border-white bg-black' : 'border-zinc-900 bg-[#fafafa]')
+                      : (activePath === 'record' ? 'border-[#282828] bg-black group-hover:border-zinc-600' : 'border-zinc-200 bg-[#fafafa] group-hover:border-zinc-400')
                       }`}>
-                      <div className={`w-[3px] h-[3px] rounded-full transition-colors duration-300 ${activeTab === item.id ? 'bg-zinc-900' : 'bg-transparent'
+                      <div className={`w-[3px] h-[3px] rounded-full transition-colors duration-300 ${activeTab === item.id ? (activePath === 'record' ? 'bg-white' : 'bg-zinc-900') : 'bg-transparent'
                         }`}></div>
                     </div>
                   </div>
@@ -516,29 +516,29 @@ export default function App() {
               ))}
             </nav>
 
-            <div className="flex items-center gap-4 pl-8 border-l border-zinc-200 hidden md:flex h-5 relative z-10">
+            <div className={`flex items-center gap-4 pl-8 border-l hidden md:flex h-5 relative z-10 ${activePath === 'record' ? 'border-[#282828]' : 'border-zinc-200'}`}>
 
               <div className="flex items-center gap-2 mr-4">
                 {user ? (
-                  <button onClick={handleLogin} className="flex items-center gap-2 text-xs text-zinc-500 hover:text-red-500 font-medium transition-colors bg-zinc-100 hover:bg-red-50 px-2 py-1 rounded" title="Sign Out">
+                  <button onClick={handleLogin} className={`flex items-center gap-2 text-xs font-medium transition-colors px-2 py-1 rounded ${activePath === 'record' ? 'text-zinc-400 hover:text-red-400 bg-zinc-900 hover:bg-neutral-800' : 'text-zinc-500 hover:text-red-500 bg-zinc-100 hover:bg-red-50'}`} title="Sign Out">
                     <span className="max-w-[100px] truncate">{user.email}</span>
                     <LogOut size={14} />
                   </button>
                 ) : (
-                  <button onClick={handleLogin} className="flex items-center gap-2 text-xs text-zinc-900 font-medium transition-colors bg-zinc-100 hover:bg-zinc-200 px-3 py-1 rounded" title="Sign In with Google">
+                  <button onClick={handleLogin} className={`flex items-center gap-2 text-xs font-medium transition-colors px-3 py-1 rounded ${activePath === 'record' ? 'text-white bg-zinc-800 hover:bg-zinc-700' : 'text-zinc-900 bg-zinc-100 hover:bg-zinc-200'}`} title="Sign In with Google">
                     <span>Sign In</span>
                     <LogIn size={14} />
                   </button>
                 )}
               </div>
 
-              <a href="mailto:hello@yourdomain.com" className="text-zinc-400 hover:text-zinc-900 transition-colors">
+              <a href="mailto:hello@yourdomain.com" className={`transition-colors ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900'}`}>
                 <Mail size={16} />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="text-zinc-400 hover:text-zinc-900 transition-colors">
+              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className={`transition-colors ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900'}`}>
                 <Linkedin size={16} />
               </a>
-              <a href="https://github.com" target="_blank" rel="noreferrer" className="text-zinc-400 hover:text-zinc-900 transition-colors">
+              <a href="https://github.com" target="_blank" rel="noreferrer" className={`transition-colors ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900'}`}>
                 <Github size={16} />
               </a>
             </div>
