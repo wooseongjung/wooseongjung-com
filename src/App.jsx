@@ -250,10 +250,31 @@ const LifeView = ({ user }) => {
             </div>
           ))}
         </div>
-      </div>
 
-      <div className="w-full">
-        <MusicPlayer user={user} />
+        {/* Portal to WSJ Record */}
+        <div className="mt-16 w-full group relative overflow-hidden bg-black text-white p-8 sm:p-12 mb-16 cursor-pointer" onClick={() => window.location.href = '/record'}>
+          <div className="absolute inset-0 bg-gradient-to-r from-zinc-900 to-black z-0 pointer-events-none"></div>
+          <div className="absolute -right-12 -bottom-12 z-0 opacity-10 group-hover:scale-110 group-hover:opacity-20 transition-all duration-700 pointer-events-none">
+            <Disc size={250} />
+          </div>
+          <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
+            <div className="flex flex-col max-w-lg">
+              <span className="text-zinc-500 text-xs font-medium uppercase tracking-[0.2em] mb-3">Interactive Experience</span>
+              <h3 className="text-3xl sm:text-4xl font-bold tracking-tighter mb-4 flex items-center gap-3">
+                WSJ Record <Disc className="text-green-500 animate-spin-slow" size={28} style={{ animationDuration: '4s' }} />
+              </h3>
+              <p className="text-zinc-400 font-light leading-relaxed">
+                Dive into my highly curated sonic landscape. A deeply personalized, edge-to-edge playback experience designed for deep work and aesthetic flow.
+              </p>
+            </div>
+            <div className="shrink-0">
+              <button className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full font-medium hover:bg-zinc-200 hover:scale-105 transition-all text-sm">
+                Open Player <ArrowRight size={16} />
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );
@@ -371,7 +392,33 @@ const ContactSection = () => {
   );
 };
 
+const StandardLayout = ({ user }) => (
+  <div className="max-w-5xl mx-auto px-6 md:px-12 py-12 md:py-16 relative z-10 flex flex-col gap-24">
+    <main className="min-h-[40vh]">
+      <Routes>
+        <Route path="/" element={<Navigate to="/about" replace />} />
+        <Route path="/about" element={<AboutView />} />
+        <Route path="/project" element={<ProjectsView />} />
+        <Route path="/life" element={<LifeView user={user} />} />
+        <Route path="*" element={<Navigate to="/about" replace />} />
+      </Routes>
+    </main>
 
+    <Trace className="w-1/3 opacity-50" />
+
+    <section>
+      <ContactSection />
+    </section>
+
+    <div className="pt-8 flex items-center justify-between text-xs text-zinc-400 font-light pb-12 border-t border-zinc-200">
+      <div className="flex items-center gap-3">
+        <GroundSymbol />
+        <span>SYSTEM.ONLINE</span>
+      </div>
+      <span className="hidden md:inline">© {new Date().getFullYear()} Wooseong Jung</span>
+    </div>
+  </div>
+);
 
 export default function App() {
   const location = useLocation();
@@ -497,35 +544,10 @@ export default function App() {
         </div>
       </header>
 
-      <div className="relative z-10 flex flex-col">
-        <main className="min-h-[40vh] w-full">
-          <div className={activeTab === 'life' ? 'w-full pb-12 pt-12' : 'max-w-5xl mx-auto px-6 md:px-12 py-12 md:py-16'}>
-            <Routes>
-              <Route path="/" element={<Navigate to="/about" replace />} />
-              <Route path="/about" element={<AboutView />} />
-              <Route path="/project" element={<ProjectsView />} />
-              <Route path="/life" element={<LifeView user={user} />} />
-              <Route path="*" element={<Navigate to="/about" replace />} />
-            </Routes>
-          </div>
-        </main>
-
-        <div className="max-w-5xl mx-auto px-6 md:px-12 w-full flex flex-col gap-24">
-          <Trace className="w-1/3 opacity-50" />
-
-          <section>
-            <ContactSection />
-          </section>
-
-          <div className="pt-8 flex items-center justify-between text-xs text-zinc-400 font-light pb-12 border-t border-zinc-200">
-            <div className="flex items-center gap-3">
-              <GroundSymbol />
-              <span>SYSTEM.ONLINE</span>
-            </div>
-            <span className="hidden md:inline">© {new Date().getFullYear()} Wooseong Jung</span>
-          </div>
-        </div>
-      </div>
+      <Routes>
+        <Route path="/record" element={<MusicPlayer user={user} />} />
+        <Route path="*" element={<StandardLayout user={user} />} />
+      </Routes>
     </div>
   );
 }
