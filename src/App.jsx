@@ -13,13 +13,9 @@ import {
   Mail,
   Github,
   Linkedin,
-  Music,
   Coffee,
   Shirt,
-  ArrowRight,
-  Sparkles,
-  Loader2,
-  Plug,
+  Disc,
   Zap,
   Power,
   Cpu,
@@ -249,10 +245,6 @@ const LifeView = ({ user }) => {
           </div>
         ))}
       </div>
-
-      <div className="pt-8">
-        <MusicPlayer user={user} />
-      </div>
     </div>
   );
 };
@@ -369,6 +361,34 @@ const ContactSection = () => {
   );
 };
 
+const StandardLayout = ({ user }) => (
+  <div className="max-w-5xl mx-auto px-6 md:px-12 py-12 md:py-16 relative z-10 flex flex-col gap-24">
+    <main className="min-h-[40vh]">
+      <Routes>
+        <Route path="/" element={<Navigate to="/about" replace />} />
+        <Route path="/about" element={<AboutView />} />
+        <Route path="/project" element={<ProjectsView />} />
+        <Route path="/life" element={<LifeView user={user} />} />
+        <Route path="*" element={<Navigate to="/about" replace />} />
+      </Routes>
+    </main>
+
+    <Trace className="w-1/3 opacity-50" />
+
+    <section>
+      <ContactSection />
+    </section>
+
+    <div className="pt-8 flex items-center justify-between text-xs text-zinc-400 font-light pb-12 border-t border-zinc-200">
+      <div className="flex items-center gap-3">
+        <GroundSymbol />
+        <span>SYSTEM.ONLINE</span>
+      </div>
+      <span className="hidden md:inline">© {new Date().getFullYear()} Wooseong Jung</span>
+    </div>
+  </div>
+);
+
 export default function App() {
   const location = useLocation();
   const activePath = location.pathname.split('/')[1] || 'about';
@@ -395,6 +415,7 @@ export default function App() {
     { id: 'about', label: 'About', icon: User, path: '/about' },
     { id: 'project', label: 'Work', icon: Cpu, path: '/project' },
     { id: 'life', label: 'Life', icon: Compass, path: '/life' },
+    { id: 'record', label: 'WSJ Record', icon: Disc, path: '/record' },
   ];
 
   useEffect(() => {
@@ -464,9 +485,21 @@ export default function App() {
             </nav>
 
             <div className="flex items-center gap-4 pl-8 border-l border-zinc-200 hidden md:flex h-5 relative z-10">
-              <button onClick={handleLogin} className="text-zinc-400 hover:text-zinc-900 transition-colors flex items-center gap-1 text-sm font-medium mr-2" title={user ? "Sign Out" : "Sign In with Google"}>
-                {user ? <LogOut size={16} /> : <LogIn size={16} />}
-              </button>
+
+              <div className="flex items-center gap-2 mr-4">
+                {user ? (
+                  <button onClick={handleLogin} className="flex items-center gap-2 text-xs text-zinc-500 hover:text-red-500 font-medium transition-colors bg-zinc-100 hover:bg-red-50 px-2 py-1 rounded" title="Sign Out">
+                    <span className="max-w-[100px] truncate">{user.email}</span>
+                    <LogOut size={14} />
+                  </button>
+                ) : (
+                  <button onClick={handleLogin} className="flex items-center gap-2 text-xs text-zinc-900 font-medium transition-colors bg-zinc-100 hover:bg-zinc-200 px-3 py-1 rounded" title="Sign In with Google">
+                    <span>Sign In</span>
+                    <LogIn size={14} />
+                  </button>
+                )}
+              </div>
+
               <a href="mailto:hello@yourdomain.com" className="text-zinc-400 hover:text-zinc-900 transition-colors">
                 <Mail size={16} />
               </a>
@@ -481,39 +514,10 @@ export default function App() {
         </div>
       </header>
 
-      <div className="max-w-5xl mx-auto px-6 md:px-12 py-12 md:py-16 relative z-10 flex flex-col gap-24">
-
-        {user && (
-          <div className="text-sm px-4 py-2 bg-zinc-100 rounded text-zinc-600 font-light border border-zinc-200 self-start animate-fade-up">
-            Signed in as: <strong className="font-medium text-zinc-900">{user.email}</strong>
-          </div>
-        )}
-
-        <main className="min-h-[40vh]">
-          <Routes>
-            <Route path="/" element={<Navigate to="/about" replace />} />
-            <Route path="/about" element={<AboutView />} />
-            <Route path="/project" element={<ProjectsView />} />
-            <Route path="/life" element={<LifeView user={user} />} />
-            <Route path="*" element={<Navigate to="/about" replace />} />
-          </Routes>
-        </main>
-
-        <Trace className="w-1/3 opacity-50" />
-
-        <section>
-          <ContactSection />
-        </section>
-
-        <div className="pt-8 flex items-center justify-between text-xs text-zinc-400 font-light pb-12 border-t border-zinc-200">
-          <div className="flex items-center gap-3">
-            <GroundSymbol />
-            <span>SYSTEM.ONLINE</span>
-          </div>
-          <span className="hidden md:inline">© {new Date().getFullYear()} Wooseong Jung</span>
-        </div>
-
-      </div>
+      <Routes>
+        <Route path="/record" element={<MusicPlayer user={user} />} />
+        <Route path="*" element={<StandardLayout user={user} />} />
+      </Routes>
     </div>
   );
 }
