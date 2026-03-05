@@ -465,9 +465,11 @@ export default function App() {
     <div className="min-h-screen bg-[#fafafa] relative selection:bg-zinc-200 selection:text-zinc-900">
       <style>{injectedStyles}</style>
 
-      <div className="bg-minimal-circuit absolute inset-0 pointer-events-none fixed"></div>
+      {activePath !== 'record' && (
+        <div className="bg-minimal-circuit absolute inset-0 pointer-events-none fixed"></div>
+      )}
 
-      <header className="sticky top-0 z-50 bg-[#fafafa]/90 backdrop-blur-md overflow-hidden">
+      <header className={`sticky top-0 z-50 bg-[#fafafa]/90 backdrop-blur-md overflow-hidden ${activePath === 'record' ? 'hidden' : ''}`}>
         <div className="absolute bottom-0 left-0 w-full h-[1.5px] bg-zinc-200 z-0 pointer-events-none"></div>
 
         <div className="max-w-5xl mx-auto px-6 md:px-12 h-14 flex items-center justify-between">

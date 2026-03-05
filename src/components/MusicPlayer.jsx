@@ -165,11 +165,11 @@ export default function MusicPlayer({ user }) {
         setPlayerInfo({ isPlaying: true, currentVidIndex: index, duration: 0, currentTime: 0 });
     };
 
-    const handleProgressBarClick = (e) => {
+    const handleSliderChange = (e) => {
         if (!playerState || !playerInfo.duration) return;
-        const rect = e.currentTarget.getBoundingClientRect();
-        const percent = (e.clientX - rect.left) / rect.width;
-        playerState.seekTo(percent * playerInfo.duration);
+        const newTime = parseFloat(e.target.value);
+        setPlayerInfo(p => ({ ...p, currentTime: newTime }));
+        playerState.seekTo(newTime, true);
     };
 
     if (!user) {
@@ -210,7 +210,9 @@ export default function MusicPlayer({ user }) {
                         <div className="flex items-center justify-between px-2 py-3 text-zinc-400 font-medium text-sm">
                             <span className="flex flex-col gap-1"><ListMusic size={20} /> Playlists</span>
                             <div className="flex items-center gap-2 bg-zinc-800/50 rounded-full px-2 py-1 focus-within:ring-1 ring-white">
-                                <Plus size={14} className="opacity-70" />
+                                <button onClick={handleCreatePlaylist} className="hover:text-white transition-colors cursor-pointer" title="Create Playlist">
+                                    <Plus size={14} className="opacity-70 group-hover:opacity-100" />
+                                </button>
                                 <input
                                     type="text"
                                     className="bg-transparent outline-none w-20 text-xs text-white placeholder-zinc-500"
@@ -277,16 +279,21 @@ export default function MusicPlayer({ user }) {
                                         {playerInfo.isPlaying ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" className="ml-1" />}
                                     </button>
                                 </div>
-                                <form onSubmit={handleAddSong} className="flex items-center gap-2 bg-white/10 rounded-full px-3 py-1.5 focus-within:ring-1 ring-white/30 transition-all max-w-[200px] sm:max-w-xs">
-                                    <Search size={16} className="text-zinc-400" />
+                                <form onSubmit={handleAddSong} className="flex items-center gap-2 bg-white/10 rounded-full px-3 py-1.5 focus-within:ring-1 ring-white/30 transition-all max-w-[250px] sm:max-w-sm">
                                     <input
                                         type="text"
-                                        placeholder="Paste link..."
+                                        placeholder="Paste YouTube link..."
                                         value={newVideoUrl}
                                         onChange={e => setNewVideoUrl(e.target.value)}
                                         className="bg-transparent outline-none text-sm w-full placeholder-zinc-500 text-white"
                                     />
-                                    {isAddingSong && <div className="w-3 h-3 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>}
+                                    {isAddingSong ? (
+                                        <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+                                    ) : (
+                                        <button type="submit" disabled={!newVideoUrl} className="text-[#a7a7a7] hover:text-white disabled:opacity-50 transition-colors" title="Add song to playlist">
+                                            <Plus size={18} />
+                                        </button>
+                                    )}
                                 </form>
                             </div>
 
@@ -354,7 +361,7 @@ export default function MusicPlayer({ user }) {
                             <div className="w-14 h-14 bg-zinc-800 rounded shadow-md flex items-center justify-center shrink-0">
                                 <Disc size={24} className={`text-white/20 ${playerInfo.isPlaying ? 'animate-spin' : ''}`} style={{ animationDuration: '3s' }} />
                             </div>
-                            <div className="flex flex-col truncate">
+                            <div className="flex flex-col truncate pr-4">
                                 <a href={`https://youtube.com/watch?v=${currentSong.videoId}`} target="_blank" rel="noreferrer" className="text-white text-sm hover:underline truncate">
                                     {currentSong.title}
                                 </a>
@@ -362,7 +369,6 @@ export default function MusicPlayer({ user }) {
                                     {currentSong.author || "Unknown"}
                                 </span>
                             </div>
-                            <button className="ml-4 text-[#a7a7a7] hover:text-white"><Plus size={16} /></button>
                         </>
                     )}
                 </div>
@@ -384,20 +390,20 @@ export default function MusicPlayer({ user }) {
                         </button>
                     </div>
 
-                    <div className="w-full flex items-center gap-2 text-xs text-[#a7a7a7] font-medium hidden sm:flex">
+                    <div className="w-full flex items-center gap-3 text-xs text-[#a7a7a7] font-medium hidden sm:flex">
                         <span className="w-10 text-right">{formatTime(playerInfo.currentTime)}</span>
-                        <div
-                            className="flex-1 h-1 bg-[#4d4d4d] rounded-full relative group cursor-pointer"
-                            onClick={handleProgressBarClick}
-                        >
-                            <div
-                                className="absolute top-0 left-0 h-full bg-white group-hover:bg-green-500 rounded-full"
-                                style={{ width: `${playerInfo.duration ? (playerInfo.currentTime / playerInfo.duration) * 100 : 0}%` }}
-                            >
-                                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full opacity-0 group-hover:opacity-100 shadow-md transform translate-x-1/2"></div>
-                            </div>
-                        </div>
-                        <span className="w-10">{formatTime(playerInfo.duration)}</span>
+                        <input
+                            type="range"
+                            min="0"
+                            max={playerInfo.duration || 100}
+                            value={playerInfo.duration ? playerInfo.currentTime : 0}
+                            onChange={handleSliderChange}
+                            className="flex-1 h-1 appearance-none cursor-pointer range-slider rounded-full"
+                            style={{
+                                background: `linear-gradient(to right, #1db954 ${playerInfo.duration ? (playerInfo.currentTime / playerInfo.duration) * 100 : 0}%, #4d4d4d ${playerInfo.duration ? (playerInfo.currentTime / playerInfo.duration) * 100 : 0}%)`
+                            }}
+                        />
+                        <span className="w-10 text-left">{formatTime(playerInfo.duration)}</span>
                     </div>
                 </div>
 
@@ -428,6 +434,29 @@ export default function MusicPlayer({ user }) {
                 }
                 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
                     background-color: rgba(255, 255, 255, 0.5);
+                }
+                
+                /* Range Slider Styling */
+                .range-slider {
+                    -webkit-appearance: none;
+                    width: 100%;
+                }
+                .range-slider::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    width: 12px;
+                    height: 12px;
+                    border-radius: 50%;
+                    background: #fff;
+                    cursor: pointer;
+                    opacity: 0;
+                    transition: opacity 0.2s, transform 0.1s;
+                }
+                .range-slider:hover::-webkit-slider-thumb {
+                    opacity: 1;
+                }
+                .range-slider::-webkit-slider-thumb:active {
+                    transform: scale(1.2);
                 }
             `}} />
         </div>
