@@ -6,7 +6,7 @@ import { Play, Pause, SkipForward, SkipBack, ListMusic, Plus, Trash2, X } from '
 
 export default function MusicPlayer({ user }) {
     const [playlists, setPlaylists] = useState([]);
-    const [activePlaylist, setActivePlaylist] = useState(null);
+    const [activePlaylistId, setActivePlaylistId] = useState(null);
 
     // Playback state
     const [playerInfo, setPlayerInfo] = useState({ isPlaying: false, currentVidIndex: 0 });
@@ -14,23 +14,19 @@ export default function MusicPlayer({ user }) {
     const [newPlaylistName, setNewPlaylistName] = useState('');
     const [newVideoUrl, setNewVideoUrl] = useState('');
 
+    const activePlaylist = playlists.find(p => p.id === activePlaylistId) || null;
+
     // Fetch playlists for the user
     useEffect(() => {
         if (!user) {
             setPlaylists([]);
-            setActivePlaylist(null);
+            setActivePlaylistId(null);
             return;
         }
         const unsubscribe = onSnapshot(collection(db, 'users', user.uid, 'playlists'), (snapshot) => {
             const pData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             setPlaylists(pData);
-
-            // Update active playlist safely if it was modified
-            if (activePlaylist) {
-                const updatedActive = pData.find(p => p.id === activePlaylist.id);
-                if (updatedActive) setActivePlaylist(updatedActive);
-                else setActivePlaylist(null);
-            }
+            // We no longer need to manually sync activePlaylist because it is derived from playlists on each render.
         });
         return () => unsubscribe();
     }, [user]);
@@ -55,7 +51,7 @@ export default function MusicPlayer({ user }) {
     const handleDeletePlaylist = async (id) => {
         if (!user) return;
         await deleteDoc(doc(db, 'users', user.uid, 'playlists', id));
-        if (activePlaylist?.id === id) setActivePlaylist(null);
+        if (activePlaylistId === id) setActivePlaylistId(null);
     };
 
     const handleAddSong = async () => {
@@ -163,9 +159,9 @@ export default function MusicPlayer({ user }) {
                         playlists.map(pl => (
                             <div
                                 key={pl.id}
-                                className={`flex items-center justify-between p-2 rounded text-sm cursor-pointer transition-colors ${activePlaylist?.id === pl.id ? 'bg-zinc-900 text-white' : 'hover:bg-zinc-100 text-zinc-600'}`}
+                                className={`flex items-center justify-between p-2 rounded text-sm cursor-pointer transition-colors ${activePlaylistId === pl.id ? 'bg-zinc-900 text-white' : 'hover:bg-zinc-100 text-zinc-600'}`}
                                 onClick={() => {
-                                    setActivePlaylist(pl);
+                                    setActivePlaylistId(pl.id);
                                     setPlayerInfo({ isPlaying: false, currentVidIndex: 0 }); // reset playback
                                 }}
                             >
