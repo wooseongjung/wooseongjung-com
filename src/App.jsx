@@ -3,6 +3,8 @@ import { Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import MusicPlayer from "./components/MusicPlayer";
 
 import {
   User,
@@ -35,8 +37,9 @@ const firebaseConfig = {
   measurementId: "G-FVYNF66XQ9"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+export const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 try { getAnalytics(app); } catch (e) { }
 
@@ -174,14 +177,13 @@ const ProjectsView = () => {
   );
 };
 
-const LifeView = () => {
+const LifeView = ({ user }) => {
   const [curation, setCuration] = useState('');
   const [isCurating, setIsCurating] = useState(false);
   const [error, setError] = useState('');
 
   const interests = [
     { icon: Shirt, title: 'Fashion & Aesthetic', desc: 'Appreciating the architecture of clothing. Favoring minimalist, functional, and well-constructed garments over fast trends.' },
-    { icon: Music, title: 'Sonic Landscapes', desc: 'Curating soundtracks for every phase of the day. From ambient focus tracks during coding sessions to live indie gigs on weekends.' },
     { icon: Coffee, title: 'Gastronomy', desc: 'Exploring culinary arts. Whether it is finding the perfect espresso pull or experimenting with global recipes in my own kitchen.' },
   ];
 
@@ -246,6 +248,10 @@ const LifeView = () => {
             <p className="text-sm text-zinc-500 font-light leading-relaxed">{item.desc}</p>
           </div>
         ))}
+      </div>
+
+      <div className="pt-8">
+        <MusicPlayer user={user} />
       </div>
     </div>
   );
@@ -488,7 +494,7 @@ export default function App() {
             <Route path="/" element={<Navigate to="/about" replace />} />
             <Route path="/about" element={<AboutView />} />
             <Route path="/project" element={<ProjectsView />} />
-            <Route path="/life" element={<LifeView />} />
+            <Route path="/life" element={<LifeView user={user} />} />
             <Route path="*" element={<Navigate to="/about" replace />} />
           </Routes>
         </main>
