@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import YouTube from 'react-youtube';
 import { db } from '../App';
 import { collection, doc, setDoc, onSnapshot, deleteDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
-import { Play, Pause, SkipForward, SkipBack, Plus, Trash2, X, Disc, Clock, Search, ListMusic } from 'lucide-react';
+import { Play, Pause, SkipForward, SkipBack, Plus, Trash2, X, Disc, Clock, Search, ListMusic, Repeat, Shuffle, Volume2, VolumeX, Edit2, MoreHorizontal, ArrowRight } from 'lucide-react';
 
 export default function MusicPlayer({ user }) {
     const [playlists, setPlaylists] = useState([]);
@@ -15,7 +15,52 @@ export default function MusicPlayer({ user }) {
     const [newVideoUrl, setNewVideoUrl] = useState('');
     const [isAddingSong, setIsAddingSong] = useState(false);
 
+    // Advanced controls
+    const [isRepeat, setIsRepeat] = useState(false);
+    const [isShuffle, setIsShuffle] = useState(false);
+    const [volume, setVolume] = useState(100);
+    const [isMuted, setIsMuted] = useState(false);
+
+    // Playlists & songs modifications
+    const [editingPlaylistId, setEditingPlaylistId] = useState(null);
+    const [editPlaylistName, setEditPlaylistName] = useState('');
+    const [songMoveMenuId, setSongMoveMenuId] = useState(null);
+
+    const isRepeatRef = useRef(false);
+    const isShuffleRef = useRef(false);
+    const activePlaylistRef = useRef(null);
+
     const activePlaylist = playlists.find(p => p.id === activePlaylistId) || null;
+
+    useEffect(() => { activePlaylistRef.current = activePlaylist; }, [activePlaylist]);
+    useEffect(() => { isRepeatRef.current = isRepeat; }, [isRepeat]);
+    useEffect(() => { isShuffleRef.current = isShuffle; }, [isShuffle]);
+
+    const handleRenamePlaylist = async (id, e) => {
+        if (e) e.preventDefault();
+        if (!editPlaylistName.trim() || !user) {
+            setEditingPlaylistId(null);
+            return;
+        }
+        await updateDoc(doc(db, 'users', user.uid, 'playlists', id), {
+            name: editPlaylistName
+        });
+        setEditingPlaylistId(null);
+    };
+
+    const handleMoveSong = async (song, targetPlaylistId) => {
+        if (!activePlaylist || !user || activePlaylist.id === targetPlaylistId) {
+            setSongMoveMenuId(null);
+            return;
+        }
+        await setDoc(doc(db, 'users', user.uid, 'playlists', targetPlaylistId), {
+            songs: arrayUnion(song)
+        }, { merge: true });
+        await updateDoc(doc(db, 'users', user.uid, 'playlists', activePlaylist.id), {
+            songs: arrayRemove(song)
+        });
+        setSongMoveMenuId(null);
+    };
 
     useEffect(() => {
         if (!user) {
@@ -132,6 +177,8 @@ export default function MusicPlayer({ user }) {
 
     const onPlayerReady = (event) => {
         setPlayerState(event.target);
+        event.target.setVolume(volume);
+        if (isMuted) event.target.mute();
     };
 
     const onPlayerStateChange = async (event) => {
@@ -139,10 +186,17 @@ export default function MusicPlayer({ user }) {
         if (event.data === 1) {
             const dur = await target.getDuration();
             setPlayerInfo(p => ({ ...p, isPlaying: true, duration: dur }));
-            if (dur && activePlaylist) updateSongDurationInDB(dur);
+            if (dur && activePlaylistRef.current) updateSongDurationInDB(dur);
         }
         if (event.data === 2) setPlayerInfo(p => ({ ...p, isPlaying: false }));
-        if (event.data === 0) handleNext();
+        if (event.data === 0) {
+            if (isRepeatRef.current) {
+                target.seekTo(0);
+                target.playVideo();
+            } else {
+                handleNext();
+            }
+        }
     };
 
     const togglePlay = () => {
@@ -152,13 +206,21 @@ export default function MusicPlayer({ user }) {
     };
 
     const handleNext = () => {
-        if (!activePlaylist?.songs?.length) return;
-        setPlayerInfo(p => ({ ...p, currentVidIndex: (p.currentVidIndex + 1) % activePlaylist.songs.length }));
+        const currentActive = activePlaylistRef.current || activePlaylist;
+        if (!currentActive?.songs?.length) return;
+
+        if (isShuffleRef.current) {
+            const nextIdx = Math.floor(Math.random() * currentActive.songs.length);
+            setPlayerInfo(p => ({ ...p, currentVidIndex: nextIdx, duration: 0, currentTime: 0, isPlaying: true }));
+        } else {
+            setPlayerInfo(p => ({ ...p, currentVidIndex: (p.currentVidIndex + 1) % currentActive.songs.length, duration: 0, currentTime: 0, isPlaying: true }));
+        }
     };
 
     const handlePrev = () => {
-        if (!activePlaylist?.songs?.length) return;
-        setPlayerInfo(p => ({ ...p, currentVidIndex: p.currentVidIndex === 0 ? activePlaylist.songs.length - 1 : p.currentVidIndex - 1 }));
+        const currentActive = activePlaylistRef.current || activePlaylist;
+        if (!currentActive?.songs?.length) return;
+        setPlayerInfo(p => ({ ...p, currentVidIndex: p.currentVidIndex === 0 ? currentActive.songs.length - 1 : p.currentVidIndex - 1, duration: 0, currentTime: 0, isPlaying: true }));
     };
 
     const selectSong = (index) => {
@@ -170,6 +232,37 @@ export default function MusicPlayer({ user }) {
         const newTime = parseFloat(e.target.value);
         setPlayerInfo(p => ({ ...p, currentTime: newTime }));
         playerState.seekTo(newTime, true);
+    };
+
+    const handleVolumeChange = (e) => {
+        const val = parseInt(e.target.value);
+        setVolume(val);
+        if (playerState) {
+            playerState.setVolume(val);
+            if (val > 0 && isMuted) {
+                playerState.unMute();
+                setIsMuted(false);
+            }
+            if (val === 0 && !isMuted) {
+                playerState.mute();
+                setIsMuted(true);
+            }
+        }
+    };
+
+    const toggleMute = () => {
+        if (!playerState) return;
+        if (isMuted) {
+            playerState.unMute();
+            setIsMuted(false);
+            if (volume === 0) {
+                setVolume(50);
+                playerState.setVolume(50);
+            }
+        } else {
+            playerState.mute();
+            setIsMuted(true);
+        }
     };
 
     if (!user) {
@@ -186,7 +279,10 @@ export default function MusicPlayer({ user }) {
     const bgGradient = "bg-gradient-to-b from-[#2E2E2E] to-[#121212]";
 
     return (
-        <div className="flex flex-col h-[calc(100vh-56px)] bg-black text-zinc-300 font-sans selection:bg-white selection:text-black">
+        <div
+            className="flex flex-col h-[calc(100vh-56px)] bg-black text-zinc-300 font-sans selection:bg-white selection:text-black"
+            onClick={() => { if (songMoveMenuId !== null) setSongMoveMenuId(null); }}
+        >
             {/* Invisible Player */}
             {currentSong && (
                 <div className="hidden">
@@ -229,15 +325,43 @@ export default function MusicPlayer({ user }) {
                                 <div
                                     key={pl.id}
                                     onClick={() => {
-                                        setActivePlaylistId(pl.id);
-                                        setPlayerInfo({ isPlaying: false, currentVidIndex: 0, duration: 0, currentTime: 0 });
+                                        if (editingPlaylistId !== pl.id) {
+                                            setActivePlaylistId(pl.id);
+                                            setPlayerInfo({ isPlaying: false, currentVidIndex: 0, duration: 0, currentTime: 0 });
+                                        }
                                     }}
                                     className={`group flex items-center justify-between px-3 py-2 rounded-md cursor-pointer transition-colors ${activePlaylistId === pl.id ? 'bg-zinc-800 text-white' : 'hover:bg-zinc-800/50'}`}
                                 >
-                                    <span className="text-sm truncate w-full pr-4">{pl.name}</span>
-                                    <button onClick={(e) => handleDeletePlaylist(pl.id, e)} className="opacity-0 group-hover:opacity-100 hover:text-white transition-opacity">
-                                        <Trash2 size={14} />
-                                    </button>
+                                    {editingPlaylistId === pl.id ? (
+                                        <form onSubmit={(e) => handleRenamePlaylist(pl.id, e)} className="flex-1 mr-2">
+                                            <input
+                                                autoFocus
+                                                type="text"
+                                                className="bg-zinc-900 border border-zinc-700 text-white text-sm rounded px-2 py-1 w-full outline-none"
+                                                value={editPlaylistName}
+                                                onChange={(e) => setEditPlaylistName(e.target.value)}
+                                                onBlur={(e) => handleRenamePlaylist(pl.id, e)}
+                                                onClick={(e) => e.stopPropagation()}
+                                            />
+                                        </form>
+                                    ) : (
+                                        <span className="text-sm truncate w-full pr-2" onDoubleClick={() => { setEditingPlaylistId(pl.id); setEditPlaylistName(pl.name); }}>{pl.name}</span>
+                                    )}
+
+                                    {editingPlaylistId !== pl.id && (
+                                        <div className="opacity-0 group-hover:opacity-100 flex items-center gap-2 transition-opacity">
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); setEditingPlaylistId(pl.id); setEditPlaylistName(pl.name); }}
+                                                className="hover:text-white"
+                                                title="Rename playlist"
+                                            >
+                                                <Edit2 size={12} />
+                                            </button>
+                                            <button onClick={(e) => handleDeletePlaylist(pl.id, e)} className="hover:text-red-400" title="Delete playlist">
+                                                <Trash2 size={14} />
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
                             ))}
                         </div>
@@ -336,11 +460,46 @@ export default function MusicPlayer({ user }) {
                                                     {formatDate(song.addedAt)}
                                                 </div>
 
-                                                <div className="flex items-center justify-end gap-3 text-sm text-[#a7a7a7]">
-                                                    <span className="flex-1 text-right">{song.duration ? formatTime(song.duration) : ''}</span>
-                                                    <button onClick={(e) => handleRemoveSong(song, e)} className="opacity-0 group-hover:opacity-100 hover:scale-110 hover:text-white p-1">
-                                                        <X size={16} />
+                                                <div className="flex items-center justify-end gap-3 text-sm text-[#a7a7a7] relative">
+                                                    <span className="flex-1 text-right pr-2">{song.duration ? formatTime(song.duration) : ''}</span>
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setSongMoveMenuId(songMoveMenuId === idx ? null : idx);
+                                                        }}
+                                                        className="opacity-0 group-hover:opacity-100 hover:text-white p-1"
+                                                        title="More options"
+                                                    >
+                                                        <MoreHorizontal size={16} />
                                                     </button>
+
+                                                    {songMoveMenuId === idx && (
+                                                        <div className="absolute right-8 top-8 z-50 w-48 bg-[#282828] border border-white/10 rounded-md shadow-2xl py-1 text-sm text-zinc-300">
+                                                            <div className="px-3 py-1.5 text-xs font-semibold text-zinc-500 uppercase tracking-wider">Move to...</div>
+                                                            {playlists.filter(p => p.id !== activePlaylist.id).length === 0 ? (
+                                                                <div className="px-3 py-2 text-zinc-500 text-xs italic">No other playlists</div>
+                                                            ) : (
+                                                                playlists.filter(p => p.id !== activePlaylist.id).map(p => (
+                                                                    <button
+                                                                        key={p.id}
+                                                                        onClick={(e) => { e.stopPropagation(); handleMoveSong(song, p.id); }}
+                                                                        className="w-full text-left px-3 py-2 hover:bg-white/10 hover:text-white truncate flex items-center justify-between"
+                                                                    >
+                                                                        <span className="truncate">{p.name}</span>
+                                                                        <ArrowRight size={14} className="opacity-50 shrink-0 ml-2" />
+                                                                    </button>
+                                                                ))
+                                                            )}
+                                                            <div className="border-t border-white/10 my-1"></div>
+                                                            <button
+                                                                onClick={(e) => { e.stopPropagation(); setSongMoveMenuId(null); handleRemoveSong(song, e); }}
+                                                                className="w-full text-left px-3 py-2 hover:bg-white/10 text-red-400 hover:text-red-300 flex items-center justify-between"
+                                                            >
+                                                                Remove from playlist
+                                                                <Trash2 size={14} />
+                                                            </button>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         );
@@ -375,18 +534,36 @@ export default function MusicPlayer({ user }) {
 
                 {/* Player Controls */}
                 <div className="w-1/3 max-w-[722px] flex flex-col items-center justify-center gap-2">
-                    <div className="flex items-center gap-6">
-                        <button onClick={handlePrev} className="text-[#a7a7a7] hover:text-white transition-colors">
+                    <div className="flex items-center gap-4 sm:gap-6">
+                        <button
+                            onClick={(e) => { e.stopPropagation(); setIsShuffle(!isShuffle); }}
+                            className={`transition-colors relative ${isShuffle ? 'text-green-500' : 'text-[#a7a7a7] hover:text-white'}`}
+                            title="Shuffle"
+                        >
+                            <Shuffle size={16} />
+                            {isShuffle && <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-green-500 rounded-full"></span>}
+                        </button>
+
+                        <button onClick={(e) => { e.stopPropagation(); handlePrev(); }} className="text-[#a7a7a7] hover:text-white transition-colors" title="Previous">
                             <SkipBack size={20} fill="currentColor" />
                         </button>
                         <button
-                            onClick={togglePlay}
+                            onClick={(e) => { e.stopPropagation(); togglePlay(); }}
                             className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition-transform"
                         >
                             {playerInfo.isPlaying ? <Pause size={16} fill="currentColor" /> : <Play size={16} fill="currentColor" className="ml-0.5" />}
                         </button>
-                        <button onClick={handleNext} className="text-[#a7a7a7] hover:text-white transition-colors">
+                        <button onClick={(e) => { e.stopPropagation(); handleNext(); }} className="text-[#a7a7a7] hover:text-white transition-colors" title="Next">
                             <SkipForward size={20} fill="currentColor" />
+                        </button>
+
+                        <button
+                            onClick={(e) => { e.stopPropagation(); setIsRepeat(!isRepeat); }}
+                            className={`transition-colors relative ${isRepeat ? 'text-green-500' : 'text-[#a7a7a7] hover:text-white'}`}
+                            title="Repeat song"
+                        >
+                            <Repeat size={16} />
+                            {isRepeat && <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-green-500 rounded-full"></span>}
                         </button>
                     </div>
 
@@ -409,11 +586,28 @@ export default function MusicPlayer({ user }) {
 
                 {/* Volume / Extra Controls */}
                 <div className="w-1/3 flex justify-end items-center gap-4 text-[#a7a7a7] hidden md:flex pr-2">
-                    <div className={`flex items-end gap-[3px] h-4 ${playerInfo.isPlaying ? 'opacity-100' : 'opacity-0'} transition-opacity`}>
+                    <div className={`flex items-end gap-[3px] h-4 ${playerInfo.isPlaying ? 'opacity-100' : 'opacity-0'} transition-opacity mr-4`}>
                         <div className="w-1 bg-green-500 h-2 animate-bounce" style={{ animationDelay: '0ms', animationDuration: '0.8s' }}></div>
                         <div className="w-1 bg-green-500 h-4 animate-bounce" style={{ animationDelay: '200ms', animationDuration: '1.2s' }}></div>
                         <div className="w-1 bg-green-500 h-3 animate-bounce" style={{ animationDelay: '400ms', animationDuration: '0.9s' }}></div>
                         <div className="w-1 bg-green-500 h-3 animate-bounce" style={{ animationDelay: '100ms', animationDuration: '1.1s' }}></div>
+                    </div>
+
+                    <div className="flex items-center gap-2 group w-32" onClick={(e) => e.stopPropagation()}>
+                        <button onClick={toggleMute} className="hover:text-white transition-colors" title={isMuted ? "Unmute" : "Mute"}>
+                            {isMuted || volume === 0 ? <VolumeX size={18} /> : <Volume2 size={18} />}
+                        </button>
+                        <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            value={isMuted ? 0 : volume}
+                            onChange={handleVolumeChange}
+                            className="flex-1 h-1 bg-[#4d4d4d] appearance-none cursor-pointer range-slider rounded-full"
+                            style={{
+                                background: `linear-gradient(to right, #1db954 ${isMuted ? 0 : volume}%, #4d4d4d ${isMuted ? 0 : volume}%)`
+                            }}
+                        />
                     </div>
                 </div>
             </div>
