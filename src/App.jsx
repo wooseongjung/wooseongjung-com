@@ -423,7 +423,7 @@ const StandardLayout = ({ user }) => (
 export default function App() {
   const location = useLocation();
   const activePath = location.pathname.split('/')[1] || 'about';
-  const activeTab = activePath === 'project' ? 'project' : (activePath === 'life' ? 'life' : 'about');
+  const activeTab = activePath === 'project' ? 'project' : ((activePath === 'life' || activePath === 'record') ? 'life' : 'about');
   const [wireLength, setWireLength] = useState(0);
   const [user, setUser] = useState(null);
 
