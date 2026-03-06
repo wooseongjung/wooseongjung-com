@@ -54,8 +54,8 @@ const injectedStyles = `
   }
 
   .dark body {
-    background-color: #121212;
-    color: #ececec;
+    background-color: #0e0e0e;
+    color: #e4e4e7;
   }
 
   .bg-minimal-circuit {
@@ -68,8 +68,8 @@ const injectedStyles = `
 
   .dark .bg-minimal-circuit {
     background-image: 
-      linear-gradient(rgba(45, 45, 45, 0.5) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(45, 45, 45, 0.5) 1px, transparent 1px);
+      linear-gradient(rgba(60, 60, 60, 0.4) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(60, 60, 60, 0.4) 1px, transparent 1px);
   }
 
   ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -146,13 +146,13 @@ const LightSwitch = ({ isOpen, onToggle, className = "" }) => (
 const AboutView = () => (
   <div className="space-y-16 animate-fade-up max-w-4xl">
     <div className="relative">
-      <h2 className="text-3xl font-light tracking-tight text-zinc-900 mb-6">
+      <h2 className="text-3xl font-light tracking-tight text-zinc-900 dark:text-zinc-100 mb-6">
         Architecting intelligence in <span className="font-semibold">silicon</span> and <span className="font-semibold">motion</span>.
       </h2>
 
-      <div className="space-y-6 text-zinc-600 leading-relaxed font-light text-lg">
+      <div className="space-y-6 text-zinc-600 dark:text-zinc-400 leading-relaxed font-light text-lg">
         <p>
-          I am an Electronic Engineering undergrad at the University of Manchester, specializing in the intersection of <strong className="font-semibold text-zinc-900">Robotics</strong> and <strong className="font-semibold text-zinc-900">VLSI Design</strong>.
+          I am an Electronic Engineering undergrad at the University of Manchester, specializing in the intersection of <strong className="font-semibold text-zinc-900 dark:text-zinc-100">Robotics</strong> and <strong className="font-semibold text-zinc-900 dark:text-zinc-100">VLSI Design</strong>.
         </p>
         <p>
           My technical footprint spans from low-level hardware design (VHDL, Altium, Tanner EDA) and C++ microcontroller firmware, right up to high-level robotics frameworks like ROS 2 and Gazebo. I build systems that move precisely and calculate efficiently.
@@ -171,8 +171,8 @@ const AboutView = () => (
     </div>
 
     {/* Timeline Section */}
-    <div className="pt-8 border-t border-zinc-200">
-      <h3 className="text-xl font-medium text-zinc-900 mb-8 flex items-center gap-2">
+    <div className="pt-8 border-t border-zinc-200 dark:border-zinc-800">
+      <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-8 flex items-center gap-2">
         <Briefcase size={20} className="text-blue-500/80" /> Footprint
       </h3>
 
@@ -229,11 +229,11 @@ const AboutView = () => (
       </div>
     </div>
 
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-8 border-t border-zinc-200">
-      <div className="text-sm text-zinc-500"><span className="font-medium text-zinc-900 block mb-1">Languages</span> C/C++, Python, Assembly, VHDL, JavaScript</div>
-      <div className="text-sm text-zinc-500"><span className="font-medium text-zinc-900 block mb-1">Hardware</span> STM32, Raspberry Pi, ROS 2</div>
-      <div className="text-sm text-zinc-500"><span className="font-medium text-zinc-900 block mb-1">Software</span> Matlab, Simulink, Solidworks, Altium</div>
-      <div className="text-sm text-zinc-500"><span className="font-medium text-zinc-900 block mb-1">EDA</span> Tanner EDA, NI Multisim, Xilinx</div>
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-8 border-t border-zinc-200 dark:border-zinc-800">
+      <div className="text-sm text-zinc-500 dark:text-zinc-400"><span className="font-medium text-zinc-900 dark:text-zinc-100 block mb-1">Languages</span> C/C++, Python, Assembly, VHDL, JavaScript</div>
+      <div className="text-sm text-zinc-500 dark:text-zinc-400"><span className="font-medium text-zinc-900 dark:text-zinc-100 block mb-1">Hardware</span> STM32, Raspberry Pi, ROS 2</div>
+      <div className="text-sm text-zinc-500 dark:text-zinc-400"><span className="font-medium text-zinc-900 dark:text-zinc-100 block mb-1">Software</span> Matlab, Simulink, Solidworks, Altium</div>
+      <div className="text-sm text-zinc-500 dark:text-zinc-400"><span className="font-medium text-zinc-900 dark:text-zinc-100 block mb-1">EDA</span> Tanner EDA, NI Multisim, Xilinx</div>
     </div>
   </div>
 );
@@ -293,31 +293,31 @@ const ProjectsView = () => {
           </section>
 
           <section>
-            <h3 className="text-xl font-medium text-zinc-900 mb-4 flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-zinc-900"></div> 2. Methodology</h3>
+            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white"></div> 2. Methodology</h3>
             <ul className="list-none space-y-4 pl-0">
-              <li className="pl-4 border-l-2 border-zinc-200"><strong className="font-semibold text-zinc-900 block">Simulation Environment</strong> Platform: NS-3 (v3.46) with 5G-LENA module representing realistic 3GPP mmWave physics. Mobility relies on SUMO over a 1km slice of Manchester City Center.</li>
-              <li className="pl-4 border-l-2 border-zinc-200"><strong className="font-semibold text-zinc-900 block">Double-Hop Architecture</strong> Both client cars and fog-node buses are configured as standard User Equipment (UE). The data path operates strictly as: Car → gNB → Core Network → gNB → Bus.</li>
-              <li className="pl-4 border-l-2 border-zinc-200"><strong className="font-semibold text-zinc-900 block">Experimental Scenarios</strong> Tested against a 40-vehicle high-speed (Off-Peak) run and a 200-vehicle congested (Peak) run, utilizing a 15 dB Cell Range Extension (CRE) bias.</li>
+              <li className="pl-4 border-l-2 border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300"><strong className="font-semibold text-zinc-900 dark:text-zinc-100 block">Simulation Environment</strong> Platform: NS-3 (v3.46) with 5G-LENA module representing realistic 3GPP mmWave physics. Mobility relies on SUMO over a 1km slice of Manchester City Center.</li>
+              <li className="pl-4 border-l-2 border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300"><strong className="font-semibold text-zinc-900 dark:text-zinc-100 block">Double-Hop Architecture</strong> Both client cars and fog-node buses are configured as standard User Equipment (UE). The data path operates strictly as: Car → gNB → Core Network → gNB → Bus.</li>
+              <li className="pl-4 border-l-2 border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300"><strong className="font-semibold text-zinc-900 dark:text-zinc-100 block">Experimental Scenarios</strong> Tested against a 40-vehicle high-speed (Off-Peak) run and a 200-vehicle congested (Peak) run, utilizing a 15 dB Cell Range Extension (CRE) bias.</li>
             </ul>
           </section>
 
           <section>
-            <h3 className="text-xl font-medium text-zinc-900 mb-4 flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-zinc-900"></div> 3. Key Findings</h3>
+            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white"></div> 3. Key Findings</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-              <div className="bg-white border border-zinc-200 p-6 shadow-sm">
-                <h4 className="font-semibold text-zinc-900 mb-2">Macro-Cell Congestion Collapse</h4>
-                <p className="text-sm">In the 200-vehicle scenario, routing all traffic double-hop via the cell tower caused extreme mmWave co-channel interference, blinding receivers and causing a catastrophic <strong className="text-red-500 font-medium">97.5% uplink packet loss</strong>.</p>
+              <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-6 shadow-sm">
+                <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-2">Macro-Cell Congestion Collapse</h4>
+                <p className="text-sm text-zinc-700 dark:text-zinc-400">In the 200-vehicle scenario, routing all traffic double-hop via the cell tower caused extreme mmWave co-channel interference, blinding receivers and causing a catastrophic <strong className="text-red-500 font-medium">97.5% uplink packet loss</strong>.</p>
               </div>
-              <div className="bg-white border border-zinc-200 p-6 shadow-sm">
-                <h4 className="font-semibold text-zinc-900 mb-2">The Compute Bottleneck</h4>
-                <p className="text-sm">Applying CRE bias effectively offloaded traffic from the gNB, but blindly forcing 99% of tasks onto a few buses overwhelmed their CPUs (capped at 200 tasks/s), resulting in <strong className="text-red-500 font-medium">multi-minute queuing delays</strong>.</p>
+              <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-6 shadow-sm">
+                <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-2">The Compute Bottleneck</h4>
+                <p className="text-sm text-zinc-700 dark:text-zinc-400">Applying CRE bias effectively offloaded traffic from the gNB, but blindly forcing 99% of tasks onto a few buses overwhelmed their CPUs (capped at 200 tasks/s), resulting in <strong className="text-red-500 font-medium">multi-minute queuing delays</strong>.</p>
               </div>
             </div>
           </section>
 
-          <div className="bg-zinc-50 border border-zinc-200 p-6 mt-8 rounded-sm">
-            <h4 className="font-semibold text-zinc-900 mb-2">Conclusion</h4>
-            <p className="text-sm text-zinc-700">Neither pure gNB offloading nor pure VFN offloading functions alone in a dense 5G network. The data validates the absolute necessity of the proposed Velocity-Aware Hybrid Algorithm to monitor vehicle speeds and CPU queues to intelligently route load.</p>
+          <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-6 mt-8 rounded-sm">
+            <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-2">Conclusion</h4>
+            <p className="text-sm text-zinc-700 dark:text-zinc-400">Neither pure gNB offloading nor pure VFN offloading functions alone in a dense 5G network. The data validates the absolute necessity of the proposed Velocity-Aware Hybrid Algorithm to monitor vehicle speeds and CPU queues to intelligently route load.</p>
           </div>
         </div>
       </div>
@@ -327,8 +327,8 @@ const ProjectsView = () => {
   return (
     <div className="space-y-10 animate-fade-up max-w-4xl">
       <div className="mb-12">
-        <h2 className="text-2xl font-semibold text-zinc-900 mb-4">Engineering Projects</h2>
-        <p className="text-zinc-500 font-light">A selection of research and hardware projects executed during my degree, spanning VLSI logic, embedded firmware, and network simulations.</p>
+        <h2 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4">Engineering Projects</h2>
+        <p className="text-zinc-500 dark:text-zinc-400 font-light">A selection of research and hardware projects executed during my degree, spanning VLSI logic, embedded firmware, and network simulations.</p>
       </div>
 
       <div className="relative border-transparent pl-8 space-y-12 ml-2">
@@ -385,28 +385,28 @@ const LifeView = ({ user }) => {
     <div className="space-y-10 animate-fade-up w-full">
 
       <div className="max-w-5xl mx-auto w-full">
-        <h2 className="text-2xl font-semibold text-zinc-900">Life Beyond the Screen</h2>
-        <p className="text-zinc-600 font-light max-w-2xl mb-8">
+        <h2 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">Life Beyond the Screen</h2>
+        <p className="text-zinc-600 dark:text-zinc-400 font-light max-w-2xl mb-8">
           The inputs that fuel my outputs. A collection of offline pursuits that influence my digital work.
         </p>
 
-        <div className="bg-white p-8 border border-zinc-200 relative group overflow-hidden">
+        <div className="bg-white dark:bg-zinc-900 p-8 border border-zinc-200 dark:border-zinc-800 relative group overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-zinc-300 to-transparent"></div>
           <div className="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
             <div className="max-w-xl">
-              <h3 className="text-lg font-medium text-zinc-900 mb-2 flex items-center gap-2">
+              <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2 flex items-center gap-2">
                 <Zap size={18} className="text-zinc-400" /> Daily Curation
               </h3>
               {isCurating ? (
-                <div className="flex items-center gap-3 text-sm text-zinc-500">
+                <div className="flex items-center gap-3 text-sm text-zinc-500 dark:text-zinc-400">
                   <Loader2 size={16} className="animate-spin" /> Fetching today's aesthetic...
                 </div>
               ) : curation ? (
-                <p className="text-sm text-zinc-600 font-light leading-relaxed">{curation}</p>
+                <p className="text-sm text-zinc-600 dark:text-zinc-300 font-light leading-relaxed">{curation}</p>
               ) : error ? (
                 <p className="text-sm text-red-500 font-light">{error}</p>
               ) : (
-                <p className="text-sm text-zinc-500 font-light">Generate a unique blend of music, fashion, and coffee recommendations for today's focus session.</p>
+                <p className="text-sm text-zinc-500 dark:text-zinc-400 font-light">Generate a unique blend of music, fashion, and coffee recommendations for today's focus session.</p>
               )}
             </div>
             <button
@@ -421,13 +421,13 @@ const LifeView = ({ user }) => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8 mb-16">
           {interests.map((item, idx) => (
-            <div key={idx} className="bg-white p-8 border border-zinc-100 shadow-sm relative group hover:shadow-xl hover:-translate-y-1 hover:border-zinc-200 transition-all duration-300 cursor-default">
-              <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-zinc-200 transition-colors duration-500 group-hover:border-zinc-900 group-hover:w-full group-hover:h-full group-hover:opacity-10"></div>
-              <div className="w-10 h-10 rounded-full bg-zinc-50 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <item.icon size={18} className="text-zinc-900" />
+            <div key={idx} className="bg-white dark:bg-zinc-900 p-8 border border-zinc-100 dark:border-zinc-800 shadow-sm relative group hover:shadow-xl hover:-translate-y-1 hover:border-zinc-200 dark:hover:border-zinc-600 transition-all duration-300 cursor-default">
+              <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-zinc-200 dark:border-zinc-700 transition-colors duration-500 group-hover:border-zinc-900 dark:group-hover:border-zinc-400 group-hover:w-full group-hover:h-full group-hover:opacity-10"></div>
+              <div className="w-10 h-10 rounded-full bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <item.icon size={18} className="text-zinc-900 dark:text-zinc-200" />
               </div>
-              <h3 className="text-lg font-medium text-zinc-900 mb-3 group-hover:text-black transition-colors">{item.title}</h3>
-              <p className="text-sm text-zinc-500 font-light leading-relaxed">{item.desc}</p>
+              <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-3 group-hover:text-black dark:group-hover:text-white transition-colors">{item.title}</h3>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 font-light leading-relaxed">{item.desc}</p>
             </div>
           ))}
         </div>
@@ -482,27 +482,27 @@ const ContactView = () => {
   return (
     <div className="space-y-12 animate-fade-up max-w-3xl">
       <div className="mb-8">
-        <h2 className="text-3xl font-light tracking-tight text-zinc-900 flex items-center gap-3 mb-4">
+        <h2 className="text-3xl font-light tracking-tight text-zinc-900 dark:text-zinc-100 flex items-center gap-3 mb-4">
           <Plug className="text-zinc-400" size={28} />
           Establishing Connection
         </h2>
-        <p className="text-zinc-600 font-light text-lg">
+        <p className="text-zinc-600 dark:text-zinc-400 font-light text-lg">
           Whether you want to discuss a new software architecture, share a Spotify playlist, or debate the best local coffee roaster, my inbox is open.
         </p>
       </div>
 
-      <div className="bg-zinc-50 border border-zinc-200 p-6 relative shadow-sm hover:shadow-md transition-shadow">
+      <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6 relative shadow-sm hover:shadow-md transition-shadow">
         <div className="absolute -left-[5px] top-1/2 -translate-y-1/2 flex items-center">
           <Node className="bg-zinc-100" />
         </div>
-        <h3 className="font-medium text-zinc-900 mb-4 flex items-center gap-2">
+        <h3 className="font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
           <Cpu size={18} className="text-zinc-400" /> AI Icebreaker Drafter
         </h3>
         <div className="flex flex-col sm:flex-row gap-4 mb-4">
           <select
             value={intent}
             onChange={(e) => setIntent(e.target.value)}
-            className="flex-1 bg-white border border-zinc-200 p-2 text-sm text-zinc-700 outline-none focus:border-zinc-400 transition-colors"
+            className="flex-1 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-2 text-sm text-zinc-700 dark:text-zinc-200 outline-none focus:border-zinc-400 transition-colors"
           >
             <option value="collaboration">Discuss a project collaboration</option>
             <option value="hiring">Discuss a hiring opportunity</option>
@@ -518,7 +518,7 @@ const ContactView = () => {
         </div>
 
         {draft && (
-          <div className="mt-4 p-4 bg-white border border-zinc-100 text-sm text-zinc-600 font-light leading-relaxed relative group shadow-sm">
+          <div className="mt-4 p-4 bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700 text-sm text-zinc-600 dark:text-zinc-300 font-light leading-relaxed relative group shadow-sm">
             {draft}
             <button
               onClick={() => {
@@ -529,7 +529,7 @@ const ContactView = () => {
                 document.execCommand('copy');
                 document.body.removeChild(el);
               }}
-              className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-xs font-medium bg-zinc-100 px-3 py-1 text-zinc-600 transition-opacity hover:bg-zinc-200 rounded-sm"
+              className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-xs font-medium bg-zinc-100 dark:bg-zinc-700 px-3 py-1 text-zinc-600 dark:text-zinc-300 transition-opacity hover:bg-zinc-200 dark:hover:bg-zinc-600 rounded-sm"
             >
               Copy
             </button>
@@ -538,31 +538,31 @@ const ContactView = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
-        <a href="mailto:wooseongjung12@gmail.com" className="flex flex-col gap-4 p-6 bg-white border border-zinc-200 hover:border-zinc-900 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
-          <Mail size={24} className="text-zinc-400 group-hover:text-zinc-900 transition-colors" />
+        <a href="mailto:wooseongjung12@gmail.com" className="flex flex-col gap-4 p-6 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-900 dark:hover:border-zinc-500 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
+          <Mail size={24} className="text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors" />
           <div className="mt-2">
-            <h3 className="font-medium text-zinc-900">Email</h3>
-            <span className="text-xs text-zinc-500 font-light break-words">wooseongjung12@gmail.com</span>
+            <h3 className="font-medium text-zinc-900 dark:text-zinc-100">Email</h3>
+            <span className="text-xs text-zinc-500 dark:text-zinc-400 font-light break-words">wooseongjung12@gmail.com</span>
           </div>
-          <ArrowRight size={16} className="text-zinc-300 group-hover:text-zinc-900 transform group-hover:translate-x-1 transition-all mt-auto" />
+          <ArrowRight size={16} className="text-zinc-300 dark:text-zinc-600 group-hover:text-zinc-900 dark:group-hover:text-white transform group-hover:translate-x-1 transition-all mt-auto" />
         </a>
 
-        <a href="https://linkedin.com/in/wooseong-jung-0bb5b121b" target="_blank" rel="noreferrer" className="flex flex-col gap-4 p-6 bg-white border border-zinc-200 hover:border-zinc-900 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
-          <Linkedin size={24} className="text-zinc-400 group-hover:text-zinc-900 transition-colors" />
+        <a href="https://linkedin.com/in/wooseong-jung-0bb5b121b" target="_blank" rel="noreferrer" className="flex flex-col gap-4 p-6 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-900 dark:hover:border-zinc-500 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
+          <Linkedin size={24} className="text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors" />
           <div className="mt-2">
-            <h3 className="font-medium text-zinc-900">LinkedIn</h3>
+            <h3 className="font-medium text-zinc-900 dark:text-zinc-100">LinkedIn</h3>
             <span className="text-xs text-zinc-500 font-light">Network & resume</span>
           </div>
-          <ArrowRight size={16} className="text-zinc-300 group-hover:text-zinc-900 transform group-hover:-rotate-45 transition-all mt-auto" />
+          <ArrowRight size={16} className="text-zinc-300 dark:text-zinc-600 group-hover:text-zinc-900 dark:group-hover:text-white transform group-hover:-rotate-45 transition-all mt-auto" />
         </a>
 
-        <a href="https://github.com/wooseongjung" target="_blank" rel="noreferrer" className="flex flex-col gap-4 p-6 bg-white border border-zinc-200 hover:border-zinc-900 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
-          <Github size={24} className="text-zinc-400 group-hover:text-zinc-900 transition-colors" />
+        <a href="https://github.com/wooseongjung" target="_blank" rel="noreferrer" className="flex flex-col gap-4 p-6 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-900 dark:hover:border-zinc-500 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
+          <Github size={24} className="text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors" />
           <div className="mt-2">
-            <h3 className="font-medium text-zinc-900">GitHub</h3>
-            <span className="text-xs text-zinc-500 font-light">Code repositories</span>
+            <h3 className="font-medium text-zinc-900 dark:text-zinc-100">GitHub</h3>
+            <span className="text-xs text-zinc-500 dark:text-zinc-400 font-light">Code repositories</span>
           </div>
-          <ArrowRight size={16} className="text-zinc-300 group-hover:text-zinc-900 transform group-hover:-rotate-45 transition-all mt-auto" />
+          <ArrowRight size={16} className="text-zinc-300 dark:text-zinc-600 group-hover:text-zinc-900 dark:group-hover:text-white transform group-hover:-rotate-45 transition-all mt-auto" />
         </a>
       </div>
     </div>
