@@ -176,7 +176,7 @@ const AboutView = () => (
         <Briefcase size={20} className="text-blue-500/80" /> Footprint
       </h3>
 
-      <div className="relative border-transparent space-y-12 ml-2">
+      <div className="relative border-transparent space-y-8 ml-2">
 
         {/* Present */}
         <div className="relative group transition-all duration-300 hover:-translate-y-1 p-4 rounded-md hover:bg-white dark:hover:bg-neutral-900 border border-transparent hover:border-zinc-100 dark:hover:border-zinc-800 flex items-start gap-5">
@@ -713,44 +713,44 @@ export default function App() {
                 </Link>
               ))}
             </nav>
+          </div>
 
-            <div className={`flex items-center gap-4 shrink-0 h-5 relative z-10 ${activePath === 'record' ? 'border-[#282828]' : 'border-zinc-200'}`}>
+          <div className={`flex items-center gap-4 shrink-0 h-5 relative z-10 ml-4 lg:ml-8 ${activePath === 'record' ? 'border-[#282828]' : 'border-zinc-200'}`}>
 
-              <div className="hidden lg:flex items-center gap-2 mr-2">
-                {user ? (
-                  <button onClick={handleLogin} className={`flex items-center gap-2 text-[11px] font-medium transition-colors px-2 py-1 rounded bg-white dark:bg-black border border-zinc-200 dark:border-zinc-800 ${activePath === 'record' ? 'text-zinc-400 hover:text-red-400 hover:bg-neutral-800' : 'text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:border-zinc-400 dark:hover:border-zinc-600'}`} title="Sign Out">
-                    <span className="max-w-[120px] truncate">{user.email}</span>
-                    <LogOut size={12} />
-                  </button>
-                ) : (
-                  <button onClick={handleLogin} className={`flex items-center gap-2 text-[11px] font-medium transition-colors px-3 py-1 rounded bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-white dark:hover:bg-zinc-700 ${activePath === 'record' ? 'text-white bg-zinc-800 hover:bg-zinc-700' : 'text-zinc-900'}`} title="Sign In with Google">
-                    <span>Sign In</span>
-                    <LogIn size={12} />
-                  </button>
-                )}
-              </div>
+            <div className="hidden lg:flex items-center gap-2 mr-2">
+              {user ? (
+                <button onClick={handleLogin} className={`flex items-center gap-2 text-[11px] font-medium transition-colors px-2 py-1 rounded bg-white dark:bg-black border border-zinc-200 dark:border-zinc-800 ${activePath === 'record' ? 'text-zinc-400 hover:text-red-400 hover:bg-neutral-800' : 'text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:border-zinc-400 dark:hover:border-zinc-600'}`} title="Sign Out">
+                  <span className="max-w-[120px] truncate">{user.email}</span>
+                  <LogOut size={12} />
+                </button>
+              ) : (
+                <button onClick={handleLogin} className={`flex items-center gap-2 text-[11px] font-medium transition-colors px-3 py-1 rounded bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-white dark:hover:bg-zinc-700 ${activePath === 'record' ? 'text-white bg-zinc-800 hover:bg-zinc-700' : 'text-zinc-900'}`} title="Sign In with Google">
+                  <span>Sign In</span>
+                  <LogIn size={12} />
+                </button>
+              )}
+            </div>
 
-              <div className="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 mx-1 hidden lg:block"></div>
+            <div className="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 mx-1 hidden lg:block"></div>
 
-              <LightSwitch
-                isOpen={isDarkMode}
-                onToggle={() => setIsDarkMode(!isDarkMode)}
-                className={activePath === 'record' ? 'opacity-50 pointer-events-none' : ''}
-              />
+            <LightSwitch
+              isOpen={isDarkMode}
+              onToggle={() => setIsDarkMode(!isDarkMode)}
+              className={activePath === 'record' ? 'opacity-50 pointer-events-none' : ''}
+            />
 
-              <div className="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 mx-1"></div>
+            <div className="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 mx-1"></div>
 
-              <div className="flex items-center gap-4 ml-1">
-                <a href="mailto:hello@yourdomain.com" className={`transition-colors flex shrink-0 ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900 dark:hover:text-white dark:text-zinc-500'}`}>
-                  <Mail size={16} />
-                </a>
-                <a href="https://linkedin.com" target="_blank" rel="noreferrer" className={`transition-colors flex shrink-0 ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900 dark:hover:text-white dark:text-zinc-500'}`}>
-                  <Linkedin size={16} />
-                </a>
-                <a href="https://github.com" target="_blank" rel="noreferrer" className={`transition-colors flex shrink-0 ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900 dark:hover:text-white dark:text-zinc-500'}`}>
-                  <Github size={16} />
-                </a>
-              </div>
+            <div className="flex items-center gap-4 ml-1">
+              <a href="mailto:hello@yourdomain.com" className={`transition-colors flex shrink-0 ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900 dark:hover:text-white dark:text-zinc-500'}`}>
+                <Mail size={16} />
+              </a>
+              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className={`transition-colors flex shrink-0 ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900 dark:hover:text-white dark:text-zinc-500'}`}>
+                <Linkedin size={16} />
+              </a>
+              <a href="https://github.com" target="_blank" rel="noreferrer" className={`transition-colors flex shrink-0 ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900 dark:hover:text-white dark:text-zinc-500'}`}>
+                <Github size={16} />
+              </a>
             </div>
           </div>
         </div>
@@ -760,6 +760,6 @@ export default function App() {
         <Route path="/record" element={<MusicPlayer user={user} />} />
         <Route path="*" element={<StandardLayout user={user} />} />
       </Routes>
-    </div>
+    </div >
   );
 }
