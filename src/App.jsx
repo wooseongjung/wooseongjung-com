@@ -145,7 +145,7 @@ const AboutView = () => (
     {/* Timeline Section */}
     <div className="pt-8 border-t border-zinc-200">
       <h3 className="text-xl font-medium text-zinc-900 mb-8 flex items-center gap-2">
-        <Cpu size={20} className="text-zinc-400" /> Professional Footprint
+        <Briefcase size={20} className="text-blue-500/80" /> Footprint
       </h3>
 
       <div className="relative border-l border-zinc-200 pl-8 space-y-12 ml-2">
@@ -297,17 +297,16 @@ const ProjectsView = () => {
       <div className="relative border-l border-zinc-200 pl-8 space-y-12 ml-2">
         {projects.map((proj) => (
           <div key={proj.id} className="relative group cursor-pointer transition-all duration-300 hover:-translate-y-1.5 p-6 -ml-6 -mt-6 rounded-lg hover:bg-white hover:shadow-md border border-transparent hover:border-zinc-200" onClick={() => setActiveProjectId(proj.id)}>
-            <div className={`absolute -left-[4px] top-[31px] w-7 h-[1px] z-0 ${proj.id === 'vfc-ns3' ? 'bg-zinc-900' : 'bg-zinc-200 group-hover:bg-zinc-900'} transition-colors duration-500`}></div>
-            <Node className={`absolute -left-[12px] top-[28px] transition-all duration-500 ${proj.id === 'vfc-ns3' ? 'bg-zinc-900' : 'group-hover:bg-zinc-900 group-hover:scale-125'}`} />
+            <Node className={`absolute -left-[11px] top-[28px] transition-all duration-500 ${proj.id === 'vfc-ns3' ? 'bg-indigo-500 border-indigo-500' : 'group-hover:bg-indigo-500 group-hover:border-indigo-500 group-hover:scale-125'}`} />
 
             <div className="flex flex-col md:flex-row md:items-baseline justify-between mb-2">
               <h3 className="text-xl font-medium text-zinc-900 group-hover:text-black transition-colors flex items-center gap-2">
                 {proj.title}
-                {proj.id === 'vfc-ns3' && <span className="px-2 py-0.5 bg-zinc-100 text-zinc-600 text-[10px] uppercase tracking-wider font-semibold rounded-sm">Research</span>}
+                {proj.id === 'vfc-ns3' && <span className="px-2 py-0.5 bg-indigo-50 text-indigo-700 text-[10px] uppercase tracking-wider font-semibold rounded-sm">Research</span>}
               </h3>
-              <span className="text-sm text-zinc-400 font-light mt-1 md:mt-0">{proj.year} • {proj.category}</span>
+              <span className="text-[13px] text-zinc-600 font-medium mt-1 md:mt-0 bg-zinc-50 px-2 py-0.5 rounded-sm">{proj.year} • {proj.category}</span>
             </div>
-            <p className="text-zinc-600 font-light leading-relaxed max-w-2xl">{proj.desc}</p>
+            <p className="text-zinc-700 font-light leading-relaxed max-w-2xl">{proj.desc}</p>
 
             {proj.id === 'vfc-ns3' && (
               <div className="mt-4 text-sm font-medium text-zinc-900 flex items-center gap-2 opacity-70 group-hover:opacity-100 transition-opacity">
