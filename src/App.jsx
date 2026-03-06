@@ -50,6 +50,12 @@ const injectedStyles = `
     color: #18181b;
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .dark body {
+    background-color: #121212;
+    color: #ececec;
   }
 
   .bg-minimal-circuit {
@@ -58,6 +64,12 @@ const injectedStyles = `
       linear-gradient(90deg, rgba(228, 228, 231, 0.5) 1px, transparent 1px);
     background-size: 60px 60px;
     background-position: center center;
+  }
+
+  .dark .bg-minimal-circuit {
+    background-image: 
+      linear-gradient(rgba(45, 45, 45, 0.5) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(45, 45, 45, 0.5) 1px, transparent 1px);
   }
 
   ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -109,10 +121,34 @@ const Trace = ({ vertical = false, className = "" }) => (
 
 const GroundSymbol = ({ className = "" }) => (
   <div className={`flex flex-col items-center gap-[3px] ${className}`}>
-    <div className="w-4 h-[1.5px] bg-zinc-400"></div>
-    <div className="w-2.5 h-[1.5px] bg-zinc-400"></div>
-    <div className="w-1 h-[1.5px] bg-zinc-400"></div>
+    <div className="w-4 h-[1.5px] bg-zinc-400 dark:bg-zinc-600 transition-colors"></div>
+    <div className="w-2.5 h-[1.5px] bg-zinc-400 dark:bg-zinc-600 transition-colors"></div>
+    <div className="w-1 h-[1.5px] bg-zinc-400 dark:bg-zinc-600 transition-colors"></div>
   </div>
+);
+
+const CircuitSwitch = ({ isOpen, onToggle, className = "" }) => (
+  <button
+    onClick={onToggle}
+    className={`relative w-8 h-4 flex items-center justify-center group focus:outline-none ${className}`}
+    aria-label="Toggle Dark Mode"
+  >
+    {/* Left wire */}
+    <div className="absolute left-0 w-2.5 h-[1.5px] bg-zinc-500 dark:bg-zinc-400 group-hover:bg-zinc-900 dark:group-hover:bg-white transition-colors"></div>
+    {/* Left node */}
+    <div className="absolute left-2.5 w-1.5 h-1.5 rounded-full border-[1.5px] border-zinc-500 dark:border-zinc-400 group-hover:border-zinc-900 dark:group-hover:border-white bg-transparent transition-colors z-10"></div>
+
+    {/* Right node */}
+    <div className="absolute right-2.5 w-1.5 h-1.5 rounded-full border-[1.5px] border-zinc-500 dark:border-zinc-400 group-hover:border-zinc-900 dark:group-hover:border-white bg-transparent transition-colors z-10"></div>
+    {/* Right wire */}
+    <div className="absolute right-0 w-2.5 h-[1.5px] bg-zinc-500 dark:bg-zinc-400 group-hover:bg-zinc-900 dark:group-hover:bg-white transition-colors"></div>
+
+    {/* The Switch Arm (Pivots from the right node) */}
+    <div
+      className="absolute right-[11px] w-3.5 h-[1.5px] bg-zinc-500 dark:bg-zinc-400 group-hover:bg-zinc-900 dark:group-hover:bg-white transition-all duration-300 origin-right"
+      style={{ transform: isOpen ? 'rotate(35deg) scaleX(1.1) translateX(-1px) translateY(-1px)' : 'rotate(0deg)' }}
+    ></div>
+  </button>
 );
 
 const AboutView = () => (
@@ -148,44 +184,41 @@ const AboutView = () => (
         <Briefcase size={20} className="text-blue-500/80" /> Footprint
       </h3>
 
-      <div className="relative border-l border-zinc-200 pl-8 space-y-12 ml-2">
+      <div className="relative border-transparent pl-8 space-y-16 ml-2">
 
         {/* Present */}
-        <div className="relative group">
-          <div className="absolute -left-[28px] top-[7px] w-7 h-[1px] bg-zinc-200 group-hover:bg-zinc-900 transition-colors"></div>
-          <Node className="absolute -left-[36px] top-[4px] transition-colors group-hover:bg-zinc-900" />
+        <div className="relative group transition-all duration-300 hover:-translate-y-1 p-4 -ml-4 -mt-4 rounded-md hover:bg-white dark:hover:bg-neutral-900 border border-transparent hover:border-zinc-100 dark:hover:border-zinc-800">
+          <Node className="absolute -left-[35px] top-[4px] border-zinc-900 dark:border-white transition-colors group-hover:bg-blue-500 group-hover:border-blue-500 group-hover:scale-125" />
           <div className="mb-2">
-            <h4 className="text-lg font-medium text-zinc-900">University of Manchester</h4>
-            <span className="text-sm text-zinc-400 font-light block mt-1">Sep 2021 — Present • BEng (Hons) in Electronic Engineering</span>
+            <h4 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors">University of Manchester</h4>
+            <span className="text-[13px] text-blue-700/80 dark:text-blue-400 font-medium bg-blue-50 dark:bg-blue-500/10 inline-block px-1.5 py-0.5 rounded-sm mt-2">Sep 2021 — Present • BEng (Hons) in Electronic Engineering</span>
           </div>
-          <p className="text-zinc-600 font-light leading-relaxed">
-            First-Class (80%) expected. Key modules include Microcontroller Engineering, Analog and Digital Communication, Control Systems, and VLSI Design.
+          <p className="text-zinc-600 dark:text-zinc-400 font-light leading-relaxed mt-3">
+            First-Class (80%) expected. Key modules include <span className="bg-blue-50 dark:bg-blue-500/10 text-blue-800 dark:text-blue-300 font-normal px-1 rounded-sm">Microcontroller Engineering</span>, <span className="bg-blue-50 dark:bg-blue-500/10 text-blue-800 dark:text-blue-300 font-normal px-1 rounded-sm">Analog and Digital Comm</span>, Control Systems, and <span className="bg-blue-50 dark:bg-blue-500/10 text-blue-800 dark:text-blue-300 font-normal px-1 rounded-sm">VLSI Design</span>.
           </p>
         </div>
 
         {/* Hackabot */}
-        <div className="relative group">
-          <div className="absolute -left-[28px] top-[7px] w-7 h-[1px] bg-zinc-200 group-hover:bg-zinc-900 transition-colors"></div>
-          <Node className="absolute -left-[36px] top-[4px] transition-colors group-hover:bg-zinc-900" />
+        <div className="relative group transition-all duration-300 hover:-translate-y-1 p-4 -ml-4 -mt-4 rounded-md hover:bg-white dark:hover:bg-neutral-900 border border-transparent hover:border-zinc-100 dark:hover:border-zinc-800">
+          <Node className="absolute -left-[35px] top-[4px] border-zinc-900 dark:border-white transition-colors group-hover:bg-green-500 group-hover:border-green-500 group-hover:scale-125" />
           <div className="mb-2">
-            <h4 className="text-lg font-medium text-zinc-900">Hack-A-Bot 2025 (3rd Place)</h4>
-            <span className="text-sm text-zinc-400 font-light block mt-1">Mar 2025 • Robosoc, UoM</span>
+            <h4 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors">Hack-A-Bot 2025 (3rd Place)</h4>
+            <span className="text-[13px] text-green-700/80 dark:text-green-400 font-medium bg-green-50 dark:bg-green-500/10 inline-block px-1.5 py-0.5 rounded-sm mt-2">Mar 2025 • Robosoc, UoM</span>
           </div>
-          <p className="text-zinc-600 font-light leading-relaxed">
-            Developed a real-time hand-raise detection system using a Raspberry Pi 5. Designed a custom CAD mount for a Sony AI camera to gauge student classroom engagement.
+          <p className="text-zinc-600 dark:text-zinc-400 font-light leading-relaxed mt-3">
+            Developed a <span className="bg-green-50 dark:bg-green-500/10 text-green-800 dark:text-green-300 font-normal px-1 rounded-sm">real-time hand-raise detection system</span> using a Raspberry Pi 5. Designed a custom CAD mount for a Sony AI camera to gauge student classroom engagement.
           </p>
         </div>
 
         {/* Airforce */}
-        <div className="relative group">
-          <div className="absolute -left-[28px] top-[7px] w-7 h-[1px] bg-zinc-200 group-hover:bg-zinc-900 transition-colors"></div>
-          <Node className="absolute -left-[36px] top-[4px] transition-colors group-hover:bg-zinc-900" />
+        <div className="relative group transition-all duration-300 hover:-translate-y-1 p-4 -ml-4 -mt-4 rounded-md hover:bg-white dark:hover:bg-neutral-900 border border-transparent hover:border-zinc-100 dark:hover:border-zinc-800">
+          <Node className="absolute -left-[35px] top-[4px] border-zinc-900 dark:border-white transition-colors group-hover:bg-orange-500 group-hover:border-orange-500 group-hover:scale-125" />
           <div className="mb-2">
-            <h4 className="text-lg font-medium text-zinc-900">Republic of Korea Airforce</h4>
-            <span className="text-sm text-zinc-400 font-light block mt-1">Sep 2022 — Jun 2024 • Flight Control Maintenance</span>
+            <h4 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors">Republic of Korea Airforce</h4>
+            <span className="text-[13px] text-orange-700/80 dark:text-orange-400 font-medium bg-orange-50 dark:bg-orange-500/10 inline-block px-1.5 py-0.5 rounded-sm mt-2">Sep 2022 — Jun 2024 • Flight Control Maintenance</span>
           </div>
-          <p className="text-zinc-600 font-light leading-relaxed">
-            Supported avionics maintenance in a 35-person unit. Standardized fault checklists and ESD handling tools, notably reducing average troubleshooting times by 15%. Mentored 16 recruits during on-the-job training.
+          <p className="text-zinc-600 dark:text-zinc-400 font-light leading-relaxed mt-3">
+            Supported avionics maintenance in a 35-person unit. Standardized fault checklists and ESD handling tools, notably <span className="bg-orange-50 dark:bg-orange-500/10 text-orange-800 dark:text-orange-300 font-normal px-1 rounded-sm">reducing troubleshooting times by 15%</span>. Mentored 16 recruits during on-the-job training.
           </p>
         </div>
 
@@ -294,22 +327,22 @@ const ProjectsView = () => {
         <p className="text-zinc-500 font-light">A selection of research and hardware projects executed during my degree, spanning VLSI logic, embedded firmware, and network simulations.</p>
       </div>
 
-      <div className="relative border-l border-zinc-200 pl-8 space-y-12 ml-2">
+      <div className="relative border-transparent pl-8 space-y-12 ml-2">
         {projects.map((proj) => (
-          <div key={proj.id} className="relative group cursor-pointer transition-all duration-300 hover:-translate-y-1.5 p-6 -ml-6 -mt-6 rounded-lg hover:bg-white hover:shadow-md border border-transparent hover:border-zinc-200" onClick={() => setActiveProjectId(proj.id)}>
-            <Node className={`absolute -left-[11px] top-[28px] transition-all duration-500 ${proj.id === 'vfc-ns3' ? 'bg-indigo-500 border-indigo-500' : 'group-hover:bg-indigo-500 group-hover:border-indigo-500 group-hover:scale-125'}`} />
+          <div key={proj.id} className="relative group cursor-pointer transition-all duration-300 hover:-translate-y-1.5 p-6 -ml-6 -mt-6 rounded-lg hover:bg-white dark:hover:bg-neutral-900 hover:shadow-md border border-transparent hover:border-zinc-200 dark:hover:border-zinc-800" onClick={() => setActiveProjectId(proj.id)}>
+            <Node className={`absolute -left-[11px] top-[28px] border-zinc-900 dark:border-white transition-all duration-500 ${proj.id === 'vfc-ns3' ? 'bg-indigo-500 border-indigo-500' : 'group-hover:bg-indigo-500 group-hover:border-indigo-500 group-hover:scale-125'}`} />
 
             <div className="flex flex-col md:flex-row md:items-baseline justify-between mb-2">
-              <h3 className="text-xl font-medium text-zinc-900 group-hover:text-black transition-colors flex items-center gap-2">
+              <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors flex items-center gap-2">
                 {proj.title}
-                {proj.id === 'vfc-ns3' && <span className="px-2 py-0.5 bg-indigo-50 text-indigo-700 text-[10px] uppercase tracking-wider font-semibold rounded-sm">Research</span>}
+                {proj.id === 'vfc-ns3' && <span className="px-2 py-0.5 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 text-[10px] uppercase tracking-wider font-semibold rounded-sm">Research</span>}
               </h3>
-              <span className="text-[13px] text-zinc-600 font-medium mt-1 md:mt-0 bg-zinc-50 px-2 py-0.5 rounded-sm">{proj.year} • {proj.category}</span>
+              <span className="text-[13px] text-zinc-600 dark:text-zinc-400 font-medium mt-1 md:mt-0 bg-zinc-50 dark:bg-zinc-800 px-2 py-0.5 rounded-sm">{proj.year} • {proj.category}</span>
             </div>
-            <p className="text-zinc-700 font-light leading-relaxed max-w-2xl">{proj.desc}</p>
+            <p className="text-zinc-700 dark:text-zinc-400 font-light leading-relaxed max-w-2xl">{proj.desc}</p>
 
             {proj.id === 'vfc-ns3' && (
-              <div className="mt-4 text-sm font-medium text-zinc-900 flex items-center gap-2 opacity-70 group-hover:opacity-100 transition-opacity">
+              <div className="mt-4 text-sm font-medium text-zinc-900 dark:text-zinc-300 flex items-center gap-2 opacity-70 group-hover:opacity-100 transition-opacity">
                 View full research abstract <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
               </div>
             )}
@@ -547,19 +580,17 @@ const StandardLayout = ({ user }) => (
 
     <Trace className="w-1/3 opacity-50" />
 
-    <section className="flex flex-col md:flex-row items-center justify-between pt-4 pb-8 border-b border-zinc-200 gap-6">
-      <p className="text-zinc-600 font-light text-sm max-w-sm text-center md:text-left">Interested in discussing robotics, hardware integration, or just grabbing a coffee?</p>
-      <Link to="/contact" className="group flex items-center gap-3 px-6 py-3 bg-white border border-zinc-200 rounded-full hover:border-zinc-900 hover:shadow-md transition-all duration-300">
-        <span className="text-sm font-medium text-zinc-900">Get in touch</span>
-        <ArrowRight size={16} className="text-zinc-500 group-hover:text-black group-hover:translate-x-1 transition-transform" />
-      </Link>
-    </section>
-
-    <div className="pt-4 flex items-center justify-between text-xs text-zinc-400 font-light pb-12">
+    <div className="pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-zinc-400 dark:text-zinc-500 font-light pb-12 gap-4 relative">
       <div className="flex items-center gap-3">
         <GroundSymbol />
         <span>SYSTEM.ONLINE</span>
       </div>
+
+      <Link to="/contact" className="absolute left-1/2 -translate-x-1/2 flex justify-center items-center group bg-white dark:bg-black border border-zinc-200 dark:border-zinc-800 rounded-full px-5 py-2 hover:border-zinc-900 dark:hover:border-zinc-400 hover:shadow-sm transition-all shadow-sm z-30">
+        <span className="text-zinc-900 dark:text-white font-medium">Get in touch</span>
+        <ArrowRight size={12} className="ml-2 text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-white group-hover:translate-x-1 transition-transform" />
+      </Link>
+
       <span className="hidden md:inline">© {new Date().getFullYear()} Wooseong Jung</span>
     </div>
   </div>
@@ -571,6 +602,23 @@ export default function App() {
   const activeTab = activePath === 'project' ? 'project' : (activePath === 'contact' ? 'contact' : ((activePath === 'life' || activePath === 'record') ? 'life' : 'about'));
   const [wireLength, setWireLength] = useState(0);
   const [user, setUser] = useState(null);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('theme') === 'dark' ||
+        (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -678,13 +726,21 @@ export default function App() {
                 )}
               </div>
 
-              <a href="mailto:hello@yourdomain.com" className={`transition-colors ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900'}`}>
+              <div className="h-4 w-[1px] bg-zinc-200 dark:bg-[#282828] mx-2"></div>
+
+              <CircuitSwitch
+                isOpen={isDarkMode}
+                onToggle={() => setIsDarkMode(!isDarkMode)}
+                className={activePath === 'record' ? 'opacity-50 pointer-events-none' : ''}
+              />
+
+              <a href="mailto:hello@yourdomain.com" className={`transition-colors ml-2 ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900 dark:hover:text-white dark:text-zinc-500'}`}>
                 <Mail size={16} />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className={`transition-colors ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900'}`}>
+              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className={`transition-colors ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900 dark:hover:text-white dark:text-zinc-500'}`}>
                 <Linkedin size={16} />
               </a>
-              <a href="https://github.com" target="_blank" rel="noreferrer" className={`transition-colors ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900'}`}>
+              <a href="https://github.com" target="_blank" rel="noreferrer" className={`transition-colors ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900 dark:hover:text-white dark:text-zinc-500'}`}>
                 <Github size={16} />
               </a>
             </div>
