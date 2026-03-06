@@ -116,59 +116,204 @@ const GroundSymbol = ({ className = "" }) => (
 );
 
 const AboutView = () => (
-  <div className="space-y-12 animate-fade-up">
+  <div className="space-y-16 animate-fade-up max-w-4xl">
     <div className="relative">
       <h2 className="text-3xl font-light tracking-tight text-zinc-900 mb-6">
-        Bridging the gap between <span className="font-semibold">logic</span> and <span className="font-semibold">lifestyle</span>.
+        Architecting intelligence in <span className="font-semibold">silicon</span> and <span className="font-semibold">motion</span>.
       </h2>
 
-      <div className="space-y-6 text-zinc-600 leading-relaxed font-light text-lg max-w-2xl">
+      <div className="space-y-6 text-zinc-600 leading-relaxed font-light text-lg">
         <p>
-          I am a developer and designer who believes that good code should be as clean and well-structured as a beautifully tailored suit.
+          I am an Electronic Engineering undergrad at the University of Manchester, specializing in the intersection of <strong className="font-semibold text-zinc-900">Robotics</strong> and <strong className="font-semibold text-zinc-900">VLSI Design</strong>.
         </p>
         <p>
-          While my professional foundation is built on circuits, servers, and software architecture, my real-world inspiration is drawn from the culture around me. I don't just stare at screens—I explore the world through gastronomy, curated playlists, and modern fashion.
-        </p>
-        <p>
-          This space is a log of my technical endeavors, alongside the aesthetics and experiences that keep me balanced.
+          My technical footprint spans from low-level hardware design (VHDL, Altium, Tanner EDA) and C++ microcontroller firmware, right up to high-level robotics frameworks like ROS 2 and Gazebo. I build systems that move precisely and calculate efficiently.
         </p>
       </div>
 
-      <div className="absolute -left-12 top-2 h-full hidden md:flex flex-col items-center">
+      <div className="absolute -left-12 top-2 h-[120%] hidden md:flex flex-col items-center">
         <Power size={14} className="text-zinc-300 mb-2" />
-        <Trace vertical className="flex-1 max-h-[100px]" />
+        <Trace vertical className="flex-1 max-h-[80px]" />
         <Node className="border-zinc-300 my-2" />
-        <Trace vertical className="flex-1 max-h-[60px]" />
+        <Trace vertical className="flex-1 max-h-[80px]" />
         <Node className="border-zinc-300 my-2" />
-        <Trace vertical className="flex-1 max-h-[40px]" />
+        <Trace vertical className="flex-1 max-h-[80px]" />
         <GroundSymbol className="mt-2" />
       </div>
+    </div>
+
+    {/* Timeline Section */}
+    <div className="pt-8 border-t border-zinc-200">
+      <h3 className="text-xl font-medium text-zinc-900 mb-8 flex items-center gap-2">
+        <Cpu size={20} className="text-zinc-400" /> Professional Footprint
+      </h3>
+
+      <div className="relative border-l border-zinc-200 pl-8 space-y-12 ml-2">
+
+        {/* Present */}
+        <div className="relative group">
+          <div className="absolute -left-[32px] top-[7px] w-8 h-[1px] bg-zinc-200 group-hover:bg-zinc-900 transition-colors"></div>
+          <Node className="absolute -left-[36px] top-[4px] transition-colors group-hover:bg-zinc-900" />
+          <div className="mb-2">
+            <h4 className="text-lg font-medium text-zinc-900">University of Manchester</h4>
+            <span className="text-sm text-zinc-400 font-light block mt-1">Sep 2021 — Present • BEng (Hons) in Electronic Engineering</span>
+          </div>
+          <p className="text-zinc-600 font-light leading-relaxed">
+            First-Class (80%) expected. Key modules include Microcontroller Engineering, Analog and Digital Communication, Control Systems, and VLSI Design.
+          </p>
+        </div>
+
+        {/* Hackabot */}
+        <div className="relative group">
+          <div className="absolute -left-[32px] top-[7px] w-8 h-[1px] bg-zinc-200 group-hover:bg-zinc-900 transition-colors"></div>
+          <Node className="absolute -left-[36px] top-[4px] transition-colors group-hover:bg-zinc-900" />
+          <div className="mb-2">
+            <h4 className="text-lg font-medium text-zinc-900">Hack-A-Bot 2025 (3rd Place)</h4>
+            <span className="text-sm text-zinc-400 font-light block mt-1">Mar 2025 • Robosoc, UoM</span>
+          </div>
+          <p className="text-zinc-600 font-light leading-relaxed">
+            Developed a real-time hand-raise detection system using a Raspberry Pi 5. Designed a custom CAD mount for a Sony AI camera to gauge student classroom engagement.
+          </p>
+        </div>
+
+        {/* Airforce */}
+        <div className="relative group">
+          <div className="absolute -left-[32px] top-[7px] w-8 h-[1px] bg-zinc-200 group-hover:bg-zinc-900 transition-colors"></div>
+          <Node className="absolute -left-[36px] top-[4px] transition-colors group-hover:bg-zinc-900" />
+          <div className="mb-2">
+            <h4 className="text-lg font-medium text-zinc-900">Republic of Korea Airforce</h4>
+            <span className="text-sm text-zinc-400 font-light block mt-1">Sep 2022 — Jun 2024 • Flight Control Maintenance</span>
+          </div>
+          <p className="text-zinc-600 font-light leading-relaxed">
+            Supported avionics maintenance in a 35-person unit. Standardized fault checklists and ESD handling tools, notably reducing average troubleshooting times by 15%. Mentored 16 recruits during on-the-job training.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-8 border-t border-zinc-200">
+      <div className="text-sm text-zinc-500"><span className="font-medium text-zinc-900 block mb-1">Languages</span> C/C++, Python, Assembly, VHDL, JavaScript</div>
+      <div className="text-sm text-zinc-500"><span className="font-medium text-zinc-900 block mb-1">Hardware</span> STM32, Raspberry Pi, ROS 2</div>
+      <div className="text-sm text-zinc-500"><span className="font-medium text-zinc-900 block mb-1">Software</span> Matlab, Simulink, Solidworks, Altium</div>
+      <div className="text-sm text-zinc-500"><span className="font-medium text-zinc-900 block mb-1">EDA</span> Tanner EDA, NI Multisim, Xilinx</div>
     </div>
   </div>
 );
 
 const ProjectsView = () => {
+  const [activeProjectId, setActiveProjectId] = useState(null);
+
   const projects = [
-    { title: 'E-Commerce Platform', category: 'Web Development', desc: 'A sleek, high-conversion storefront built with React and seamless payment integrations.', year: '2024' },
-    { title: 'Inventory API', category: 'Backend Systems', desc: 'A robust, scalable REST API handling thousands of requests per minute with zero downtime.', year: '2023' },
-    { title: 'Interactive Portfolio', category: 'UI/UX Design', desc: 'An award-winning digital experience focusing on micro-interactions and clean typography.', year: '2023' },
+    {
+      id: 'vfc-ns3',
+      title: '5G VFC Architecture Simulation (FYP)',
+      category: 'Research / Networks',
+      desc: 'Evaluating 5G Cellular-Routed Vehicular Fog Computing with NS-3. Introducing a Velocity-Aware Hybrid Algorithm to dynamically balance compute loads and prevent macro-cell congestion.',
+      year: 'FYP'
+    },
+    {
+      id: 'baby-spyder',
+      title: 'Baby Spyder Robot',
+      category: 'Robotics',
+      desc: 'Developing a ROS 2 control stack for a 12-servo quadruped robot, utilizing torque calculations for joint stability and Gazebo simulation for physical validation.',
+      year: '2025'
+    },
+    {
+      id: 'vlsi-cell',
+      title: 'VLSI Logic Cell Optimization',
+      category: 'VLSI Design',
+      desc: 'Designed a fast-switching CMOS logic cell securing a worst-case delay of 0.553 ns via transistor optimization and Tanner EDA LT spice simulations.',
+      year: '2025'
+    },
+    {
+      id: 'buggy',
+      title: 'Autonomous Line-Following Buggy',
+      category: 'Embedded Systems',
+      desc: 'Engineered an STM32-based feedback control system via C++, increasing line detection accuracy to 76% and optimizing motor response for high-speed track navigation.',
+      year: '2024'
+    },
   ];
 
+  if (activeProjectId === 'vfc-ns3') {
+    return (
+      <div className="space-y-10 animate-fade-up max-w-4xl pb-12">
+        <button onClick={() => setActiveProjectId(null)} className="flex items-center gap-2 text-zinc-500 hover:text-zinc-900 transition-colors mb-4 group font-medium text-sm">
+          <ArrowRight size={16} className="rotate-180 transition-transform group-hover:-translate-x-1" />
+          Back to List
+        </button>
+
+        <div className="border-b border-zinc-200 pb-8">
+          <h2 className="text-3xl md:text-5xl font-semibold tracking-tight text-zinc-900 mb-4">Cellular-Routed Vehicular Fog Computing</h2>
+          <p className="text-lg text-zinc-500 font-light">Final Year Project • NS-3 & 5G-LENA Simulation</p>
+        </div>
+
+        <div className="prose prose-zinc max-w-none text-zinc-700 font-light space-y-8 leading-relaxed">
+          <section>
+            <h3 className="text-xl font-medium text-zinc-900 mb-4 flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-zinc-900"></div> 1. Purpose & The Core Problem</h3>
+            <p>Vehicular Fog Computing (VFC) aims to reduce latency by offloading computing tasks from vehicles to nearby edge nodes (like buses) instead of the distant Cloud. However, existing literature relies on idealized assumptions—specifically that vehicles can communicate directly using frictionless, out-of-band Sidelink connections.</p>
+            <p>In reality, near-term deployments rely on existing 5G infrastructure, meaning all V2V traffic must route through the macro-cell base station (gNB). This project evaluated the real-world physical limits of this <strong className="font-semibold text-zinc-900">Cellular-Routed VFC architecture</strong> in a dense urban environment to ultimately introduce a <strong className="font-semibold text-zinc-900">Velocity-Aware Hybrid Algorithm</strong>.</p>
+          </section>
+
+          <section>
+            <h3 className="text-xl font-medium text-zinc-900 mb-4 flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-zinc-900"></div> 2. Methodology</h3>
+            <ul className="list-none space-y-4 pl-0">
+              <li className="pl-4 border-l-2 border-zinc-200"><strong className="font-semibold text-zinc-900 block">Simulation Environment</strong> Platform: NS-3 (v3.46) with 5G-LENA module representing realistic 3GPP mmWave physics. Mobility relies on SUMO over a 1km slice of Manchester City Center.</li>
+              <li className="pl-4 border-l-2 border-zinc-200"><strong className="font-semibold text-zinc-900 block">Double-Hop Architecture</strong> Both client cars and fog-node buses are configured as standard User Equipment (UE). The data path operates strictly as: Car → gNB → Core Network → gNB → Bus.</li>
+              <li className="pl-4 border-l-2 border-zinc-200"><strong className="font-semibold text-zinc-900 block">Experimental Scenarios</strong> Tested against a 40-vehicle high-speed (Off-Peak) run and a 200-vehicle congested (Peak) run, utilizing a 15 dB Cell Range Extension (CRE) bias.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3 className="text-xl font-medium text-zinc-900 mb-4 flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-zinc-900"></div> 3. Key Findings</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+              <div className="bg-white border border-zinc-200 p-6 shadow-sm">
+                <h4 className="font-semibold text-zinc-900 mb-2">Macro-Cell Congestion Collapse</h4>
+                <p className="text-sm">In the 200-vehicle scenario, routing all traffic double-hop via the cell tower caused extreme mmWave co-channel interference, blinding receivers and causing a catastrophic <strong className="text-red-500 font-medium">97.5% uplink packet loss</strong>.</p>
+              </div>
+              <div className="bg-white border border-zinc-200 p-6 shadow-sm">
+                <h4 className="font-semibold text-zinc-900 mb-2">The Compute Bottleneck</h4>
+                <p className="text-sm">Applying CRE bias effectively offloaded traffic from the gNB, but blindly forcing 99% of tasks onto a few buses overwhelmed their CPUs (capped at 200 tasks/s), resulting in <strong className="text-red-500 font-medium">multi-minute queuing delays</strong>.</p>
+              </div>
+            </div>
+          </section>
+
+          <div className="bg-zinc-50 border border-zinc-200 p-6 mt-8 rounded-sm">
+            <h4 className="font-semibold text-zinc-900 mb-2">Conclusion</h4>
+            <p className="text-sm text-zinc-700">Neither pure gNB offloading nor pure VFN offloading functions alone in a dense 5G network. The data validates the absolute necessity of the proposed Velocity-Aware Hybrid Algorithm to monitor vehicle speeds and CPU queues to intelligently route load.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-10 animate-fade-up">
-      <h2 className="text-2xl font-semibold text-zinc-900">Selected Works</h2>
+    <div className="space-y-10 animate-fade-up max-w-4xl">
+      <div className="mb-12">
+        <h2 className="text-2xl font-semibold text-zinc-900 mb-4">Engineering Projects</h2>
+        <p className="text-zinc-500 font-light">A selection of research and hardware projects executed during my degree, spanning VLSI logic, embedded firmware, and network simulations.</p>
+      </div>
 
       <div className="relative border-l border-zinc-200 pl-8 space-y-12 ml-2">
-        {projects.map((proj, idx) => (
-          <div key={idx} className="relative group">
-            <div className="absolute -left-[32px] top-[7px] w-8 h-[1px] bg-zinc-200 group-hover:bg-zinc-900 transition-colors"></div>
-            <Node className="absolute -left-[36px] top-[4px] transition-colors group-hover:bg-zinc-900" />
+        {projects.map((proj) => (
+          <div key={proj.id} className="relative group cursor-pointer" onClick={() => setActiveProjectId(proj.id)}>
+            <div className={`absolute -left-[32px] top-[7px] w-8 h-[1px] ${proj.id === 'vfc-ns3' ? 'bg-zinc-900' : 'bg-zinc-200 group-hover:bg-zinc-900'} transition-colors`}></div>
+            <Node className={`absolute -left-[36px] top-[4px] transition-colors ${proj.id === 'vfc-ns3' ? 'bg-zinc-900' : 'group-hover:bg-zinc-900'}`} />
 
             <div className="flex flex-col md:flex-row md:items-baseline justify-between mb-2">
-              <h3 className="text-xl font-medium text-zinc-900">{proj.title}</h3>
+              <h3 className="text-xl font-medium text-zinc-900 group-hover:text-black transition-colors flex items-center gap-2">
+                {proj.title}
+                {proj.id === 'vfc-ns3' && <span className="px-2 py-0.5 bg-zinc-100 text-zinc-600 text-[10px] uppercase tracking-wider font-semibold rounded-sm">Research</span>}
+              </h3>
               <span className="text-sm text-zinc-400 font-light mt-1 md:mt-0">{proj.year} • {proj.category}</span>
             </div>
             <p className="text-zinc-600 font-light leading-relaxed max-w-2xl">{proj.desc}</p>
+
+            {proj.id === 'vfc-ns3' && (
+              <div className="mt-4 text-sm font-medium text-zinc-900 flex items-center gap-2 opacity-70 group-hover:opacity-100 transition-opacity">
+                View full research abstract <ArrowRight size={14} />
+              </div>
+            )}
           </div>
         ))}
       </div>
@@ -444,7 +589,7 @@ export default function App() {
 
   const navItems = [
     { id: 'about', label: 'About', icon: User, path: '/about' },
-    { id: 'project', label: 'Work', icon: Cpu, path: '/project' },
+    { id: 'project', label: 'Projects', icon: Cpu, path: '/project' },
     { id: 'life', label: 'Life', icon: Compass, path: '/life' },
   ];
 
