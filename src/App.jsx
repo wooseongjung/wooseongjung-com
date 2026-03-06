@@ -296,9 +296,9 @@ const ProjectsView = () => {
 
       <div className="relative border-l border-zinc-200 pl-8 space-y-12 ml-2">
         {projects.map((proj) => (
-          <div key={proj.id} className="relative group cursor-pointer" onClick={() => setActiveProjectId(proj.id)}>
-            <div className={`absolute -left-[32px] top-[7px] w-8 h-[1px] ${proj.id === 'vfc-ns3' ? 'bg-zinc-900' : 'bg-zinc-200 group-hover:bg-zinc-900'} transition-colors`}></div>
-            <Node className={`absolute -left-[36px] top-[4px] transition-colors ${proj.id === 'vfc-ns3' ? 'bg-zinc-900' : 'group-hover:bg-zinc-900'}`} />
+          <div key={proj.id} className="relative group cursor-pointer transition-all duration-300 hover:-translate-y-1.5 p-6 -ml-6 -mt-6 rounded-lg hover:bg-white hover:shadow-md border border-transparent hover:border-zinc-200" onClick={() => setActiveProjectId(proj.id)}>
+            <div className={`absolute -left-[24px] top-[31px] w-6 h-[1px] ${proj.id === 'vfc-ns3' ? 'bg-zinc-900' : 'bg-zinc-200 group-hover:bg-zinc-900'} transition-colors duration-500`}></div>
+            <Node className={`absolute -left-[28px] top-[28px] transition-all duration-500 ${proj.id === 'vfc-ns3' ? 'bg-zinc-900' : 'group-hover:bg-zinc-900 group-hover:scale-125'}`} />
 
             <div className="flex flex-col md:flex-row md:items-baseline justify-between mb-2">
               <h3 className="text-xl font-medium text-zinc-900 group-hover:text-black transition-colors flex items-center gap-2">
@@ -311,7 +311,7 @@ const ProjectsView = () => {
 
             {proj.id === 'vfc-ns3' && (
               <div className="mt-4 text-sm font-medium text-zinc-900 flex items-center gap-2 opacity-70 group-hover:opacity-100 transition-opacity">
-                View full research abstract <ArrowRight size={14} />
+                View full research abstract <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
               </div>
             )}
           </div>
@@ -385,12 +385,12 @@ const LifeView = ({ user }) => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8 mb-16">
           {interests.map((item, idx) => (
-            <div key={idx} className="bg-white p-8 border border-zinc-100 shadow-sm relative group hover:shadow-md transition-shadow">
-              <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-zinc-200 transition-colors group-hover:border-zinc-900"></div>
-              <div className="w-10 h-10 rounded-full bg-zinc-50 flex items-center justify-center mb-6">
+            <div key={idx} className="bg-white p-8 border border-zinc-100 shadow-sm relative group hover:shadow-xl hover:-translate-y-1 hover:border-zinc-200 transition-all duration-300 cursor-default">
+              <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-zinc-200 transition-colors duration-500 group-hover:border-zinc-900 group-hover:w-full group-hover:h-full group-hover:opacity-10"></div>
+              <div className="w-10 h-10 rounded-full bg-zinc-50 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                 <item.icon size={18} className="text-zinc-900" />
               </div>
-              <h3 className="text-lg font-medium text-zinc-900 mb-3">{item.title}</h3>
+              <h3 className="text-lg font-medium text-zinc-900 mb-3 group-hover:text-black transition-colors">{item.title}</h3>
               <p className="text-sm text-zinc-500 font-light leading-relaxed">{item.desc}</p>
             </div>
           ))}
@@ -425,7 +425,7 @@ const LifeView = ({ user }) => {
   );
 };
 
-const ContactSection = () => {
+const ContactView = () => {
   const [intent, setIntent] = useState('collaboration');
   const [draft, setDraft] = useState('');
   const [isDrafting, setIsDrafting] = useState(false);
@@ -444,16 +444,18 @@ const ContactSection = () => {
   };
 
   return (
-    <div className="space-y-10 animate-fade-up max-w-2xl">
-      <h2 className="text-2xl font-semibold text-zinc-900 flex items-center gap-3">
-        <Plug className="text-zinc-400" size={24} />
-        Let's Connect
-      </h2>
-      <p className="text-zinc-600 font-light">
-        Whether you want to discuss a new software project, share a playlist, or debate the best local coffee roaster, my inbox is open.
-      </p>
+    <div className="space-y-12 animate-fade-up max-w-3xl">
+      <div className="mb-8">
+        <h2 className="text-3xl font-light tracking-tight text-zinc-900 flex items-center gap-3 mb-4">
+          <Plug className="text-zinc-400" size={28} />
+          Establishing Connection
+        </h2>
+        <p className="text-zinc-600 font-light text-lg">
+          Whether you want to discuss a new software architecture, share a Spotify playlist, or debate the best local coffee roaster, my inbox is open.
+        </p>
+      </div>
 
-      <div className="bg-zinc-50 border border-zinc-200 p-6 relative">
+      <div className="bg-zinc-50 border border-zinc-200 p-6 relative shadow-sm hover:shadow-md transition-shadow">
         <div className="absolute -left-[5px] top-1/2 -translate-y-1/2 flex items-center">
           <Node className="bg-zinc-100" />
         </div>
@@ -499,38 +501,32 @@ const ContactSection = () => {
         )}
       </div>
 
-      <div className="space-y-6 pt-4">
-        <a href="mailto:hello@yourdomain.com" className="flex items-center justify-between p-6 bg-white border border-zinc-200 hover:border-zinc-900 transition-colors group">
-          <div className="flex items-center gap-4">
-            <Mail size={20} className="text-zinc-400 group-hover:text-zinc-900 transition-colors" />
-            <div>
-              <h3 className="font-medium text-zinc-900">Email</h3>
-              <span className="text-sm text-zinc-500 font-light">hello@yourdomain.com</span>
-            </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+        <a href="mailto:wooseongjung12@gmail.com" className="flex flex-col gap-4 p-6 bg-white border border-zinc-200 hover:border-zinc-900 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
+          <Mail size={24} className="text-zinc-400 group-hover:text-zinc-900 transition-colors" />
+          <div className="mt-2">
+            <h3 className="font-medium text-zinc-900">Email</h3>
+            <span className="text-xs text-zinc-500 font-light break-words">wooseongjung12@gmail.com</span>
           </div>
-          <ArrowRight size={18} className="text-zinc-300 group-hover:text-zinc-900 transform group-hover:-rotate-45 transition-all" />
+          <ArrowRight size={16} className="text-zinc-300 group-hover:text-zinc-900 transform group-hover:translate-x-1 transition-all mt-auto" />
         </a>
 
-        <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noreferrer" className="flex items-center justify-between p-6 bg-white border border-zinc-200 hover:border-zinc-900 transition-colors group">
-          <div className="flex items-center gap-4">
-            <Linkedin size={20} className="text-zinc-400 group-hover:text-zinc-900 transition-colors" />
-            <div>
-              <h3 className="font-medium text-zinc-900">LinkedIn</h3>
-              <span className="text-sm text-zinc-500 font-light">Professional network & resume</span>
-            </div>
+        <a href="https://linkedin.com/in/wooseong-jung-0bb5b121b" target="_blank" rel="noreferrer" className="flex flex-col gap-4 p-6 bg-white border border-zinc-200 hover:border-zinc-900 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
+          <Linkedin size={24} className="text-zinc-400 group-hover:text-zinc-900 transition-colors" />
+          <div className="mt-2">
+            <h3 className="font-medium text-zinc-900">LinkedIn</h3>
+            <span className="text-xs text-zinc-500 font-light">Network & resume</span>
           </div>
-          <ArrowRight size={18} className="text-zinc-300 group-hover:text-zinc-900 transform group-hover:-rotate-45 transition-all" />
+          <ArrowRight size={16} className="text-zinc-300 group-hover:text-zinc-900 transform group-hover:-rotate-45 transition-all mt-auto" />
         </a>
 
-        <a href="https://github.com/yourusername" target="_blank" rel="noreferrer" className="flex items-center justify-between p-6 bg-white border border-zinc-200 hover:border-zinc-900 transition-colors group">
-          <div className="flex items-center gap-4">
-            <Github size={20} className="text-zinc-400 group-hover:text-zinc-900 transition-colors" />
-            <div>
-              <h3 className="font-medium text-zinc-900">GitHub</h3>
-              <span className="text-sm text-zinc-500 font-light">Code repositories & contributions</span>
-            </div>
+        <a href="https://github.com/wooseongjung" target="_blank" rel="noreferrer" className="flex flex-col gap-4 p-6 bg-white border border-zinc-200 hover:border-zinc-900 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
+          <Github size={24} className="text-zinc-400 group-hover:text-zinc-900 transition-colors" />
+          <div className="mt-2">
+            <h3 className="font-medium text-zinc-900">GitHub</h3>
+            <span className="text-xs text-zinc-500 font-light">Code repositories</span>
           </div>
-          <ArrowRight size={18} className="text-zinc-300 group-hover:text-zinc-900 transform group-hover:-rotate-45 transition-all" />
+          <ArrowRight size={16} className="text-zinc-300 group-hover:text-zinc-900 transform group-hover:-rotate-45 transition-all mt-auto" />
         </a>
       </div>
     </div>
@@ -545,17 +541,22 @@ const StandardLayout = ({ user }) => (
         <Route path="/about" element={<AboutView />} />
         <Route path="/project" element={<ProjectsView />} />
         <Route path="/life" element={<LifeView user={user} />} />
+        <Route path="/contact" element={<ContactView />} />
         <Route path="*" element={<Navigate to="/about" replace />} />
       </Routes>
     </main>
 
     <Trace className="w-1/3 opacity-50" />
 
-    <section>
-      <ContactSection />
+    <section className="flex flex-col md:flex-row items-center justify-between pt-4 pb-8 border-b border-zinc-200 gap-6">
+      <p className="text-zinc-600 font-light text-sm max-w-sm text-center md:text-left">Interested in discussing robotics, hardware integration, or just grabbing a coffee?</p>
+      <Link to="/contact" className="group flex items-center gap-3 px-6 py-3 bg-white border border-zinc-200 rounded-full hover:border-zinc-900 hover:shadow-md transition-all duration-300">
+        <span className="text-sm font-medium text-zinc-900">Get in touch</span>
+        <ArrowRight size={16} className="text-zinc-500 group-hover:text-black group-hover:translate-x-1 transition-transform" />
+      </Link>
     </section>
 
-    <div className="pt-8 flex items-center justify-between text-xs text-zinc-400 font-light pb-12 border-t border-zinc-200">
+    <div className="pt-4 flex items-center justify-between text-xs text-zinc-400 font-light pb-12">
       <div className="flex items-center gap-3">
         <GroundSymbol />
         <span>SYSTEM.ONLINE</span>
@@ -568,7 +569,7 @@ const StandardLayout = ({ user }) => (
 export default function App() {
   const location = useLocation();
   const activePath = location.pathname.split('/')[1] || 'about';
-  const activeTab = activePath === 'project' ? 'project' : ((activePath === 'life' || activePath === 'record') ? 'life' : 'about');
+  const activeTab = activePath === 'project' ? 'project' : (activePath === 'contact' ? 'contact' : ((activePath === 'life' || activePath === 'record') ? 'life' : 'about'));
   const [wireLength, setWireLength] = useState(0);
   const [user, setUser] = useState(null);
 
@@ -591,6 +592,7 @@ export default function App() {
     { id: 'about', label: 'About', icon: User, path: '/about' },
     { id: 'project', label: 'Projects', icon: Cpu, path: '/project' },
     { id: 'life', label: 'Life', icon: Compass, path: '/life' },
+    { id: 'contact', label: 'Contact', icon: Mail, path: '/contact' },
   ];
 
   useEffect(() => {
