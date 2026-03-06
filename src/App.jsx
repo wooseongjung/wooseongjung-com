@@ -152,8 +152,8 @@ const AboutView = () => (
 
         {/* Present */}
         <div className="relative group">
-          <div className="absolute -left-[32px] top-[14px] w-8 h-[1px] bg-zinc-200 group-hover:bg-zinc-900 transition-colors"></div>
-          <Node className="absolute -left-[36px] top-[11px] transition-colors group-hover:bg-zinc-900" />
+          <div className="absolute -left-[28px] top-[7px] w-7 h-[1px] bg-zinc-200 group-hover:bg-zinc-900 transition-colors"></div>
+          <Node className="absolute -left-[36px] top-[4px] transition-colors group-hover:bg-zinc-900" />
           <div className="mb-2">
             <h4 className="text-lg font-medium text-zinc-900">University of Manchester</h4>
             <span className="text-sm text-zinc-400 font-light block mt-1">Sep 2021 — Present • BEng (Hons) in Electronic Engineering</span>
@@ -165,8 +165,8 @@ const AboutView = () => (
 
         {/* Hackabot */}
         <div className="relative group">
-          <div className="absolute -left-[32px] top-[14px] w-8 h-[1px] bg-zinc-200 group-hover:bg-zinc-900 transition-colors"></div>
-          <Node className="absolute -left-[36px] top-[11px] transition-colors group-hover:bg-zinc-900" />
+          <div className="absolute -left-[28px] top-[7px] w-7 h-[1px] bg-zinc-200 group-hover:bg-zinc-900 transition-colors"></div>
+          <Node className="absolute -left-[36px] top-[4px] transition-colors group-hover:bg-zinc-900" />
           <div className="mb-2">
             <h4 className="text-lg font-medium text-zinc-900">Hack-A-Bot 2025 (3rd Place)</h4>
             <span className="text-sm text-zinc-400 font-light block mt-1">Mar 2025 • Robosoc, UoM</span>
@@ -178,8 +178,8 @@ const AboutView = () => (
 
         {/* Airforce */}
         <div className="relative group">
-          <div className="absolute -left-[32px] top-[14px] w-8 h-[1px] bg-zinc-200 group-hover:bg-zinc-900 transition-colors"></div>
-          <Node className="absolute -left-[36px] top-[11px] transition-colors group-hover:bg-zinc-900" />
+          <div className="absolute -left-[28px] top-[7px] w-7 h-[1px] bg-zinc-200 group-hover:bg-zinc-900 transition-colors"></div>
+          <Node className="absolute -left-[36px] top-[4px] transition-colors group-hover:bg-zinc-900" />
           <div className="mb-2">
             <h4 className="text-lg font-medium text-zinc-900">Republic of Korea Airforce</h4>
             <span className="text-sm text-zinc-400 font-light block mt-1">Sep 2022 — Jun 2024 • Flight Control Maintenance</span>
@@ -297,8 +297,8 @@ const ProjectsView = () => {
       <div className="relative border-l border-zinc-200 pl-8 space-y-12 ml-2">
         {projects.map((proj) => (
           <div key={proj.id} className="relative group cursor-pointer transition-all duration-300 hover:-translate-y-1.5 p-6 -ml-6 -mt-6 rounded-lg hover:bg-white hover:shadow-md border border-transparent hover:border-zinc-200" onClick={() => setActiveProjectId(proj.id)}>
-            <div className={`absolute -left-[9px] top-[41px] w-[9px] h-[1px] z-0 ${proj.id === 'vfc-ns3' ? 'bg-zinc-900' : 'bg-zinc-200 group-hover:bg-zinc-900'} transition-colors duration-500`}></div>
-            <Node className={`absolute -left-[13px] top-[38px] transition-all duration-500 ${proj.id === 'vfc-ns3' ? 'bg-zinc-900' : 'group-hover:bg-zinc-900 group-hover:scale-125'}`} />
+            <div className={`absolute -left-[4px] top-[31px] w-7 h-[1px] z-0 ${proj.id === 'vfc-ns3' ? 'bg-zinc-900' : 'bg-zinc-200 group-hover:bg-zinc-900'} transition-colors duration-500`}></div>
+            <Node className={`absolute -left-[12px] top-[28px] transition-all duration-500 ${proj.id === 'vfc-ns3' ? 'bg-zinc-900' : 'group-hover:bg-zinc-900 group-hover:scale-125'}`} />
 
             <div className="flex flex-col md:flex-row md:items-baseline justify-between mb-2">
               <h3 className="text-xl font-medium text-zinc-900 group-hover:text-black transition-colors flex items-center gap-2">
