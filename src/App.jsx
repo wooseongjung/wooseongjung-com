@@ -127,27 +127,19 @@ const GroundSymbol = ({ className = "" }) => (
   </div>
 );
 
-const CircuitSwitch = ({ isOpen, onToggle, className = "" }) => (
+const LightSwitch = ({ isOpen, onToggle, className = "" }) => (
   <button
     onClick={onToggle}
-    className={`relative w-8 h-4 flex items-center justify-center group focus:outline-none ${className}`}
+    className={`relative w-[24px] h-[36px] border-[1.5px] border-zinc-900 dark:border-zinc-500 rounded-sm bg-[#fafafa] dark:bg-[#121212] flex flex-col items-center justify-between py-[2px] focus:outline-none transition-colors ${className}`}
     aria-label="Toggle Dark Mode"
   >
-    {/* Left wire */}
-    <div className="absolute left-0 w-2.5 h-[1.5px] bg-zinc-500 dark:bg-zinc-400 group-hover:bg-zinc-900 dark:group-hover:bg-white transition-colors"></div>
-    {/* Left node */}
-    <div className="absolute left-2.5 w-1.5 h-1.5 rounded-full border-[1.5px] border-zinc-500 dark:border-zinc-400 group-hover:border-zinc-900 dark:group-hover:border-white bg-transparent transition-colors z-10"></div>
+    <span className="text-[5px] font-bold text-zinc-900 dark:text-zinc-500 tracking-wider">ON</span>
 
-    {/* Right node */}
-    <div className="absolute right-2.5 w-1.5 h-1.5 rounded-full border-[1.5px] border-zinc-500 dark:border-zinc-400 group-hover:border-zinc-900 dark:group-hover:border-white bg-transparent transition-colors z-10"></div>
-    {/* Right wire */}
-    <div className="absolute right-0 w-2.5 h-[1.5px] bg-zinc-500 dark:bg-zinc-400 group-hover:bg-zinc-900 dark:group-hover:bg-white transition-colors"></div>
+    <div className="w-[12px] h-[16px] bg-zinc-200 dark:bg-zinc-800 border border-zinc-900 dark:border-zinc-600 relative overflow-hidden my-0.5">
+      <div className={`absolute left-0 w-full h-[10px] bg-white dark:bg-zinc-400 border border-zinc-300 dark:border-zinc-500 shadow-sm transition-all duration-300 ${isOpen ? 'top-0' : 'top-1.5'}`}></div>
+    </div>
 
-    {/* The Switch Arm (Pivots from the right node) */}
-    <div
-      className="absolute right-[11px] w-3.5 h-[1.5px] bg-zinc-500 dark:bg-zinc-400 group-hover:bg-zinc-900 dark:group-hover:bg-white transition-all duration-300 origin-right"
-      style={{ transform: isOpen ? 'rotate(35deg) scaleX(1.1) translateX(-1px) translateY(-1px)' : 'rotate(0deg)' }}
-    ></div>
+    <span className="text-[5px] font-bold text-zinc-900 dark:text-zinc-500 tracking-wider">OFF</span>
   </button>
 );
 
@@ -184,42 +176,54 @@ const AboutView = () => (
         <Briefcase size={20} className="text-blue-500/80" /> Footprint
       </h3>
 
-      <div className="relative border-transparent pl-8 space-y-16 ml-2">
+      <div className="relative border-transparent space-y-12 ml-2">
 
         {/* Present */}
-        <div className="relative group transition-all duration-300 hover:-translate-y-1 p-4 -ml-4 -mt-4 rounded-md hover:bg-white dark:hover:bg-neutral-900 border border-transparent hover:border-zinc-100 dark:hover:border-zinc-800">
-          <Node className="absolute -left-[35px] top-[4px] border-zinc-900 dark:border-white transition-colors group-hover:bg-blue-500 group-hover:border-blue-500 group-hover:scale-125" />
-          <div className="mb-2">
-            <h4 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors">University of Manchester</h4>
-            <span className="text-[13px] text-blue-700/80 dark:text-blue-400 font-medium bg-blue-50 dark:bg-blue-500/10 inline-block px-1.5 py-0.5 rounded-sm mt-2">Sep 2021 — Present • BEng (Hons) in Electronic Engineering</span>
+        <div className="relative group transition-all duration-300 hover:-translate-y-1 p-4 rounded-md hover:bg-white dark:hover:bg-neutral-900 border border-transparent hover:border-zinc-100 dark:hover:border-zinc-800 flex items-start gap-5">
+          <div className="mt-2 shrink-0">
+            <Node className="border-zinc-900 dark:border-white transition-colors group-hover:bg-blue-500 group-hover:border-blue-500 group-hover:scale-125 focus:outline-none" />
           </div>
-          <p className="text-zinc-600 dark:text-zinc-400 font-light leading-relaxed mt-3">
-            First-Class (80%) expected. Key modules include <span className="bg-blue-50 dark:bg-blue-500/10 text-blue-800 dark:text-blue-300 font-normal px-1 rounded-sm">Microcontroller Engineering</span>, <span className="bg-blue-50 dark:bg-blue-500/10 text-blue-800 dark:text-blue-300 font-normal px-1 rounded-sm">Analog and Digital Comm</span>, Control Systems, and <span className="bg-blue-50 dark:bg-blue-500/10 text-blue-800 dark:text-blue-300 font-normal px-1 rounded-sm">VLSI Design</span>.
-          </p>
-        </div>
-
-        {/* Hackabot */}
-        <div className="relative group transition-all duration-300 hover:-translate-y-1 p-4 -ml-4 -mt-4 rounded-md hover:bg-white dark:hover:bg-neutral-900 border border-transparent hover:border-zinc-100 dark:hover:border-zinc-800">
-          <Node className="absolute -left-[35px] top-[4px] border-zinc-900 dark:border-white transition-colors group-hover:bg-green-500 group-hover:border-green-500 group-hover:scale-125" />
-          <div className="mb-2">
-            <h4 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors">Hack-A-Bot 2025 (3rd Place)</h4>
-            <span className="text-[13px] text-green-700/80 dark:text-green-400 font-medium bg-green-50 dark:bg-green-500/10 inline-block px-1.5 py-0.5 rounded-sm mt-2">Mar 2025 • Robosoc, UoM</span>
+          <div>
+            <div className="mb-2">
+              <h4 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors">University of Manchester</h4>
+              <span className="text-[13px] text-blue-700/80 dark:text-blue-400 font-medium bg-blue-50 dark:bg-blue-500/10 inline-block px-1.5 py-0.5 rounded-sm mt-2">Sep 2021 — Present • BEng (Hons) in Electronic Engineering</span>
+            </div>
+            <p className="text-zinc-600 dark:text-zinc-400 font-light leading-relaxed mt-3 max-w-2xl">
+              First-Class (80%) expected. Key modules include <span className="bg-blue-50 dark:bg-blue-500/10 text-blue-800 dark:text-blue-300 font-normal px-1 rounded-sm">Microcontroller Engineering</span>, <span className="bg-blue-50 dark:bg-blue-500/10 text-blue-800 dark:text-blue-300 font-normal px-1 rounded-sm">Analog and Digital Comm</span>, Control Systems, and <span className="bg-blue-50 dark:bg-blue-500/10 text-blue-800 dark:text-blue-300 font-normal px-1 rounded-sm">VLSI Design</span>.
+            </p>
           </div>
-          <p className="text-zinc-600 dark:text-zinc-400 font-light leading-relaxed mt-3">
-            Developed a <span className="bg-green-50 dark:bg-green-500/10 text-green-800 dark:text-green-300 font-normal px-1 rounded-sm">real-time hand-raise detection system</span> using a Raspberry Pi 5. Designed a custom CAD mount for a Sony AI camera to gauge student classroom engagement.
-          </p>
         </div>
 
         {/* Airforce */}
-        <div className="relative group transition-all duration-300 hover:-translate-y-1 p-4 -ml-4 -mt-4 rounded-md hover:bg-white dark:hover:bg-neutral-900 border border-transparent hover:border-zinc-100 dark:hover:border-zinc-800">
-          <Node className="absolute -left-[35px] top-[4px] border-zinc-900 dark:border-white transition-colors group-hover:bg-orange-500 group-hover:border-orange-500 group-hover:scale-125" />
-          <div className="mb-2">
-            <h4 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors">Republic of Korea Airforce</h4>
-            <span className="text-[13px] text-orange-700/80 dark:text-orange-400 font-medium bg-orange-50 dark:bg-orange-500/10 inline-block px-1.5 py-0.5 rounded-sm mt-2">Sep 2022 — Jun 2024 • Flight Control Maintenance</span>
+        <div className="relative group transition-all duration-300 hover:-translate-y-1 p-4 rounded-md hover:bg-white dark:hover:bg-neutral-900 border border-transparent hover:border-zinc-100 dark:hover:border-zinc-800 flex items-start gap-5">
+          <div className="mt-2 shrink-0">
+            <Node className="border-zinc-900 dark:border-white transition-colors group-hover:bg-orange-500 group-hover:border-orange-500 group-hover:scale-125" />
           </div>
-          <p className="text-zinc-600 dark:text-zinc-400 font-light leading-relaxed mt-3">
-            Supported avionics maintenance in a 35-person unit. Standardized fault checklists and ESD handling tools, notably <span className="bg-orange-50 dark:bg-orange-500/10 text-orange-800 dark:text-orange-300 font-normal px-1 rounded-sm">reducing troubleshooting times by 15%</span>. Mentored 16 recruits during on-the-job training.
-          </p>
+          <div>
+            <div className="mb-2">
+              <h4 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors">Republic of Korea Airforce</h4>
+              <span className="text-[13px] text-orange-700/80 dark:text-orange-400 font-medium bg-orange-50 dark:bg-orange-500/10 inline-block px-1.5 py-0.5 rounded-sm mt-2">Sep 2022 — Jun 2024 • Flight Control Maintenance</span>
+            </div>
+            <p className="text-zinc-600 dark:text-zinc-400 font-light leading-relaxed mt-3 max-w-2xl">
+              Supported avionics maintenance in a 35-person unit. Standardized fault checklists and ESD handling tools, notably <span className="bg-orange-50 dark:bg-orange-500/10 text-orange-800 dark:text-orange-300 font-normal px-1 rounded-sm">reducing troubleshooting times by 15%</span>. Mentored 16 recruits during on-the-job training.
+            </p>
+          </div>
+        </div>
+
+        {/* Hackabot */}
+        <div className="relative group transition-all duration-300 hover:-translate-y-1 p-4 rounded-md hover:bg-white dark:hover:bg-neutral-900 border border-transparent hover:border-zinc-100 dark:hover:border-zinc-800 flex items-start gap-5">
+          <div className="mt-2 shrink-0">
+            <Node className="border-zinc-900 dark:border-white transition-colors group-hover:bg-green-500 group-hover:border-green-500 group-hover:scale-125" />
+          </div>
+          <div>
+            <div className="mb-2">
+              <h4 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors">Hack-A-Bot 2025 (3rd Place)</h4>
+              <span className="text-[13px] text-green-700/80 dark:text-green-400 font-medium bg-green-50 dark:bg-green-500/10 inline-block px-1.5 py-0.5 rounded-sm mt-2">Mar 2025 • Robosoc, UoM</span>
+            </div>
+            <p className="text-zinc-600 dark:text-zinc-400 font-light leading-relaxed mt-3 max-w-2xl">
+              Developed a <span className="bg-green-50 dark:bg-green-500/10 text-green-800 dark:text-green-300 font-normal px-1 rounded-sm">real-time hand-raise detection system</span> using a Raspberry Pi 5. Designed a custom CAD mount for a Sony AI camera to gauge student classroom engagement.
+            </p>
+          </div>
         </div>
 
       </div>
@@ -666,20 +670,20 @@ export default function App() {
       <header className={`sticky top-0 z-50 backdrop-blur-md overflow-hidden ${activePath === 'record' ? 'bg-black text-white border-b border-[#282828]' : 'bg-[#fafafa]/90'}`}>
         <div className={`absolute bottom-0 left-0 w-full h-[1.5px] z-0 pointer-events-none ${activePath === 'record' ? 'bg-[#282828]' : 'bg-zinc-200'}`}></div>
 
-        <div className="max-w-5xl mx-auto px-6 md:px-12 h-14 flex items-center justify-between">
+        <div className="max-w-[1400px] w-full mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
 
-          <Link to="/about" className="flex flex-col relative group cursor-pointer">
-            <h1 className={`text-lg font-bold tracking-tight leading-none flex items-center gap-2 ${activePath === 'record' ? 'text-white' : 'text-zinc-900'}`}>
+          <Link to="/about" className="flex flex-col relative group cursor-pointer lg:pr-12 shrink-0">
+            <h1 className={`text-lg font-bold tracking-tight leading-none flex items-center gap-2 ${activePath === 'record' ? 'text-white' : 'text-zinc-900 dark:text-white'}`}>
               <Zap size={16} fill="currentColor" />
               Wooseong Jung
             </h1>
-            <p className={`text-[10px] font-light mt-1 ml-6 ${activePath === 'record' ? 'text-zinc-500' : 'text-zinc-500'}`}>Software Engineer & Creative</p>
+            <p className={`text-[10px] font-light mt-1 ml-6 ${activePath === 'record' ? 'text-zinc-500' : 'text-zinc-500 dark:text-zinc-400'}`}>Software Engineer & Creative</p>
           </Link>
 
-          <div className="flex items-center gap-8 h-full">
-            <nav id="nav-container" className="hidden md:flex items-center gap-2 h-full relative pl-2">
+          <div className="flex-1 flex justify-start pl-4 md:pl-12 lg:pl-20 h-full overflow-x-auto hide-scrollbar">
+            <nav id="nav-container" className="flex items-center gap-8 md:gap-12 h-full relative pl-2">
               <div
-                className={`absolute bottom-0 left-[-2000px] h-[1.5px] transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] z-10 pointer-events-none ${activePath === 'record' ? 'bg-white' : 'bg-zinc-900'}`}
+                className={`absolute bottom-0 left-[-2000px] h-[1.5px] transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] z-10 pointer-events-none ${activePath === 'record' ? 'bg-white' : 'bg-zinc-900 dark:bg-white'}`}
                 style={{ width: `calc(2000px + ${wireLength}px)` }}
               ></div>
 
@@ -710,39 +714,43 @@ export default function App() {
               ))}
             </nav>
 
-            <div className={`flex items-center gap-4 pl-8 border-l hidden md:flex h-5 relative z-10 ${activePath === 'record' ? 'border-[#282828]' : 'border-zinc-200'}`}>
+            <div className={`flex items-center gap-4 shrink-0 h-5 relative z-10 ${activePath === 'record' ? 'border-[#282828]' : 'border-zinc-200'}`}>
 
-              <div className="flex items-center gap-2 mr-4">
+              <div className="hidden lg:flex items-center gap-2 mr-2">
                 {user ? (
-                  <button onClick={handleLogin} className={`flex items-center gap-2 text-xs font-medium transition-colors px-2 py-1 rounded ${activePath === 'record' ? 'text-zinc-400 hover:text-red-400 bg-zinc-900 hover:bg-neutral-800' : 'text-zinc-500 hover:text-red-500 bg-zinc-100 hover:bg-red-50'}`} title="Sign Out">
-                    <span className="max-w-[100px] truncate">{user.email}</span>
-                    <LogOut size={14} />
+                  <button onClick={handleLogin} className={`flex items-center gap-2 text-[11px] font-medium transition-colors px-2 py-1 rounded bg-white dark:bg-black border border-zinc-200 dark:border-zinc-800 ${activePath === 'record' ? 'text-zinc-400 hover:text-red-400 hover:bg-neutral-800' : 'text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:border-zinc-400 dark:hover:border-zinc-600'}`} title="Sign Out">
+                    <span className="max-w-[120px] truncate">{user.email}</span>
+                    <LogOut size={12} />
                   </button>
                 ) : (
-                  <button onClick={handleLogin} className={`flex items-center gap-2 text-xs font-medium transition-colors px-3 py-1 rounded ${activePath === 'record' ? 'text-white bg-zinc-800 hover:bg-zinc-700' : 'text-zinc-900 bg-zinc-100 hover:bg-zinc-200'}`} title="Sign In with Google">
+                  <button onClick={handleLogin} className={`flex items-center gap-2 text-[11px] font-medium transition-colors px-3 py-1 rounded bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-white dark:hover:bg-zinc-700 ${activePath === 'record' ? 'text-white bg-zinc-800 hover:bg-zinc-700' : 'text-zinc-900'}`} title="Sign In with Google">
                     <span>Sign In</span>
-                    <LogIn size={14} />
+                    <LogIn size={12} />
                   </button>
                 )}
               </div>
 
-              <div className="h-4 w-[1px] bg-zinc-200 dark:bg-[#282828] mx-2"></div>
+              <div className="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 mx-1 hidden lg:block"></div>
 
-              <CircuitSwitch
+              <LightSwitch
                 isOpen={isDarkMode}
                 onToggle={() => setIsDarkMode(!isDarkMode)}
                 className={activePath === 'record' ? 'opacity-50 pointer-events-none' : ''}
               />
 
-              <a href="mailto:hello@yourdomain.com" className={`transition-colors ml-2 ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900 dark:hover:text-white dark:text-zinc-500'}`}>
-                <Mail size={16} />
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className={`transition-colors ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900 dark:hover:text-white dark:text-zinc-500'}`}>
-                <Linkedin size={16} />
-              </a>
-              <a href="https://github.com" target="_blank" rel="noreferrer" className={`transition-colors ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900 dark:hover:text-white dark:text-zinc-500'}`}>
-                <Github size={16} />
-              </a>
+              <div className="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 mx-1"></div>
+
+              <div className="flex items-center gap-4 ml-1">
+                <a href="mailto:hello@yourdomain.com" className={`transition-colors flex shrink-0 ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900 dark:hover:text-white dark:text-zinc-500'}`}>
+                  <Mail size={16} />
+                </a>
+                <a href="https://linkedin.com" target="_blank" rel="noreferrer" className={`transition-colors flex shrink-0 ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900 dark:hover:text-white dark:text-zinc-500'}`}>
+                  <Linkedin size={16} />
+                </a>
+                <a href="https://github.com" target="_blank" rel="noreferrer" className={`transition-colors flex shrink-0 ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900 dark:hover:text-white dark:text-zinc-500'}`}>
+                  <Github size={16} />
+                </a>
+              </div>
             </div>
           </div>
         </div>
