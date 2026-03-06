@@ -670,90 +670,89 @@ export default function App() {
       <header className={`sticky top-0 z-50 backdrop-blur-md overflow-hidden ${activePath === 'record' ? 'bg-black text-white border-b border-[#282828]' : 'bg-[#fafafa]/90'}`}>
         <div className={`absolute bottom-0 left-0 w-full h-[1.5px] z-0 pointer-events-none ${activePath === 'record' ? 'bg-[#282828]' : 'bg-zinc-200'}`}></div>
 
-        <div className="max-w-[1400px] w-full mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
+        <div className="max-w-[1400px] w-full mx-auto px-6 md:px-10 h-16 grid grid-cols-[auto_1fr_auto] items-center gap-6">
 
-          <Link to="/about" className="flex flex-col relative group cursor-pointer lg:pr-12 shrink-0">
+          {/* LEFT: Logo */}
+          <Link to="/about" className="flex flex-col cursor-pointer shrink-0">
             <h1 className={`text-lg font-bold tracking-tight leading-none flex items-center gap-2 ${activePath === 'record' ? 'text-white' : 'text-zinc-900 dark:text-white'}`}>
               <Zap size={16} fill="currentColor" />
               Wooseong Jung
             </h1>
-            <p className={`text-[10px] font-light mt-1 ml-6 ${activePath === 'record' ? 'text-zinc-500' : 'text-zinc-500 dark:text-zinc-400'}`}>Software Engineer & Creative</p>
+            <p className={`text-[10px] font-light mt-1 ml-6 ${activePath === 'record' ? 'text-zinc-500' : 'text-zinc-500 dark:text-zinc-400'}`}>Software Engineer &amp; Creative</p>
           </Link>
 
-          <div className="flex-1 flex justify-start pl-4 md:pl-12 lg:pl-20 h-full overflow-x-auto hide-scrollbar">
-            <nav id="nav-container" className="flex items-center gap-8 md:gap-12 h-full relative pl-2">
-              <div
-                className={`absolute bottom-0 left-[-2000px] h-[1.5px] transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] z-10 pointer-events-none ${activePath === 'record' ? 'bg-white' : 'bg-zinc-900 dark:bg-white'}`}
-                style={{ width: `calc(2000px + ${wireLength}px)` }}
-              ></div>
+          {/* CENTER: Nav tabs */}
+          <nav id="nav-container" className="flex items-center justify-center h-full relative">
+            <div
+              className={`absolute bottom-0 left-[-2000px] h-[1.5px] transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] z-10 pointer-events-none ${activePath === 'record' ? 'bg-white' : 'bg-zinc-900 dark:bg-white'}`}
+              style={{ width: `calc(2000px + ${wireLength}px)` }}
+            ></div>
 
-              {navItems.map((item) => (
-                <Link
-                  key={item.id}
-                  id={`nav-${item.id}`}
-                  to={item.path}
-                  className={`flex items-center gap-2 text-sm transition-colors relative h-full px-5 z-20 group ${activeTab === item.id
-                    ? (activePath === 'record' ? 'text-white font-medium' : 'text-zinc-900 font-medium')
-                    : (activePath === 'record' ? 'text-zinc-500 hover:text-white font-light' : 'text-zinc-500 hover:text-zinc-900 font-light')
-                    }`}
+            {navItems.map((item) => (
+              <Link
+                key={item.id}
+                id={`nav-${item.id}`}
+                to={item.path}
+                className={`flex items-center text-sm transition-colors relative h-full px-6 z-20 group ${activeTab === item.id
+                  ? (activePath === 'record' ? 'text-white font-medium' : 'text-zinc-900 dark:text-white font-medium')
+                  : (activePath === 'record' ? 'text-zinc-500 hover:text-white font-light' : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white font-light')
+                  }`}
+              >
+                {item.label}
+                {/* Active indicator node on the wire */}
+                <div
+                  className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center z-20 pointer-events-none"
+                  style={{ bottom: '-4.25px' }}
                 >
-                  {item.label}
-                  <div
-                    className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center z-20 pointer-events-none"
-                    style={{ bottom: '-4.25px' }}
-                  >
-                    <div className={`w-2.5 h-2.5 rounded-full border-[1.5px] flex items-center justify-center transition-colors duration-300 ${activeTab === item.id
-                      ? (activePath === 'record' ? 'border-white bg-black' : 'border-zinc-900 bg-[#fafafa]')
-                      : (activePath === 'record' ? 'border-[#282828] bg-black group-hover:border-zinc-600' : 'border-zinc-200 bg-[#fafafa] group-hover:border-zinc-400')
-                      }`}>
-                      <div className={`w-[3px] h-[3px] rounded-full transition-colors duration-300 ${activeTab === item.id ? (activePath === 'record' ? 'bg-white' : 'bg-zinc-900') : 'bg-transparent'
-                        }`}></div>
-                    </div>
+                  <div className={`w-2.5 h-2.5 rounded-full border-[1.5px] flex items-center justify-center transition-colors duration-300 ${activeTab === item.id
+                    ? (activePath === 'record' ? 'border-white bg-black' : 'border-zinc-900 dark:border-white bg-[#fafafa] dark:bg-zinc-950')
+                    : (activePath === 'record' ? 'border-[#282828] bg-black group-hover:border-zinc-600' : 'border-zinc-200 dark:border-zinc-700 bg-[#fafafa] dark:bg-zinc-950 group-hover:border-zinc-400 dark:group-hover:border-zinc-500')
+                    }`}>
+                    <div className={`w-[3px] h-[3px] rounded-full transition-colors duration-300 ${activeTab === item.id ? (activePath === 'record' ? 'bg-white' : 'bg-zinc-900 dark:bg-white') : 'bg-transparent'}`}></div>
                   </div>
-                </Link>
-              ))}
-            </nav>
-          </div>
+                </div>
+              </Link>
+            ))}
+          </nav>
 
-          <div className={`flex items-center gap-4 shrink-0 h-5 relative z-10 ml-4 lg:ml-8 ${activePath === 'record' ? 'border-[#282828]' : 'border-zinc-200'}`}>
+          {/* RIGHT: Controls */}
+          <div className="flex items-center gap-3 shrink-0">
+            {user ? (
+              <button onClick={handleLogin} className={`hidden lg:flex items-center gap-1.5 text-[11px] font-medium px-2 py-1 rounded border transition-colors ${activePath === 'record' ? 'text-zinc-400 hover:text-red-400 bg-zinc-900 border-zinc-700' : 'text-zinc-600 dark:text-zinc-300 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500'}`} title="Sign Out">
+                <span className="max-w-[110px] truncate">{user.email}</span>
+                <LogOut size={11} />
+              </button>
+            ) : (
+              <button onClick={handleLogin} className={`hidden lg:flex items-center gap-1.5 text-[11px] font-medium px-3 py-1 rounded border transition-colors ${activePath === 'record' ? 'text-white bg-zinc-800 border-zinc-700 hover:bg-zinc-700' : 'text-zinc-700 dark:text-white bg-zinc-100 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700'}`} title="Sign In with Google">
+                <span>Sign In</span>
+                <LogIn size={11} />
+              </button>
+            )}
 
-            <div className="hidden lg:flex items-center gap-2 mr-2">
-              {user ? (
-                <button onClick={handleLogin} className={`flex items-center gap-2 text-[11px] font-medium transition-colors px-2 py-1 rounded bg-white dark:bg-black border border-zinc-200 dark:border-zinc-800 ${activePath === 'record' ? 'text-zinc-400 hover:text-red-400 hover:bg-neutral-800' : 'text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:border-zinc-400 dark:hover:border-zinc-600'}`} title="Sign Out">
-                  <span className="max-w-[120px] truncate">{user.email}</span>
-                  <LogOut size={12} />
-                </button>
-              ) : (
-                <button onClick={handleLogin} className={`flex items-center gap-2 text-[11px] font-medium transition-colors px-3 py-1 rounded bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-white dark:hover:bg-zinc-700 ${activePath === 'record' ? 'text-white bg-zinc-800 hover:bg-zinc-700' : 'text-zinc-900'}`} title="Sign In with Google">
-                  <span>Sign In</span>
-                  <LogIn size={12} />
-                </button>
-              )}
-            </div>
-
-            <div className="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 mx-1 hidden lg:block"></div>
+            <div className="hidden lg:block h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700"></div>
 
             <LightSwitch
               isOpen={isDarkMode}
               onToggle={() => setIsDarkMode(!isDarkMode)}
-              className={activePath === 'record' ? 'opacity-50 pointer-events-none' : ''}
+              className={activePath === 'record' ? 'opacity-40 pointer-events-none' : ''}
             />
 
-            <div className="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 mx-1"></div>
+            <div className="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700"></div>
 
-            <div className="flex items-center gap-4 ml-1">
-              <a href="mailto:hello@yourdomain.com" className={`transition-colors flex shrink-0 ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900 dark:hover:text-white dark:text-zinc-500'}`}>
-                <Mail size={16} />
+            <div className="flex items-center gap-3">
+              <a href="mailto:hello@yourdomain.com" className={`transition-colors ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 dark:text-zinc-500 hover:text-zinc-800 dark:hover:text-white'}`}>
+                <Mail size={15} />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className={`transition-colors flex shrink-0 ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900 dark:hover:text-white dark:text-zinc-500'}`}>
-                <Linkedin size={16} />
+              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className={`transition-colors ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 dark:text-zinc-500 hover:text-zinc-800 dark:hover:text-white'}`}>
+                <Linkedin size={15} />
               </a>
-              <a href="https://github.com" target="_blank" rel="noreferrer" className={`transition-colors flex shrink-0 ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 hover:text-zinc-900 dark:hover:text-white dark:text-zinc-500'}`}>
-                <Github size={16} />
+              <a href="https://github.com" target="_blank" rel="noreferrer" className={`transition-colors ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 dark:text-zinc-500 hover:text-zinc-800 dark:hover:text-white'}`}>
+                <Github size={15} />
               </a>
             </div>
           </div>
         </div>
+
       </header>
 
       <Routes>
