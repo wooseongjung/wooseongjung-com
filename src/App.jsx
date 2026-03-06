@@ -660,14 +660,14 @@ export default function App() {
   }, [activeTab]);
 
   return (
-    <div className="min-h-screen bg-[#fafafa] relative selection:bg-zinc-200 selection:text-zinc-900">
+    <div className="min-h-screen bg-[#fafafa] dark:bg-[#0e0e0e] relative selection:bg-zinc-200 dark:selection:bg-zinc-700 selection:text-zinc-900 dark:selection:text-zinc-100">
       <style>{injectedStyles}</style>
 
       {activePath !== 'record' && (
         <div className="bg-minimal-circuit absolute inset-0 pointer-events-none fixed"></div>
       )}
 
-      <header className={`sticky top-0 z-50 backdrop-blur-md overflow-hidden ${activePath === 'record' ? 'bg-black text-white border-b border-[#282828]' : 'bg-[#fafafa]/90'}`}>
+      <header className={`sticky top-0 z-50 backdrop-blur-md overflow-hidden ${activePath === 'record' ? 'bg-black text-white border-b border-[#282828]' : 'bg-[#fafafa]/90 dark:bg-[#0e0e0e]/90 border-b border-transparent dark:border-zinc-800'}`}>
         <div className={`absolute bottom-0 left-0 w-full h-[1.5px] z-0 pointer-events-none ${activePath === 'record' ? 'bg-[#282828]' : 'bg-zinc-200'}`}></div>
 
         <div className="max-w-[1400px] w-full mx-auto px-6 md:px-10 h-16 grid grid-cols-[auto_1fr_auto] items-center gap-6">
