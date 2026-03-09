@@ -67,3 +67,51 @@ To set up continuous deployment properly:
 2. When prompted, select the existing project `wooseongjung-5f089`.
 3. Provide your GitHub repository (`wooseongjung/wooseongjung-com`).
 4. If the exact same IAM error occurs again, you will need to go to your [Google Cloud IAM Console](https://console.cloud.google.com/iam-admin/iam?project=wooseongjung-5f089) and ensure your user account has the necessary permissions to create Service Accounts.
+
+---
+
+## NS-3 Simulation Lab (Charts + Map Animation)
+
+The `Projects -> 5G VFC Architecture Simulation` page now includes an interactive simulation lab.
+
+### What it does
+
+- Queues public simulation requests (1 run at a time)
+- Runs NS-3 with user-controlled parameters:
+  - Cars (`numVehicles`)
+  - gNBs (`numGnbs`)
+  - VFCs (`numVFCs` -> ns-3 `numBuses`)
+  - CFNs (`numCFNs` -> ns-3 `numRsus`)
+- Produces:
+  - Relative velocity vs failure rate chart
+  - Vehicle density vs delay chart
+  - Delay component charts (absolute + share)
+  - OSM tile map animation
+
+### Start the backend API (host process)
+
+```bash
+cd /Users/wsj/Documents/Web/wooseongjung-com/sim-api
+npm install
+npm run dev
+```
+
+### Start API in Docker
+
+```bash
+cd /Users/wsj/Documents/Web/wooseongjung-com
+cp .env.sim.example .env.sim
+# adjust if needed
+
+docker compose --env-file .env.sim -f docker-compose.sim.yml up --build
+```
+
+### Frontend development
+
+```bash
+cd /Users/wsj/Documents/Web/wooseongjung-com
+npm install
+npm run dev
+```
+
+The Vite dev server proxies `/api/*` to `http://localhost:8080`.

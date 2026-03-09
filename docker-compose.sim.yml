@@ -1,0 +1,23 @@
+services:
+  sim-api:
+    build:
+      context: ./sim-api
+    container_name: vfc-sim-api
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: 8080
+      SIM_RUNNER: docker_exec
+      NS3_DOCKER_CONTAINER: ${NS3_DOCKER_CONTAINER:-ns3-dev}
+      NS3_RUN_WORKDIR: ${NS3_RUN_WORKDIR:-/workspace/ns-3.46}
+      NS3_BINARY_REL: ${NS3_BINARY_REL:-build-linux-out/scratch/ns3.46-v2x-5g-sumo-default}
+      NS3_TRACE_FILE: ${NS3_TRACE_FILE:-/workspace/ns-3.46/scratch/manchester_city_ns3.tcl}
+      NS3_LOCAL_ROOT: /mnt/ns3
+      NS3_LOCAL_RESULTS_ROOT: /mnt/ns3/results_web
+      NS3_RUN_RESULTS_ROOT: ${NS3_RUN_RESULTS_ROOT:-/workspace/ns-3.46/results_web}
+      RUNS_KEEP_LATEST: ${RUNS_KEEP_LATEST:-20}
+      MAP_CENTER_LAT: ${MAP_CENTER_LAT:-53.4808}
+      MAP_CENTER_LON: ${MAP_CENTER_LON:--2.2426}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${NS3_HOST_PATH:-/Users/wsj/Documents/ns3_project/ns-3.46}:/mnt/ns3

@@ -1,0 +1,17 @@
+services:
+  frontend:
+    image: node:20-bookworm-slim
+    container_name: vfc-web-ui
+    working_dir: /app
+    command: >
+      sh -lc "npm install --no-audit --no-fund && npm run dev -- --host 0.0.0.0 --port 5173 --strictPort"
+    environment:
+      VITE_SIM_API_BASE: http://127.0.0.1:8080
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./:/app
+      - vfc_web_node_modules:/app/node_modules
+
+volumes:
+  vfc_web_node_modules:

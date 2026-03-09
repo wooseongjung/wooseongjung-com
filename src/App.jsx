@@ -5,6 +5,8 @@ import { getAnalytics } from "firebase/analytics";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import MusicPlayer from "./components/MusicPlayer";
+import SimulationLab from "./components/SimulationLab";
+import { AmbientLightChart, TCRT5000LSpreadChart, AllSensorsSpreadChart } from './components/buggy/SensorCharts';
 
 import {
   User,
@@ -196,99 +198,172 @@ const LightSwitch = ({ isOpen, onToggle, className = "" }) => (
 );
 
 const AboutView = () => (
-  <div className="space-y-16 animate-fade-up max-w-4xl">
-    <div className="relative">
-      <h2 className="text-3xl font-light tracking-tight text-zinc-900 dark:text-zinc-100 mb-6">
-        Architecting intelligence in <span className="font-semibold">silicon</span> and <span className="font-semibold">motion</span>.
-      </h2>
+  <div className="animate-fade-up">
 
-      <div className="space-y-6 text-zinc-600 dark:text-zinc-400 leading-relaxed font-light text-lg">
-        <p>
-          I am an Electronic Engineering undergrad at the University of Manchester, specializing in the intersection of <strong className="font-semibold text-zinc-900 dark:text-zinc-100">Robotics</strong> and <strong className="font-semibold text-zinc-900 dark:text-zinc-100">VLSI Design</strong>.
-        </p>
-        <p>
-          My technical footprint spans from low-level hardware design (VHDL, Altium, Tanner EDA) and C++ microcontroller firmware, right up to high-level robotics frameworks like ROS 2 and Gazebo. I build systems that move precisely and calculate efficiently.
-        </p>
+    {/* ═══ Bio Section with spine ═══ */}
+    <div className="relative max-w-3xl mb-16">
+      {/* Left spine trace */}
+      <div className="absolute left-0 top-1 bottom-0 flex flex-col items-center" style={{ width: '20px' }}>
+        <div className="w-2 h-2 rounded-full border-[1.5px] border-zinc-400 dark:border-zinc-600 bg-white dark:bg-zinc-950 shrink-0" />
+        <div className="w-[1.5px] bg-zinc-200 dark:bg-zinc-700 flex-1" />
+        <div className="w-2 h-2 rounded-full border-[1.5px] border-zinc-400 dark:border-zinc-600 bg-white dark:bg-zinc-950 shrink-0 my-0.5" />
+        <div className="w-[1.5px] bg-zinc-200 dark:bg-zinc-700 flex-1" />
+        {/* Ground symbol */}
+        <div className="flex flex-col items-center gap-[2px] shrink-0 mt-1">
+          <div className="w-[10px] h-[1.5px] bg-zinc-300 dark:bg-zinc-600" />
+          <div className="w-[6px] h-[1.5px] bg-zinc-300 dark:bg-zinc-600" />
+          <div className="w-[3px] h-[1.5px] bg-zinc-300 dark:bg-zinc-600" />
+        </div>
       </div>
 
-      <div className="absolute -left-12 top-2 h-[120%] hidden md:flex flex-col items-center">
-        <Power size={14} className="text-zinc-300 mb-2" />
-        <Trace vertical className="flex-1 max-h-[80px]" />
-        <Node className="border-zinc-300 my-2" />
-        <Trace vertical className="flex-1 max-h-[80px]" />
-        <Node className="border-zinc-300 my-2" />
-        <Trace vertical className="flex-1 max-h-[80px]" />
-        <GroundSymbol className="mt-2" />
-      </div>
-    </div>
+      {/* Bio content */}
+      <div className="pl-10">
+        <h2 className="text-[32px] md:text-[38px] font-light tracking-tight text-zinc-900 dark:text-zinc-100 leading-[1.15] mb-6">
+          Bridging the gap between{' '}
+          <span className="font-bold">hardware architecture</span> and{' '}
+          <span className="font-bold">software logic</span>.
+        </h2>
 
-    {/* Timeline Section */}
-    <div className="pt-8 border-t border-zinc-200 dark:border-zinc-800">
-      <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-8 flex items-center gap-2">
-        <Briefcase size={20} className="text-blue-500/80" /> Footprint
-      </h3>
-
-      <div className="relative border-transparent space-y-8 ml-2">
-
-        {/* Present */}
-        <div className="relative group transition-all duration-300 hover:-translate-y-1 p-4 rounded-md hover:bg-white dark:hover:bg-neutral-900 border border-transparent hover:border-zinc-100 dark:hover:border-zinc-800 flex items-start gap-5">
-          <div className="mt-2 shrink-0">
-            <Node className="border-zinc-900 dark:border-white transition-colors group-hover:bg-blue-500 group-hover:border-blue-500 group-hover:scale-125 focus:outline-none" />
-          </div>
-          <div>
-            <div className="mb-2">
-              <h4 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors">University of Manchester</h4>
-              <span className="text-[13px] text-blue-700/80 dark:text-blue-400 font-medium bg-blue-50 dark:bg-blue-500/10 inline-block px-1.5 py-0.5 rounded-sm mt-2">Sep 2021 — Present • BEng (Hons) in Electronic Engineering</span>
-            </div>
-            <p className="text-zinc-600 dark:text-zinc-400 font-light leading-relaxed mt-3 max-w-2xl">
-              First-Class (80%) expected. Key modules include <span className="bg-blue-50 dark:bg-blue-500/10 text-blue-800 dark:text-blue-300 font-normal px-1 rounded-sm">Microcontroller Engineering</span>, <span className="bg-blue-50 dark:bg-blue-500/10 text-blue-800 dark:text-blue-300 font-normal px-1 rounded-sm">Analog and Digital Comm</span>, Control Systems, and <span className="bg-blue-50 dark:bg-blue-500/10 text-blue-800 dark:text-blue-300 font-normal px-1 rounded-sm">VLSI Design</span>.
-            </p>
-          </div>
+        <div className="space-y-4 text-zinc-500 dark:text-zinc-400 leading-relaxed text-[15px] max-w-2xl">
+          <p>
+            I am a final-year Electronic Engineering student at the University of Manchester, expecting a First-Class (80%) degree.
+          </p>
+          <p>
+            My engineering philosophy is rooted in full-stack physical systems. Whether it is minimizing nanosecond propagation delays in CMOS logic, or orchestrating 12-servo robotic kinematics via ROS 2, I build systems that are robust from the silicon to the high-level control software.
+          </p>
         </div>
-
-        {/* Airforce */}
-        <div className="relative group transition-all duration-300 hover:-translate-y-1 p-4 rounded-md hover:bg-white dark:hover:bg-neutral-900 border border-transparent hover:border-zinc-100 dark:hover:border-zinc-800 flex items-start gap-5">
-          <div className="mt-2 shrink-0">
-            <Node className="border-zinc-900 dark:border-white transition-colors group-hover:bg-orange-500 group-hover:border-orange-500 group-hover:scale-125" />
-          </div>
-          <div>
-            <div className="mb-2">
-              <h4 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors">Republic of Korea Airforce</h4>
-              <span className="text-[13px] text-orange-700/80 dark:text-orange-400 font-medium bg-orange-50 dark:bg-orange-500/10 inline-block px-1.5 py-0.5 rounded-sm mt-2">Sep 2022 — Jun 2024 • Flight Control Maintenance</span>
-            </div>
-            <p className="text-zinc-600 dark:text-zinc-400 font-light leading-relaxed mt-3 max-w-2xl">
-              Supported avionics maintenance in a 35-person unit. Standardized fault checklists and ESD handling tools, notably <span className="bg-orange-50 dark:bg-orange-500/10 text-orange-800 dark:text-orange-300 font-normal px-1 rounded-sm">reducing troubleshooting times by 15%</span>. Mentored 16 recruits during on-the-job training.
-            </p>
-          </div>
-        </div>
-
-        {/* Hackabot */}
-        <div className="relative group transition-all duration-300 hover:-translate-y-1 p-4 rounded-md hover:bg-white dark:hover:bg-neutral-900 border border-transparent hover:border-zinc-100 dark:hover:border-zinc-800 flex items-start gap-5">
-          <div className="mt-2 shrink-0">
-            <Node className="border-zinc-900 dark:border-white transition-colors group-hover:bg-green-500 group-hover:border-green-500 group-hover:scale-125" />
-          </div>
-          <div>
-            <div className="mb-2">
-              <h4 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors">Hack-A-Bot 2025 (3rd Place)</h4>
-              <span className="text-[13px] text-green-700/80 dark:text-green-400 font-medium bg-green-50 dark:bg-green-500/10 inline-block px-1.5 py-0.5 rounded-sm mt-2">Mar 2025 • Robosoc, UoM</span>
-            </div>
-            <p className="text-zinc-600 dark:text-zinc-400 font-light leading-relaxed mt-3 max-w-2xl">
-              Developed a <span className="bg-green-50 dark:bg-green-500/10 text-green-800 dark:text-green-300 font-normal px-1 rounded-sm">real-time hand-raise detection system</span> using a Raspberry Pi 5. Designed a custom CAD mount for a Sony AI camera to gauge student classroom engagement.
-            </p>
-          </div>
-        </div>
-
       </div>
     </div>
 
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-8 border-t border-zinc-200 dark:border-zinc-800">
-      <div className="text-sm text-zinc-500 dark:text-zinc-400"><span className="font-medium text-zinc-900 dark:text-zinc-100 block mb-1">Languages</span> C/C++, Python, Assembly, VHDL, JavaScript</div>
-      <div className="text-sm text-zinc-500 dark:text-zinc-400"><span className="font-medium text-zinc-900 dark:text-zinc-100 block mb-1">Hardware</span> STM32, Raspberry Pi, ROS 2</div>
-      <div className="text-sm text-zinc-500 dark:text-zinc-400"><span className="font-medium text-zinc-900 dark:text-zinc-100 block mb-1">Software</span> Matlab, Simulink, Solidworks, Altium</div>
-      <div className="text-sm text-zinc-500 dark:text-zinc-400"><span className="font-medium text-zinc-900 dark:text-zinc-100 block mb-1">EDA</span> Tanner EDA, NI Multisim, Xilinx</div>
+    {/* ═══ Two-Column: Skills | Operational History ═══ */}
+    <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-12 md:gap-16">
+
+      {/* ── Left Column: Skills / Tech Stack ── */}
+      <div className="space-y-8">
+
+        {/* Hardware & EDA */}
+        <div>
+          <div className="flex items-center gap-2 mb-4">
+            <Cpu size={13} className="text-zinc-400 dark:text-zinc-500" />
+            <span className="font-mono text-[11px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500">{'// '}hardware_&_eda</span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {['Altium', 'Solidworks', 'Tanner EDA', 'LT Spice', 'Xilinx', 'NI Multisim', 'STM32 Nucleo', 'Raspberry Pi'].map(s => (
+              <span key={s} className="px-3 py-1 text-[12px] font-mono text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:border-zinc-400 dark:hover:border-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors cursor-default">{s}</span>
+            ))}
+          </div>
+        </div>
+
+        {/* Software & Control */}
+        <div>
+          <div className="flex items-center gap-2 mb-4">
+            <span className="font-mono text-zinc-400 dark:text-zinc-500 text-[13px]">{'>'}_</span>
+            <span className="font-mono text-[11px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500">{'// '}software_&_control</span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {['C / C++', 'Python', 'Assembly', 'VHDL', 'ROS 2', 'Matlab / Simulink', 'JavaScript / React'].map(s => (
+              <span key={s} className="px-3 py-1 text-[12px] font-mono text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:border-zinc-400 dark:hover:border-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors cursor-default">{s}</span>
+            ))}
+          </div>
+        </div>
+
+        {/* Frameworks & Tools */}
+        <div>
+          <div className="flex items-center gap-2 mb-4">
+            <Plug size={13} className="text-zinc-400 dark:text-zinc-500" />
+            <span className="font-mono text-[11px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500">{'// '}frameworks_&_tools</span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {['Gazebo', 'Docker', 'Git', 'Firebase', 'ns-3', 'SUMO', 'Linux / Ubuntu'].map(s => (
+              <span key={s} className="px-3 py-1 text-[12px] font-mono text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:border-zinc-400 dark:hover:border-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors cursor-default">{s}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Right Column: Operational History ── */}
+      <div>
+        <div className="flex items-center gap-2 mb-8">
+          <Briefcase size={13} className="text-zinc-400 dark:text-zinc-500" />
+          <span className="font-mono text-[11px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500">{'// '}operational_history</span>
+          <div className="flex-1 h-px bg-zinc-100 dark:bg-zinc-800 ml-2" />
+        </div>
+
+        {/* Timeline */}
+        <div className="relative ml-3">
+          {/* Vertical line */}
+          <div className="absolute left-0 top-2 bottom-0 w-[1.5px] bg-gradient-to-b from-orange-300 via-blue-300 to-green-300 dark:from-orange-600 dark:via-blue-600 dark:to-green-500" />
+
+          {/* ── Republic of Korea Air Force ── */}
+          <div className="relative pl-8 pb-10 group">
+            <div className="absolute left-[-4.5px] top-2 w-[10px] h-[10px] rounded-full border-[1.5px] border-orange-500 bg-white dark:bg-zinc-950 group-hover:bg-orange-500 transition-all" />
+
+            <h4 className="text-[15px] font-semibold text-zinc-800 dark:text-zinc-200 mb-0.5 group-hover:text-zinc-950 dark:group-hover:text-white transition-colors">Republic of Korea Airforce</h4>
+            <p className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500 mb-3">Avionics Maintenance Team | Sep 2022 - Jun 2024</p>
+
+            <ul className="space-y-2 text-[13px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
+              <li className="flex gap-2">
+                <span className="text-zinc-300 dark:text-zinc-600 shrink-0 mt-0.5">•</span>
+                <span>Supported avionics maintenance in a 35-person unit; coordinated tasks and standardized fault checklists and ESD handling at benches.</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-zinc-300 dark:text-zinc-600 shrink-0 mt-0.5">•</span>
+                <span>Led procedural optimizations that <span className="text-orange-700 dark:text-orange-300 font-medium">reduced average troubleshooting time by 15%</span>.</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-zinc-300 dark:text-zinc-600 shrink-0 mt-0.5">•</span>
+                <span>Mentored 16 recruits over 6 months with weekly on-the-job training sessions.</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* ── University of Manchester ── */}
+          <div className="relative pl-8 pb-10 group">
+            <div className="absolute left-[-4.5px] top-2 w-[10px] h-[10px] rounded-full border-[1.5px] border-blue-500 bg-white dark:bg-zinc-950 group-hover:bg-blue-500 transition-all" />
+
+            <h4 className="text-[15px] font-semibold text-zinc-800 dark:text-zinc-200 mb-0.5 group-hover:text-zinc-950 dark:group-hover:text-white transition-colors">The University of Manchester</h4>
+            <p className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500 mb-3">BEng Electronic Engineering | 2021 - Present</p>
+
+            <ul className="space-y-2 text-[13px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
+              <li className="flex gap-2">
+                <span className="text-zinc-300 dark:text-zinc-600 shrink-0 mt-0.5">•</span>
+                <span>First-Class (80%) expected. Key modules: <span className="text-blue-700 dark:text-blue-300 font-medium">Microcontroller Engineering</span>, <span className="text-blue-700 dark:text-blue-300 font-medium">VLSI Design</span>, Control Systems.</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-zinc-300 dark:text-zinc-600 shrink-0 mt-0.5">•</span>
+                <span>Specializing in the intersection of Robotics and VLSI Design with hands-on lab experience in FPGA synthesis, analog IC layout, and embedded firmware.</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* ── Hack-A-Bot 2025 ── */}
+          <div className="relative pl-8 pb-2 group">
+            <div className="absolute left-[-4.5px] top-2 w-[10px] h-[10px] rounded-full border-[1.5px] border-green-500 bg-white dark:bg-zinc-950 group-hover:bg-green-500 transition-all" />
+
+            <h4 className="text-[15px] font-semibold text-zinc-800 dark:text-zinc-200 mb-0.5 group-hover:text-zinc-950 dark:group-hover:text-white transition-colors">
+              Hack-A-Bot 2025
+              <span className="ml-2 text-[10px] font-mono font-normal px-1.5 py-0.5 bg-green-50 dark:bg-green-500/10 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800">3RD PLACE</span>
+            </h4>
+            <p className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500 mb-3">Robosoc, University of Manchester | Mar 2025</p>
+
+            <ul className="space-y-2 text-[13px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
+              <li className="flex gap-2">
+                <span className="text-zinc-300 dark:text-zinc-600 shrink-0 mt-0.5">•</span>
+                <span>Developed a <span className="text-green-700 dark:text-green-300 font-medium">real-time hand-raise detection system</span> using a Raspberry Pi 5 with a Sony AI camera.</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-zinc-300 dark:text-zinc-600 shrink-0 mt-0.5">•</span>
+                <span>Designed a custom CAD mount and integrated computer vision pipeline to gauge student classroom engagement.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 );
+
+
 
 const ProjectsView = () => {
   const [activeProjectId, setActiveProjectId] = useState(null);
@@ -353,6 +428,18 @@ const ProjectsView = () => {
             </ul>
           </section>
 
+
+
+          <section>
+            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white"></div> 2.5 Interactive Lab</h3>
+            <p className="text-zinc-700 dark:text-zinc-300 mb-4">
+              Run the NS-3 VFC scenario directly from this page by tuning the number of Cars, gNBs, VFCs, and CFNs.
+              The backend executes runs in Docker, queues public requests, and streams results back as charts and map animation.
+            </p>
+            <SimulationLab />
+          </section>
+
+
           <section>
             <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white"></div> 3. Key Findings</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
@@ -376,6 +463,441 @@ const ProjectsView = () => {
     );
   }
 
+  if (activeProjectId === 'buggy') {
+    return (
+      <div className="space-y-10 animate-fade-up max-w-4xl pb-12">
+        <button onClick={() => setActiveProjectId(null)} className="flex items-center gap-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors mb-4 group font-medium text-sm">
+          <ArrowRight size={16} className="rotate-180 transition-transform group-hover:-translate-x-1" />
+          Back to List
+        </button>
+
+        <div className="border-b border-zinc-200 dark:border-zinc-700 pb-8">
+          <h2 className="text-3xl md:text-5xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 mb-4">Autonomous Line-Following Buggy</h2>
+          <p className="text-lg text-zinc-500 dark:text-zinc-400 font-light">Embedded Systems Project • University of Manchester • Group 23</p>
+          <div className="flex flex-wrap gap-3 mt-4">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-700 text-amber-800 dark:text-amber-300 text-xs font-medium">
+              <span className="text-amber-500">★</span> Best Looking Buggy Award
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-700 text-blue-800 dark:text-blue-300 text-xs font-medium">
+              84% — First Class Honours
+            </span>
+          </div>
+        </div>
+
+        {/* Hero image */}
+        <div className="overflow-hidden border border-zinc-200 dark:border-zinc-700">
+          <img src="/images/buggy/hero.jpg" alt="Autonomous line-following buggy at the final race" className="w-full h-auto object-cover" />
+          <p className="text-xs text-zinc-400 dark:text-zinc-500 px-4 py-2 bg-zinc-50 dark:bg-zinc-900">The completed buggy at the final race — acetyl chassis with front sensor array, rear drive wheels, and STM32 controller on top.</p>
+        </div>
+
+        <div className="prose prose-zinc max-w-none text-zinc-700 dark:text-zinc-300 font-light space-y-8 leading-relaxed">
+
+          {/* ── 1. Overview ── */}
+          <section>
+            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white" /> 1. Overview
+            </h3>
+            <p>An autonomous, high-speed line-following robot designed for warehouse logistics — engineered to prioritise <strong className="font-semibold text-zinc-900 dark:text-zinc-100">speed and stability</strong> over raw torque. The buggy uses a custom multi-layer acetyl chassis, BLE-tunable PID control, and a front-mounted infrared sensor array to navigate a complex racetrack with straights, curves, and an 18° incline.</p>
+            <p>The project spanned two semesters of full-cycle development: motor characterisation, gearbox selection, sensor PCB design, chassis CAD, control algorithm implementation, and final race competition. The buggy was awarded <strong className="font-semibold text-zinc-900 dark:text-zinc-100">"Best Looking Buggy"</strong> by Dr Mike O'Toole & Dr Liam Marsh, recognising its exceptionally clean acetyl chassis, internal wiring routing, and professional manufacturing quality.</p>
+
+            {/* Labeled diagram + CAD render side by side */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+              <div className="border border-zinc-200 dark:border-zinc-700 overflow-hidden">
+                <img src="/images/buggy/labeled-diagram.jpg" alt="Labeled component diagram of the buggy" className="w-full h-auto object-cover" />
+                <p className="text-[11px] text-zinc-400 dark:text-zinc-500 px-3 py-1.5 bg-zinc-50 dark:bg-zinc-900">Component layout — microcontroller, motor drive board, batteries, sensor array PCB, and gearbox module.</p>
+              </div>
+              <div className="border border-zinc-200 dark:border-zinc-700 overflow-hidden">
+                <img src="/images/buggy/cad-render.png" alt="Solidworks CAD render of the buggy" className="w-full h-auto object-cover" />
+                <p className="text-[11px] text-zinc-400 dark:text-zinc-500 px-3 py-1.5 bg-zinc-50 dark:bg-zinc-900">Solidworks CAD render — 3-layer acetyl chassis with visible gearbox, sensor mount, and internal wiring channels.</p>
+              </div>
+            </div>
+          </section>
+
+          {/* ── 2. System Architecture ── */}
+          <section>
+            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white" /> 2. System Architecture
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              {/* Mechanical */}
+              <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-6">
+                <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-3 flex items-center gap-2">
+                  <span className="font-mono text-[10px] px-1.5 py-0.5 bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800">MECH</span>
+                  Chassis & Drive
+                </h4>
+                <ul className="text-sm text-zinc-600 dark:text-zinc-400 space-y-1.5">
+                  <li>• <strong className="font-medium text-zinc-800 dark:text-zinc-200">3-layer acetyl chassis</strong> — compact, low CG, internally routed wiring</li>
+                  <li>• 2-stage gearbox (ratio <span className="font-mono text-zinc-800 dark:text-zinc-200">1:11.50</span>, 72.25% efficiency)</li>
+                  <li>• Max flat speed: <span className="font-mono text-zinc-800 dark:text-zinc-200">3.34 m/s</span> | Incline: <span className="font-mono text-zinc-800 dark:text-zinc-200">2.66 m/s</span></li>
+                  <li>• Front ball castor + 2× rear drive wheels (80.4 mm Ø)</li>
+                </ul>
+              </div>
+
+              {/* Electrical */}
+              <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-6">
+                <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-3 flex items-center gap-2">
+                  <span className="font-mono text-[10px] px-1.5 py-0.5 bg-orange-50 dark:bg-orange-500/10 text-orange-700 dark:text-orange-400 border border-orange-200 dark:border-orange-800">ELEC</span>
+                  Sensors & PCB
+                </h4>
+                <ul className="text-sm text-zinc-600 dark:text-zinc-400 space-y-1.5">
+                  <li>• 5× <strong className="font-medium text-zinc-800 dark:text-zinc-200">TCRT5000L</strong> IR reflective sensors — inline array on custom PCB</li>
+                  <li>• Sensor height: 5 mm | Resistor: 5 kΩ | ΔV white/black: 3.74 V</li>
+                  <li>• <strong className="font-medium text-zinc-800 dark:text-zinc-200">AEAT-601B-F06</strong> quadrature encoder for speed feedback</li>
+                  <li>• Dallas DS2781 IC for battery monitoring</li>
+                </ul>
+              </div>
+
+              {/* Control */}
+              <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-6">
+                <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-3 flex items-center gap-2">
+                  <span className="font-mono text-[10px] px-1.5 py-0.5 bg-green-50 dark:bg-green-500/10 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800">CTRL</span>
+                  Control System
+                </h4>
+                <ul className="text-sm text-zinc-600 dark:text-zinc-400 space-y-1.5">
+                  <li>• <strong className="font-medium text-zinc-800 dark:text-zinc-200">PID controller</strong> with limited integral history for turn stability</li>
+                  <li>• Bang-Bang fallback for robust line-break recovery</li>
+                  <li>• <strong className="font-medium text-zinc-800 dark:text-zinc-200">BLE interface</strong> for real-time PID gain tuning mid-run</li>
+                  <li>• Spin-towards-last-line recovery strategy</li>
+                </ul>
+              </div>
+
+              {/* Software */}
+              <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-6">
+                <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-3 flex items-center gap-2">
+                  <span className="font-mono text-[10px] px-1.5 py-0.5 bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-800">SW</span>
+                  Software Stack
+                </h4>
+                <ul className="text-sm text-zinc-600 dark:text-zinc-400 space-y-1.5">
+                  <li>• <strong className="font-medium text-zinc-800 dark:text-zinc-200">STM32 microcontroller</strong> programmed in C++</li>
+                  <li>• Modular firmware: motor PWM, sensor ADC, PID loop, BLE comms</li>
+                  <li>• GitHub version control for iterative algorithm testing</li>
+                  <li>• Chassis CAD in Solidworks, PCB layout in KiCad</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* PCB Layout + Wiring Diagram */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+              <div className="border border-zinc-200 dark:border-zinc-700 overflow-hidden">
+                <img src="/images/buggy/pcb-layout.png" alt="KiCad PCB layout for sensor board" className="w-full h-auto object-cover" />
+                <p className="text-[11px] text-zinc-400 dark:text-zinc-500 px-3 py-1.5 bg-zinc-50 dark:bg-zinc-900">KiCad sensor PCB layout — Group 23 custom design with TCRT5000L sensor array routing.</p>
+              </div>
+              <div className="border border-zinc-200 dark:border-zinc-700 overflow-hidden">
+                <img src="/images/buggy/wiring-diagram.jpg" alt="System wiring diagram" className="w-full h-auto object-cover" />
+                <p className="text-[11px] text-zinc-400 dark:text-zinc-500 px-3 py-1.5 bg-zinc-50 dark:bg-zinc-900">Wiring diagram — Nucleo F401RE to motor drive board, sensor array, and motor connections.</p>
+              </div>
+            </div>
+          </section>
+
+          {/* ── Deep Dive: Motor & Gearbox Selection ── */}
+          <section>
+            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white" /> Motor & Gearbox Selection
+            </h3>
+            <p>Before any mechanical design, the motor parameters were experimentally determined to mathematically select the optimal gear combination. The key motor constants were measured as:</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-zinc-200 dark:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 mt-4 mb-4">
+              <div className="bg-white dark:bg-zinc-900 p-3 text-center">
+                <span className="block text-lg font-mono font-light text-zinc-900 dark:text-zinc-100">7.3<span className="text-xs text-zinc-400"> mNm/A</span></span>
+                <span className="text-[10px] uppercase tracking-widest text-zinc-400">K<sub>T</sub> (Torque)</span>
+              </div>
+              <div className="bg-white dark:bg-zinc-900 p-3 text-center">
+                <span className="block text-lg font-mono font-light text-zinc-900 dark:text-zinc-100">7.4<span className="text-xs text-zinc-400"> mV/rad·s⁻¹</span></span>
+                <span className="text-[10px] uppercase tracking-widest text-zinc-400">K<sub>E</sub> (EMF)</span>
+              </div>
+              <div className="bg-white dark:bg-zinc-900 p-3 text-center">
+                <span className="block text-lg font-mono font-light text-zinc-900 dark:text-zinc-100">2.182<span className="text-xs text-zinc-400"> Ω</span></span>
+                <span className="text-[10px] uppercase tracking-widest text-zinc-400">R<sub>a</sub> (Armature)</span>
+              </div>
+              <div className="bg-white dark:bg-zinc-900 p-3 text-center">
+                <span className="block text-lg font-mono font-light text-zinc-900 dark:text-zinc-100">0.120<span className="text-xs text-zinc-400"> V</span></span>
+                <span className="text-[10px] uppercase tracking-widest text-zinc-400">V<sub>brush</sub></span>
+              </div>
+            </div>
+            <p>Using a test chassis weighing <span className="font-mono text-zinc-800 dark:text-zinc-200">1.09 kg</span> with friction coefficient <span className="font-mono text-zinc-800 dark:text-zinc-200">µ = 0.073</span>, the maximum opposing force on an 18° slope was calculated as <span className="font-mono text-zinc-800 dark:text-zinc-200">4.051 N</span>, requiring <span className="font-mono text-zinc-800 dark:text-zinc-200">81.43 mNm</span> of torque at each wheel shaft.</p>
+            <p className="mt-3">Three gear combinations were then evaluated against torque, speed, and current requirements:</p>
+            <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-5 mt-3">
+              <div className="space-y-3 text-sm">
+                <div className="flex gap-3 items-start">
+                  <span className="font-mono text-xs text-zinc-400 w-10 shrink-0 pt-0.5">GC1</span>
+                  <p className="text-zinc-500 dark:text-zinc-400">Rejected — required torque near motor maximum (<span className="font-mono text-zinc-800 dark:text-zinc-200">9.8 mNm</span>), unfeasible for slope conditions.</p>
+                </div>
+                <div className="flex gap-3 items-start">
+                  <span className="font-mono text-xs text-blue-600 dark:text-blue-400 w-10 shrink-0 pt-0.5">GC2 ✓</span>
+                  <p className="text-zinc-600 dark:text-zinc-300"><strong className="font-medium text-zinc-800 dark:text-zinc-200">Selected</strong> — achieved <span className="font-mono text-zinc-800 dark:text-zinc-200">85.58 rad/s</span> flat and <span className="font-mono text-zinc-800 dark:text-zinc-200">68.77 rad/s</span> on incline, meeting all torque demands efficiently.</p>
+                </div>
+                <div className="flex gap-3 items-start">
+                  <span className="font-mono text-xs text-zinc-400 w-10 shrink-0 pt-0.5">GC3</span>
+                  <p className="text-zinc-500 dark:text-zinc-400">Satisfied torque requirements but inferior speed performance compared to GC2.</p>
+                </div>
+              </div>
+            </div>
+            <p className="mt-3">The ideal gear ratio was calculated as <span className="font-mono font-medium text-zinc-800 dark:text-zinc-200">1:11.50</span> (two stages, 85% efficiency each → 72.25% combined). With wheel diameter <span className="font-mono text-zinc-800 dark:text-zinc-200">80.4 mm</span>, this yields a theoretical max flat speed of <span className="font-mono text-zinc-800 dark:text-zinc-200">3.34 m/s</span> and incline speed of <span className="font-mono text-zinc-800 dark:text-zinc-200">2.66 m/s</span>. The intermediate shaft was positioned at <span className="font-mono text-zinc-800 dark:text-zinc-200">(16.55, 1.245)</span> relative to the input shaft origin using pitch circle diameter calculations.</p>
+          </section>
+
+          {/* ── Deep Dive: Sensor Characterisation & PCB ── */}
+          <section>
+            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white" /> Sensor Characterisation & PCB Design
+            </h3>
+            <p>The line sensor selection involved a rigorous experimental process comparing <strong className="font-semibold text-zinc-900 dark:text-zinc-100">7 sensor–LED combinations</strong> across multiple performance criteria to find the optimal configuration.</p>
+
+            <h4 className="font-medium text-zinc-800 dark:text-zinc-200 mt-5 mb-2 text-sm">Sensor–LED Evaluation Process</h4>
+            <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-5">
+              <div className="space-y-2 text-sm text-zinc-600 dark:text-zinc-400">
+                <p><strong className="font-medium text-zinc-800 dark:text-zinc-200">Sensors tested:</strong> SFH203P photodiode, 5 MΩ LDR, BPW17N phototransistor, TEKT5400S phototransistor, TCRT5000L (integrated)</p>
+                <p><strong className="font-medium text-zinc-800 dark:text-zinc-200">LEDs tested:</strong> TSHG6400 IR, TSHA4401 IR, OVL5521 white LED</p>
+                <p className="mt-2">Each combination was evaluated through four phases:</p>
+                <ol className="list-decimal list-inside space-y-1 ml-2">
+                  <li><strong className="font-medium text-zinc-700 dark:text-zinc-300">Working distance optimisation</strong> — best tracking at <span className="font-mono">5 mm</span> gap confirmed via test stand</li>
+                  <li><strong className="font-medium text-zinc-700 dark:text-zinc-300">Black/white track ΔV</strong> — voltage difference measured across R<sub>sensor</sub> on each surface</li>
+                  <li><strong className="font-medium text-zinc-700 dark:text-zinc-300">Dark current measurement</strong> — error baseline with LED off and sensor covered</li>
+                  <li><strong className="font-medium text-zinc-700 dark:text-zinc-300">Ambient light immunity</strong> — flashlight simulation testing to measure reading drift</li>
+                </ol>
+              </div>
+            </div>
+
+            <h4 className="font-medium text-zinc-800 dark:text-zinc-200 mt-5 mb-2 text-sm">TCRT5000L Selection Rationale</h4>
+            <p>The <strong className="font-semibold text-zinc-900 dark:text-zinc-100">TCRT5000L</strong> was selected for its integrated emitter-detector design, which produces the largest voltage differential — <span className="font-mono text-zinc-800 dark:text-zinc-200">ΔV = 3.74 V</span> between white line and black track with <span className="font-mono text-zinc-800 dark:text-zinc-200">R<sub>sensor</sub> = 5 kΩ</span> and <span className="font-mono text-zinc-800 dark:text-zinc-200">R<sub>LED</sub> = 62 Ω</span>. Its line spread function showed the sharpest transition at the white-black boundary, and it demonstrated the best ambient light immunity among the top three candidates. A <span className="font-mono text-zinc-800 dark:text-zinc-200">2 ms</span> sampling interval was chosen to filter out noise while ensuring no line-break (≤ 6 mm gap) goes undetected.</p>
+
+            {/* ── Sensor Behaviour Graphs (from DR2 report) ── */}
+            <h4 className="font-medium text-zinc-800 dark:text-zinc-200 mt-6 mb-2 text-sm">Ambient Light Immunity Test</h4>
+            <div className="text-sm text-zinc-500 dark:text-zinc-400 mb-4 space-y-2">
+              <p>To ensure the buggy wouldn't be derailed by direct sunlight or shadows during a race, we subjected the sensors to a simulated high-glare environment using a direct flashlight. The graph below plots the voltage outputs on the white line (top cluster) vs the black track (bottom cluster) with ambient light toggled on and off.</p>
+              <p>The <strong className="font-semibold text-zinc-700 dark:text-zinc-300">BPW17N</strong> (red dashed line) failed this test — its voltage readings on the black track spiked significantly under ambient light, which would cause false-positive line detections. The <strong className="font-semibold text-zinc-700 dark:text-zinc-300">TCRT5000L</strong>, however, maintained a massive, reliable voltage gap between the white and black surfaces regardless of external illumination, proving its extreme stability.</p>
+            </div>
+            <div className="border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 rounded-xl p-5 mb-8 shadow-sm">
+              <AmbientLightChart />
+            </div>
+
+            <h4 className="font-medium text-zinc-800 dark:text-zinc-200 mt-8 mb-2 text-sm">Line Spread Function (LSF) Analysis</h4>
+            <div className="text-sm text-zinc-500 dark:text-zinc-400 mb-4 space-y-2">
+              <p>To evaluate edge-detection sensitivity, we swept each sensor across the white-black boundary (located at <span className="font-mono text-xs">-1 cm</span> and <span className="font-mono text-xs">+1 cm</span> from the centre) at 5, 10, and 15 mm working heights. The resulting Line Spread Function reveals how sharply the sensor reacts to visual blurs at the track edge.</p>
+              <p>Looking at the 5 mm comparison array (right graph), the <strong className="font-semibold text-zinc-700 dark:text-zinc-300">TCRT5000L</strong> (blue line) exhibits the tallest peak and the steepest drop-off slope. This high sensitivity is crucial — it means the sensor detects the exact edge of the white line instantly, allowing the PID controller to execute micro-corrections faster to keep the buggy perfectly parallel to the track, even through fragmented line breaks.</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 rounded-xl p-4 shadow-sm">
+                <h5 className="text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-3 text-center">TCRT5000L LSF at Various Heights</h5>
+                <TCRT5000LSpreadChart />
+              </div>
+              <div className="border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 rounded-xl p-4 shadow-sm">
+                <h5 className="text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-3 text-center">All Sensors LSF Comparison at 5mm</h5>
+                <AllSensorsSpreadChart />
+              </div>
+            </div>
+
+            <h4 className="font-medium text-zinc-800 dark:text-zinc-200 mt-5 mb-2 text-sm">5-Sensor Array Layout</h4>
+            <p>The sensor PCB uses a strategic 5-sensor inline configuration designed around the minimum white line width of <span className="font-mono text-zinc-800 dark:text-zinc-200">14 mm</span>:</p>
+            <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-5 mt-3">
+              <div className="space-y-1.5 text-sm text-zinc-600 dark:text-zinc-400">
+                <p>• <strong className="font-medium text-zinc-800 dark:text-zinc-200">1 centre sensor</strong> — always on the white line during straight-line tracking</p>
+                <p>• <strong className="font-medium text-zinc-800 dark:text-zinc-200">2 side sensors</strong> — gap to centre ≤ 14 mm ensures continuous line coverage; triggers differential motor control when activated</p>
+                <p>• <strong className="font-medium text-zinc-800 dark:text-zinc-200">2 outer sensors</strong> — safety failsafe that triggers aggressive one-wheel-forward-one-wheel-reverse turning if the line drifts to the edge</p>
+              </div>
+            </div>
+            <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-2">The PCB went through 6 manufacturing iterations during build phase due to tolerance issues and short-circuit defects, adding £36.54 in additional component costs.</p>
+          </section>
+
+          {/* ── Deep Dive: Control & Software Architecture ── */}
+          <section>
+            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white" /> Control & Software Architecture
+            </h3>
+
+            <h4 className="font-medium text-zinc-800 dark:text-zinc-200 mb-2 text-sm">Dual Controller Strategy</h4>
+            <p>Two control systems were developed in parallel to balance robustness against performance:</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+              <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-5">
+                <h5 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-2 text-sm">Bang-Bang Controller</h5>
+                <ul className="text-sm text-zinc-600 dark:text-zinc-400 space-y-1.5">
+                  <li>• Logical-statement-based — full-speed correction on sensor trigger</li>
+                  <li>• <span className="font-mono text-zinc-800 dark:text-zinc-200">270+</span> iterations tested via visual evaluation</li>
+                  <li>• Fast response; constant direction changes on straights</li>
+                  <li>• <strong className="font-medium text-zinc-800 dark:text-zinc-200">Used in final race</strong> — proven reliable at competition speed</li>
+                </ul>
+              </div>
+              <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-5">
+                <h5 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-2 text-sm">PID Controller</h5>
+                <ul className="text-sm text-zinc-600 dark:text-zinc-400 space-y-1.5">
+                  <li>• Proportional + Integral (limited history) + Derivative gains</li>
+                  <li>• <span className="font-mono text-zinc-800 dark:text-zinc-200">2,000+</span> iterations — mostly &lt;5s test runs</li>
+                  <li>• BLE real-time gain tuning (K<sub>p</sub>, K<sub>i</sub>, K<sub>d</sub>) without re-flash</li>
+                  <li>• Smoother straights but hampered by narrow sensor spacing</li>
+                </ul>
+              </div>
+            </div>
+
+            <h4 className="font-medium text-zinc-800 dark:text-zinc-200 mt-5 mb-2 text-sm">Software Development Flow</h4>
+            <p>The firmware was built incrementally using the following staged approach, with each stage merged and tested before advancing:</p>
+            <div className="flex flex-wrap items-center gap-2 mt-3 text-xs">
+              {['Speed Control', 'Line-Following', 'Speed + Line', 'Line-Break / Stop', 'BLE Turnaround', 'All Integrated', 'Improved Line-Break', 'Final Tuned'].map((stage, i) => (
+                <React.Fragment key={i}>
+                  <span className={`px-2.5 py-1 border ${i === 7 ? 'bg-blue-50 dark:bg-blue-500/10 border-blue-200 dark:border-blue-700 text-blue-800 dark:text-blue-300 font-medium' : 'bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400'}`}>{stage}</span>
+                  {i < 7 && <span className="text-zinc-300 dark:text-zinc-600">→</span>}
+                </React.Fragment>
+              ))}
+            </div>
+
+            <h4 className="font-medium text-zinc-800 dark:text-zinc-200 mt-5 mb-2 text-sm">Firmware Modules</h4>
+            <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-5">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+                <div>
+                  <p className="font-mono text-xs text-blue-600 dark:text-blue-400 mb-0.5">motor_pwm</p>
+                  <p className="text-zinc-500 dark:text-zinc-400 text-xs">H-bridge PWM control with current sensing via shunt resistor</p>
+                </div>
+                <div>
+                  <p className="font-mono text-xs text-blue-600 dark:text-blue-400 mb-0.5">sensor_adc</p>
+                  <p className="text-zinc-500 dark:text-zinc-400 text-xs">5-channel ADC readings at 2 ms ticker interval with noise filtering</p>
+                </div>
+                <div>
+                  <p className="font-mono text-xs text-blue-600 dark:text-blue-400 mb-0.5">control_isr</p>
+                  <p className="text-zinc-500 dark:text-zinc-400 text-xs">Ticker-driven ISR for both bang-bang and PID motor adjustments</p>
+                </div>
+                <div>
+                  <p className="font-mono text-xs text-blue-600 dark:text-blue-400 mb-0.5">ble_comms</p>
+                  <p className="text-zinc-500 dark:text-zinc-400 text-xs">BLE UART for live PID gain tuning and telemetry output</p>
+                </div>
+                <div>
+                  <p className="font-mono text-xs text-blue-600 dark:text-blue-400 mb-0.5">encoder</p>
+                  <p className="text-zinc-500 dark:text-zinc-400 text-xs">Quadrature decoder for speed feedback and distance tracking</p>
+                </div>
+                <div>
+                  <p className="font-mono text-xs text-blue-600 dark:text-blue-400 mb-0.5">battery_mon</p>
+                  <p className="text-zinc-500 dark:text-zinc-400 text-xs">DS2781 I²C battery voltage and capacity monitoring</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ── 3. Race Performance ── */}
+          <section>
+            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white" /> 3. Race Performance
+            </h3>
+            <p>The buggy completed the final racetrack using the Bang-Bang controller while the PID controller was still being refined. Despite running conservatively, it provided critical performance data.</p>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-zinc-200 dark:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 mt-4">
+              <div className="bg-white dark:bg-zinc-900 p-4 text-center">
+                <span className="block text-2xl font-mono font-light text-zinc-900 dark:text-zinc-100">21.8<span className="text-sm text-zinc-400">s</span></span>
+                <span className="text-[10px] uppercase tracking-widest text-zinc-400 dark:text-zinc-500">TD4 Time</span>
+              </div>
+              <div className="bg-white dark:bg-zinc-900 p-4 text-center">
+                <span className="block text-2xl font-mono font-light text-zinc-900 dark:text-zinc-100">2:27<span className="text-sm text-zinc-400">*</span></span>
+                <span className="text-[10px] uppercase tracking-widest text-zinc-400 dark:text-zinc-500">Race Lap</span>
+              </div>
+              <div className="bg-white dark:bg-zinc-900 p-4 text-center">
+                <span className="block text-2xl font-mono font-light text-zinc-900 dark:text-zinc-100">5</span>
+                <span className="text-[10px] uppercase tracking-widest text-zinc-400 dark:text-zinc-500">IR Sensors</span>
+              </div>
+              <div className="bg-white dark:bg-zinc-900 p-4 text-center">
+                <span className="block text-2xl font-mono font-light text-zinc-900 dark:text-zinc-100">3.34<span className="text-sm text-zinc-400">m/s</span></span>
+                <span className="text-[10px] uppercase tracking-widest text-zinc-400 dark:text-zinc-500">Max Flat Speed</span>
+              </div>
+            </div>
+
+            <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-2">* Penalty applied for assist during race heat. TD4 = Technical Demonstration 4 (straight-line time trial).</p>
+          </section>
+
+          {/* ── 4. Development Timeline ── */}
+          <section>
+            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white" /> 4. Development Timeline
+            </h3>
+            <div className="space-y-3">
+              <div className="flex gap-4 items-start">
+                <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500 w-20 shrink-0 pt-0.5">SEM 1</span>
+                <div className="flex-1 border-l-2 border-blue-200 dark:border-blue-800 pl-4">
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400"><strong className="font-medium text-zinc-800 dark:text-zinc-200">DR1:</strong> Motor characterisation (K<sub>T</sub>, K<sub>E</sub>), load measurements (friction µ = 0.073), gearbox selection (1:11.50), intermediate shaft positioning.</p>
+                </div>
+              </div>
+              <div className="flex gap-4 items-start">
+                <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500 w-20 shrink-0 pt-0.5">SEM 1</span>
+                <div className="flex-1 border-l-2 border-orange-200 dark:border-orange-800 pl-4">
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400"><strong className="font-medium text-zinc-800 dark:text-zinc-200">DR2:</strong> Sensor PCB layout (5× TCRT5000L), chassis CAD in Solidworks (8-piece acetyl design), PID + bang-bang control architecture, material analysis.</p>
+                </div>
+              </div>
+              <div className="flex gap-4 items-start">
+                <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500 w-20 shrink-0 pt-0.5">SEM 2</span>
+                <div className="flex-1 border-l-2 border-green-200 dark:border-green-800 pl-4">
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400"><strong className="font-medium text-zinc-800 dark:text-zinc-200">Build & Race:</strong> PCB manufacture (6 iterations), firmware development, BLE integration for live PID tuning, 4 technical demonstrations, final race completion in 21.8s.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ── Photo Gallery ── */}
+          <section>
+            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white" /> Build Gallery
+            </h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+              <div className="border border-zinc-200 dark:border-zinc-700 overflow-hidden group">
+                <img src="/images/buggy/front-view.jpg" alt="Front view of buggy" className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300" />
+                <p className="text-[10px] text-zinc-400 px-2 py-1 bg-zinc-50 dark:bg-zinc-900">Front — sensor PCB & castor</p>
+              </div>
+              <div className="border border-zinc-200 dark:border-zinc-700 overflow-hidden group">
+                <img src="/images/buggy/internals.jpg" alt="Internal wiring of buggy" className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300" />
+                <p className="text-[10px] text-zinc-400 px-2 py-1 bg-zinc-50 dark:bg-zinc-900">Internal wiring</p>
+              </div>
+              <div className="border border-zinc-200 dark:border-zinc-700 overflow-hidden group">
+                <img src="/images/buggy/pcb-iterations.jpg" alt="All PCB iterations" className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300" />
+                <p className="text-[10px] text-zinc-400 px-2 py-1 bg-zinc-50 dark:bg-zinc-900">6 PCB iterations</p>
+              </div>
+              <div className="border border-zinc-200 dark:border-zinc-700 overflow-hidden group">
+                <img src="/images/buggy/motor-drive.jpg" alt="Motor drive board closeup" className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300" />
+                <p className="text-[10px] text-zinc-400 px-2 py-1 bg-zinc-50 dark:bg-zinc-900">Motor drive board</p>
+              </div>
+            </div>
+          </section>
+
+          {/* ── 5. Lessons & Takeaways ── */}
+          <section>
+            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white" /> 5. Key Takeaways
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-green-50 dark:bg-green-500/5 border border-green-200 dark:border-green-800 p-5">
+                <h4 className="font-semibold text-green-800 dark:text-green-300 mb-2 text-sm">What Worked</h4>
+                <ul className="text-sm text-zinc-600 dark:text-zinc-400 space-y-1">
+                  <li>• Multi-layer chassis with internally routed wiring minimised connection faults</li>
+                  <li>• Spin-towards-last-line code made line-following robust at speed</li>
+                  <li>• BLE real-time tuning enabled rapid PID iteration without re-flashing</li>
+                  <li>• Parallel task execution recovered schedule after team member resignation</li>
+                </ul>
+              </div>
+              <div className="bg-orange-50 dark:bg-orange-500/5 border border-orange-200 dark:border-orange-800 p-5">
+                <h4 className="font-semibold text-orange-800 dark:text-orange-300 mb-2 text-sm">Areas for Improvement</h4>
+                <ul className="text-sm text-zinc-600 dark:text-zinc-400 space-y-1">
+                  <li>• Sensor spacing too tight — limited the control window at high speeds</li>
+                  <li>• 6 PCB reprints due to tolerance and short-circuit issues</li>
+                  <li>• PID tuning incomplete before race — bang-bang used as fallback</li>
+                  <li>• Redundant edge sensors were never utilised in final code</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          {/* ── Commercial Viability ── */}
+          <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-6 mt-8 rounded-sm">
+            <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-2">Commercial Analysis</h4>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400">Unit production cost <strong className="font-mono text-zinc-800 dark:text-zinc-200">£226</strong> vs. proposed market price <strong className="font-mono text-zinc-800 dark:text-zinc-200">£600</strong> — a 165% project margin. The modular chassis and BLE-tunable firmware offer a strong foundation for warehouse logistics automation at a fraction of the cost of industrial alternatives like Amazon Kiva (£15k/unit). Nearly 32.7% of warehouse buggies on the market are below 10 kg, indicating growing demand for the low-torque, high-speed segment this buggy targets.</p>
+          </div>
+
+          {/* ── Achievement Banner ── */}
+          <div className="border border-amber-200 dark:border-amber-800 bg-amber-50/50 dark:bg-amber-500/5 p-6 mt-4 rounded-sm">
+            <div className="flex items-start gap-4">
+              <span className="text-3xl">🏆</span>
+              <div>
+                <h4 className="font-semibold text-amber-900 dark:text-amber-200 mb-1">Best Looking Buggy Award</h4>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">Awarded by Dr Mike O'Toole & Dr Liam Marsh for the exceptionally clean chassis design, internal wiring routing, and professional build quality. The module was completed with a grade of <strong className="font-mono text-zinc-800 dark:text-zinc-200">84%</strong> (First Class Honours), reflecting excellence across hardware, software, mechanical design, and report writing.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-10 animate-fade-up max-w-4xl">
       <div className="mb-12">
@@ -383,25 +905,47 @@ const ProjectsView = () => {
         <p className="text-zinc-500 dark:text-zinc-400 font-light">A selection of research and hardware projects executed during my degree, spanning VLSI logic, embedded firmware, and network simulations.</p>
       </div>
 
-      <div className="relative border-transparent pl-8 space-y-12 ml-2">
-        {projects.map((proj) => (
-          <div key={proj.id} className="relative group cursor-pointer transition-all duration-300 hover:-translate-y-1.5 p-6 -ml-6 -mt-6 rounded-lg hover:bg-white dark:hover:bg-neutral-900 hover:shadow-md border border-transparent hover:border-zinc-200 dark:hover:border-zinc-800" onClick={() => setActiveProjectId(proj.id)}>
-            <Node className={`absolute -left-[11px] top-[28px] border-zinc-900 dark:border-white transition-all duration-500 ${proj.id === 'vfc-ns3' ? 'bg-indigo-500 border-indigo-500' : 'group-hover:bg-indigo-500 group-hover:border-indigo-500 group-hover:scale-125'}`} />
+      <div className="space-y-4">
+        {projects.map((proj, idx) => (
+          <div
+            key={proj.id}
+            className="relative group cursor-pointer border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 bg-white dark:bg-zinc-900 transition-all duration-300 overflow-hidden"
+            onClick={() => setActiveProjectId(proj.id)}
+          >
+            {/* Accent left border */}
+            <div className={`absolute left-0 top-0 bottom-0 w-[3px] transition-all duration-300 ${proj.id === 'vfc-ns3' ? 'bg-indigo-500' :
+              proj.id === 'buggy' ? 'bg-blue-500' :
+                proj.id === 'baby-spyder' ? 'bg-emerald-500 opacity-0 group-hover:opacity-100' :
+                  proj.id === 'vlsi-cell' ? 'bg-amber-500 opacity-0 group-hover:opacity-100' :
+                    'bg-zinc-400 opacity-0 group-hover:opacity-100'
+              }`} />
 
-            <div className="flex flex-col md:flex-row md:items-baseline justify-between mb-2">
-              <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors flex items-center gap-2">
-                {proj.title}
-                {proj.id === 'vfc-ns3' && <span className="px-2 py-0.5 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 text-[10px] uppercase tracking-wider font-semibold rounded-sm">Research</span>}
-              </h3>
-              <span className="text-[13px] text-zinc-600 dark:text-zinc-400 font-medium mt-1 md:mt-0 bg-zinc-50 dark:bg-zinc-800 px-2 py-0.5 rounded-sm">{proj.year} • {proj.category}</span>
-            </div>
-            <p className="text-zinc-700 dark:text-zinc-400 font-light leading-relaxed max-w-2xl">{proj.desc}</p>
-
-            {proj.id === 'vfc-ns3' && (
-              <div className="mt-4 text-sm font-medium text-zinc-900 dark:text-zinc-300 flex items-center gap-2 opacity-70 group-hover:opacity-100 transition-opacity">
-                View full research abstract <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            <div className="flex items-stretch">
+              {/* Year column */}
+              <div className="flex flex-col items-center justify-center w-20 md:w-28 shrink-0 border-r border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/30 transition-colors">
+                <span className="text-2xl md:text-3xl font-extralight text-zinc-300 dark:text-zinc-700 font-mono tracking-tighter select-none group-hover:text-zinc-500 dark:group-hover:text-zinc-400 transition-colors">
+                  {proj.year}
+                </span>
               </div>
-            )}
+
+              {/* Content */}
+              <div className="flex-1 p-5 md:p-6">
+                <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-2 mb-2">
+                  <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors flex items-center gap-2">
+                    {proj.title}
+                    {proj.id === 'vfc-ns3' && <span className="px-2 py-0.5 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 text-[10px] uppercase tracking-wider font-semibold">Research</span>}
+                  </h3>
+                  <span className="text-[11px] uppercase tracking-widest text-zinc-400 dark:text-zinc-500 font-medium shrink-0">{proj.category}</span>
+                </div>
+                <p className="text-zinc-600 dark:text-zinc-400 font-light leading-relaxed text-sm max-w-2xl">{proj.desc}</p>
+
+                {(proj.id === 'vfc-ns3' || proj.id === 'buggy') && (
+                  <div className="mt-4 text-sm font-medium text-zinc-900 dark:text-zinc-300 flex items-center gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+                    {proj.id === 'vfc-ns3' ? 'View full research abstract' : 'View full project'} <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         ))}
       </div>
