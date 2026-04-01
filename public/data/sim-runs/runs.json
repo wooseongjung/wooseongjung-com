@@ -1,0 +1,3248 @@
+{
+  "runs": [
+    {
+      "id": "cc579a",
+      "label": "50 Vehicles \u2022 CFN",
+      "vehicles": 50,
+      "architecture": "CFN",
+      "metrics": {
+        "totalTasks": 9556,
+        "successTasks": 9508,
+        "successRate": 0.995,
+        "avgQueueDelay": 0.117,
+        "avgMigrationDelay": 4.598,
+        "avgCompletionDelay": 10.631
+      },
+      "reliability": {
+        "totalTx": 9962,
+        "totalRx": 9556,
+        "radioLossRatio": 0.0408,
+        "avgRadioDelay": 5.514
+      },
+      "delayDistribution": [
+        {
+          "bucket": "5-10ms",
+          "count": 6624
+        },
+        {
+          "bucket": "10-15ms",
+          "count": 2646
+        },
+        {
+          "bucket": "15-20ms",
+          "count": 216
+        },
+        {
+          "bucket": "20-25ms",
+          "count": 5
+        },
+        {
+          "bucket": "25-30ms",
+          "count": 1
+        },
+        {
+          "bucket": "40-45ms",
+          "count": 3
+        },
+        {
+          "bucket": "45-50ms",
+          "count": 1
+        },
+        {
+          "bucket": "55-60ms",
+          "count": 1
+        },
+        {
+          "bucket": "60-65ms",
+          "count": 3
+        },
+        {
+          "bucket": "65-70ms",
+          "count": 1
+        },
+        {
+          "bucket": "70-75ms",
+          "count": 1
+        },
+        {
+          "bucket": "75-80ms",
+          "count": 1
+        },
+        {
+          "bucket": "80-85ms",
+          "count": 2
+        },
+        {
+          "bucket": "85-90ms",
+          "count": 2
+        },
+        {
+          "bucket": "95-100ms",
+          "count": 1
+        },
+        {
+          "bucket": "100-105ms",
+          "count": 2
+        },
+        {
+          "bucket": "105-110ms",
+          "count": 46
+        }
+      ],
+      "velocityFailure": [
+        {
+          "velocityBin": "0-10",
+          "txCount": 5659,
+          "rxCount": 5400,
+          "failureRate": 0.0458
+        },
+        {
+          "velocityBin": "10-20",
+          "txCount": 502,
+          "rxCount": 484,
+          "failureRate": 0.0359
+        },
+        {
+          "velocityBin": "20-30",
+          "txCount": 2230,
+          "rxCount": 2153,
+          "failureRate": 0.0345
+        },
+        {
+          "velocityBin": "30-40",
+          "txCount": 1291,
+          "rxCount": 1242,
+          "failureRate": 0.038
+        },
+        {
+          "velocityBin": "40-50",
+          "txCount": 266,
+          "rxCount": 257,
+          "failureRate": 0.0338
+        },
+        {
+          "velocityBin": "50-60",
+          "txCount": 14,
+          "rxCount": 14,
+          "failureRate": 0.0
+        }
+      ],
+      "throughputPerSec": [
+        {
+          "time": 0,
+          "tasks": 0
+        },
+        {
+          "time": 1,
+          "tasks": 93
+        },
+        {
+          "time": 2,
+          "tasks": 105
+        },
+        {
+          "time": 3,
+          "tasks": 106
+        },
+        {
+          "time": 4,
+          "tasks": 110
+        },
+        {
+          "time": 5,
+          "tasks": 98
+        },
+        {
+          "time": 6,
+          "tasks": 105
+        },
+        {
+          "time": 7,
+          "tasks": 99
+        },
+        {
+          "time": 8,
+          "tasks": 103
+        },
+        {
+          "time": 9,
+          "tasks": 109
+        },
+        {
+          "time": 10,
+          "tasks": 115
+        },
+        {
+          "time": 11,
+          "tasks": 93
+        },
+        {
+          "time": 12,
+          "tasks": 112
+        },
+        {
+          "time": 13,
+          "tasks": 119
+        },
+        {
+          "time": 14,
+          "tasks": 102
+        },
+        {
+          "time": 15,
+          "tasks": 110
+        },
+        {
+          "time": 16,
+          "tasks": 96
+        },
+        {
+          "time": 17,
+          "tasks": 91
+        },
+        {
+          "time": 18,
+          "tasks": 98
+        },
+        {
+          "time": 19,
+          "tasks": 76
+        },
+        {
+          "time": 20,
+          "tasks": 97
+        },
+        {
+          "time": 21,
+          "tasks": 96
+        },
+        {
+          "time": 22,
+          "tasks": 105
+        },
+        {
+          "time": 23,
+          "tasks": 103
+        },
+        {
+          "time": 24,
+          "tasks": 118
+        },
+        {
+          "time": 25,
+          "tasks": 101
+        },
+        {
+          "time": 26,
+          "tasks": 102
+        },
+        {
+          "time": 27,
+          "tasks": 100
+        },
+        {
+          "time": 28,
+          "tasks": 115
+        },
+        {
+          "time": 29,
+          "tasks": 92
+        },
+        {
+          "time": 30,
+          "tasks": 78
+        },
+        {
+          "time": 31,
+          "tasks": 97
+        },
+        {
+          "time": 32,
+          "tasks": 95
+        },
+        {
+          "time": 33,
+          "tasks": 91
+        },
+        {
+          "time": 34,
+          "tasks": 84
+        },
+        {
+          "time": 35,
+          "tasks": 96
+        },
+        {
+          "time": 36,
+          "tasks": 116
+        },
+        {
+          "time": 37,
+          "tasks": 111
+        },
+        {
+          "time": 38,
+          "tasks": 99
+        },
+        {
+          "time": 39,
+          "tasks": 95
+        },
+        {
+          "time": 40,
+          "tasks": 97
+        },
+        {
+          "time": 41,
+          "tasks": 112
+        },
+        {
+          "time": 42,
+          "tasks": 99
+        },
+        {
+          "time": 43,
+          "tasks": 107
+        },
+        {
+          "time": 44,
+          "tasks": 108
+        },
+        {
+          "time": 45,
+          "tasks": 117
+        },
+        {
+          "time": 46,
+          "tasks": 100
+        },
+        {
+          "time": 47,
+          "tasks": 99
+        },
+        {
+          "time": 48,
+          "tasks": 102
+        },
+        {
+          "time": 49,
+          "tasks": 98
+        },
+        {
+          "time": 50,
+          "tasks": 99
+        },
+        {
+          "time": 51,
+          "tasks": 81
+        },
+        {
+          "time": 52,
+          "tasks": 110
+        },
+        {
+          "time": 53,
+          "tasks": 96
+        },
+        {
+          "time": 54,
+          "tasks": 80
+        },
+        {
+          "time": 55,
+          "tasks": 96
+        },
+        {
+          "time": 56,
+          "tasks": 106
+        },
+        {
+          "time": 57,
+          "tasks": 106
+        },
+        {
+          "time": 58,
+          "tasks": 78
+        },
+        {
+          "time": 59,
+          "tasks": 101
+        },
+        {
+          "time": 60,
+          "tasks": 91
+        },
+        {
+          "time": 61,
+          "tasks": 85
+        },
+        {
+          "time": 62,
+          "tasks": 87
+        },
+        {
+          "time": 63,
+          "tasks": 106
+        },
+        {
+          "time": 64,
+          "tasks": 94
+        },
+        {
+          "time": 65,
+          "tasks": 85
+        },
+        {
+          "time": 66,
+          "tasks": 89
+        },
+        {
+          "time": 67,
+          "tasks": 85
+        },
+        {
+          "time": 68,
+          "tasks": 86
+        },
+        {
+          "time": 69,
+          "tasks": 75
+        },
+        {
+          "time": 70,
+          "tasks": 82
+        },
+        {
+          "time": 71,
+          "tasks": 86
+        },
+        {
+          "time": 72,
+          "tasks": 102
+        },
+        {
+          "time": 73,
+          "tasks": 96
+        },
+        {
+          "time": 74,
+          "tasks": 81
+        },
+        {
+          "time": 75,
+          "tasks": 98
+        },
+        {
+          "time": 76,
+          "tasks": 95
+        },
+        {
+          "time": 77,
+          "tasks": 104
+        },
+        {
+          "time": 78,
+          "tasks": 106
+        },
+        {
+          "time": 79,
+          "tasks": 86
+        },
+        {
+          "time": 80,
+          "tasks": 82
+        },
+        {
+          "time": 81,
+          "tasks": 97
+        },
+        {
+          "time": 82,
+          "tasks": 76
+        },
+        {
+          "time": 83,
+          "tasks": 84
+        },
+        {
+          "time": 84,
+          "tasks": 82
+        },
+        {
+          "time": 85,
+          "tasks": 86
+        },
+        {
+          "time": 86,
+          "tasks": 86
+        },
+        {
+          "time": 87,
+          "tasks": 94
+        },
+        {
+          "time": 88,
+          "tasks": 79
+        },
+        {
+          "time": 89,
+          "tasks": 84
+        },
+        {
+          "time": 90,
+          "tasks": 84
+        },
+        {
+          "time": 91,
+          "tasks": 92
+        },
+        {
+          "time": 92,
+          "tasks": 101
+        },
+        {
+          "time": 93,
+          "tasks": 93
+        },
+        {
+          "time": 94,
+          "tasks": 89
+        },
+        {
+          "time": 95,
+          "tasks": 96
+        },
+        {
+          "time": 96,
+          "tasks": 101
+        },
+        {
+          "time": 97,
+          "tasks": 84
+        },
+        {
+          "time": 98,
+          "tasks": 89
+        },
+        {
+          "time": 99,
+          "tasks": 87
+        }
+      ]
+    },
+    {
+      "id": "f0020a",
+      "label": "50 Vehicles \u2022 VFN",
+      "vehicles": 50,
+      "architecture": "VFN",
+      "metrics": {
+        "totalTasks": 8767,
+        "successTasks": 8722,
+        "successRate": 0.9949,
+        "avgQueueDelay": 0.113,
+        "avgMigrationDelay": 6.46,
+        "avgCompletionDelay": 10.685
+      },
+      "reliability": {
+        "totalTx": 9140,
+        "totalRx": 8767,
+        "radioLossRatio": 0.0408,
+        "avgRadioDelay": 5.572
+      },
+      "delayDistribution": [
+        {
+          "bucket": "5-10ms",
+          "count": 5870
+        },
+        {
+          "bucket": "10-15ms",
+          "count": 2611
+        },
+        {
+          "bucket": "15-20ms",
+          "count": 213
+        },
+        {
+          "bucket": "20-25ms",
+          "count": 3
+        },
+        {
+          "bucket": "25-30ms",
+          "count": 3
+        },
+        {
+          "bucket": "30-35ms",
+          "count": 1
+        },
+        {
+          "bucket": "35-40ms",
+          "count": 1
+        },
+        {
+          "bucket": "40-45ms",
+          "count": 4
+        },
+        {
+          "bucket": "45-50ms",
+          "count": 1
+        },
+        {
+          "bucket": "50-55ms",
+          "count": 3
+        },
+        {
+          "bucket": "60-65ms",
+          "count": 4
+        },
+        {
+          "bucket": "65-70ms",
+          "count": 3
+        },
+        {
+          "bucket": "75-80ms",
+          "count": 2
+        },
+        {
+          "bucket": "85-90ms",
+          "count": 2
+        },
+        {
+          "bucket": "90-95ms",
+          "count": 1
+        },
+        {
+          "bucket": "100-105ms",
+          "count": 3
+        },
+        {
+          "bucket": "105-110ms",
+          "count": 42
+        }
+      ],
+      "velocityFailure": [
+        {
+          "velocityBin": "0-10",
+          "txCount": 6418,
+          "rxCount": 6193,
+          "failureRate": 0.0351
+        },
+        {
+          "velocityBin": "10-20",
+          "txCount": 472,
+          "rxCount": 456,
+          "failureRate": 0.0339
+        },
+        {
+          "velocityBin": "20-30",
+          "txCount": 1022,
+          "rxCount": 968,
+          "failureRate": 0.0528
+        },
+        {
+          "velocityBin": "30-40",
+          "txCount": 751,
+          "rxCount": 702,
+          "failureRate": 0.0652
+        },
+        {
+          "velocityBin": "40-50",
+          "txCount": 301,
+          "rxCount": 280,
+          "failureRate": 0.0698
+        },
+        {
+          "velocityBin": "50-60",
+          "txCount": 122,
+          "rxCount": 108,
+          "failureRate": 0.1148
+        },
+        {
+          "velocityBin": "60-70",
+          "txCount": 39,
+          "rxCount": 39,
+          "failureRate": 0.0
+        },
+        {
+          "velocityBin": "70-80",
+          "txCount": 15,
+          "rxCount": 15,
+          "failureRate": 0.0
+        }
+      ],
+      "throughputPerSec": [
+        {
+          "time": 0,
+          "tasks": 0
+        },
+        {
+          "time": 1,
+          "tasks": 82
+        },
+        {
+          "time": 2,
+          "tasks": 97
+        },
+        {
+          "time": 3,
+          "tasks": 91
+        },
+        {
+          "time": 4,
+          "tasks": 99
+        },
+        {
+          "time": 5,
+          "tasks": 91
+        },
+        {
+          "time": 6,
+          "tasks": 98
+        },
+        {
+          "time": 7,
+          "tasks": 92
+        },
+        {
+          "time": 8,
+          "tasks": 97
+        },
+        {
+          "time": 9,
+          "tasks": 99
+        },
+        {
+          "time": 10,
+          "tasks": 105
+        },
+        {
+          "time": 11,
+          "tasks": 87
+        },
+        {
+          "time": 12,
+          "tasks": 101
+        },
+        {
+          "time": 13,
+          "tasks": 115
+        },
+        {
+          "time": 14,
+          "tasks": 95
+        },
+        {
+          "time": 15,
+          "tasks": 101
+        },
+        {
+          "time": 16,
+          "tasks": 93
+        },
+        {
+          "time": 17,
+          "tasks": 85
+        },
+        {
+          "time": 18,
+          "tasks": 93
+        },
+        {
+          "time": 19,
+          "tasks": 70
+        },
+        {
+          "time": 20,
+          "tasks": 91
+        },
+        {
+          "time": 21,
+          "tasks": 86
+        },
+        {
+          "time": 22,
+          "tasks": 95
+        },
+        {
+          "time": 23,
+          "tasks": 97
+        },
+        {
+          "time": 24,
+          "tasks": 112
+        },
+        {
+          "time": 25,
+          "tasks": 92
+        },
+        {
+          "time": 26,
+          "tasks": 99
+        },
+        {
+          "time": 27,
+          "tasks": 93
+        },
+        {
+          "time": 28,
+          "tasks": 102
+        },
+        {
+          "time": 29,
+          "tasks": 86
+        },
+        {
+          "time": 30,
+          "tasks": 74
+        },
+        {
+          "time": 31,
+          "tasks": 92
+        },
+        {
+          "time": 32,
+          "tasks": 85
+        },
+        {
+          "time": 33,
+          "tasks": 82
+        },
+        {
+          "time": 34,
+          "tasks": 75
+        },
+        {
+          "time": 35,
+          "tasks": 91
+        },
+        {
+          "time": 36,
+          "tasks": 102
+        },
+        {
+          "time": 37,
+          "tasks": 103
+        },
+        {
+          "time": 38,
+          "tasks": 91
+        },
+        {
+          "time": 39,
+          "tasks": 85
+        },
+        {
+          "time": 40,
+          "tasks": 89
+        },
+        {
+          "time": 41,
+          "tasks": 101
+        },
+        {
+          "time": 42,
+          "tasks": 93
+        },
+        {
+          "time": 43,
+          "tasks": 97
+        },
+        {
+          "time": 44,
+          "tasks": 102
+        },
+        {
+          "time": 45,
+          "tasks": 110
+        },
+        {
+          "time": 46,
+          "tasks": 91
+        },
+        {
+          "time": 47,
+          "tasks": 88
+        },
+        {
+          "time": 48,
+          "tasks": 87
+        },
+        {
+          "time": 49,
+          "tasks": 89
+        },
+        {
+          "time": 50,
+          "tasks": 93
+        },
+        {
+          "time": 51,
+          "tasks": 66
+        },
+        {
+          "time": 52,
+          "tasks": 92
+        },
+        {
+          "time": 53,
+          "tasks": 88
+        },
+        {
+          "time": 54,
+          "tasks": 74
+        },
+        {
+          "time": 55,
+          "tasks": 90
+        },
+        {
+          "time": 56,
+          "tasks": 94
+        },
+        {
+          "time": 57,
+          "tasks": 96
+        },
+        {
+          "time": 58,
+          "tasks": 69
+        },
+        {
+          "time": 59,
+          "tasks": 97
+        },
+        {
+          "time": 60,
+          "tasks": 84
+        },
+        {
+          "time": 61,
+          "tasks": 74
+        },
+        {
+          "time": 62,
+          "tasks": 84
+        },
+        {
+          "time": 63,
+          "tasks": 95
+        },
+        {
+          "time": 64,
+          "tasks": 91
+        },
+        {
+          "time": 65,
+          "tasks": 78
+        },
+        {
+          "time": 66,
+          "tasks": 86
+        },
+        {
+          "time": 67,
+          "tasks": 84
+        },
+        {
+          "time": 68,
+          "tasks": 84
+        },
+        {
+          "time": 69,
+          "tasks": 63
+        },
+        {
+          "time": 70,
+          "tasks": 74
+        },
+        {
+          "time": 71,
+          "tasks": 77
+        },
+        {
+          "time": 72,
+          "tasks": 92
+        },
+        {
+          "time": 73,
+          "tasks": 85
+        },
+        {
+          "time": 74,
+          "tasks": 72
+        },
+        {
+          "time": 75,
+          "tasks": 92
+        },
+        {
+          "time": 76,
+          "tasks": 85
+        },
+        {
+          "time": 77,
+          "tasks": 92
+        },
+        {
+          "time": 78,
+          "tasks": 101
+        },
+        {
+          "time": 79,
+          "tasks": 76
+        },
+        {
+          "time": 80,
+          "tasks": 71
+        },
+        {
+          "time": 81,
+          "tasks": 92
+        },
+        {
+          "time": 82,
+          "tasks": 72
+        },
+        {
+          "time": 83,
+          "tasks": 74
+        },
+        {
+          "time": 84,
+          "tasks": 76
+        },
+        {
+          "time": 85,
+          "tasks": 82
+        },
+        {
+          "time": 86,
+          "tasks": 84
+        },
+        {
+          "time": 87,
+          "tasks": 83
+        },
+        {
+          "time": 88,
+          "tasks": 76
+        },
+        {
+          "time": 89,
+          "tasks": 77
+        },
+        {
+          "time": 90,
+          "tasks": 72
+        },
+        {
+          "time": 91,
+          "tasks": 86
+        },
+        {
+          "time": 92,
+          "tasks": 92
+        },
+        {
+          "time": 93,
+          "tasks": 86
+        },
+        {
+          "time": 94,
+          "tasks": 85
+        },
+        {
+          "time": 95,
+          "tasks": 89
+        },
+        {
+          "time": 96,
+          "tasks": 91
+        },
+        {
+          "time": 97,
+          "tasks": 74
+        },
+        {
+          "time": 98,
+          "tasks": 82
+        },
+        {
+          "time": 99,
+          "tasks": 79
+        }
+      ]
+    },
+    {
+      "id": "13cae3",
+      "label": "100 Vehicles \u2022 CFN",
+      "vehicles": 100,
+      "architecture": "CFN",
+      "metrics": {
+        "totalTasks": 16965,
+        "successTasks": 16892,
+        "successRate": 0.9957,
+        "avgQueueDelay": 0.171,
+        "avgMigrationDelay": 4.35,
+        "avgCompletionDelay": 10.957
+      },
+      "reliability": {
+        "totalTx": 19806,
+        "totalRx": 16966,
+        "radioLossRatio": 0.1434,
+        "avgRadioDelay": 5.786
+      },
+      "delayDistribution": [
+        {
+          "bucket": "5-10ms",
+          "count": 11137
+        },
+        {
+          "bucket": "10-15ms",
+          "count": 5167
+        },
+        {
+          "bucket": "15-20ms",
+          "count": 242
+        },
+        {
+          "bucket": "20-25ms",
+          "count": 122
+        },
+        {
+          "bucket": "25-30ms",
+          "count": 73
+        },
+        {
+          "bucket": "30-35ms",
+          "count": 50
+        },
+        {
+          "bucket": "35-40ms",
+          "count": 29
+        },
+        {
+          "bucket": "40-45ms",
+          "count": 17
+        },
+        {
+          "bucket": "45-50ms",
+          "count": 21
+        },
+        {
+          "bucket": "50-55ms",
+          "count": 11
+        },
+        {
+          "bucket": "55-60ms",
+          "count": 4
+        },
+        {
+          "bucket": "60-65ms",
+          "count": 4
+        },
+        {
+          "bucket": "70-75ms",
+          "count": 6
+        },
+        {
+          "bucket": "75-80ms",
+          "count": 2
+        },
+        {
+          "bucket": "80-85ms",
+          "count": 4
+        },
+        {
+          "bucket": "85-90ms",
+          "count": 1
+        },
+        {
+          "bucket": "90-95ms",
+          "count": 1
+        },
+        {
+          "bucket": "95-100ms",
+          "count": 1
+        },
+        {
+          "bucket": "100-105ms",
+          "count": 3
+        },
+        {
+          "bucket": "105-110ms",
+          "count": 70
+        }
+      ],
+      "velocityFailure": [
+        {
+          "velocityBin": "0-10",
+          "txCount": 14252,
+          "rxCount": 11754,
+          "failureRate": 0.1753
+        },
+        {
+          "velocityBin": "10-20",
+          "txCount": 708,
+          "rxCount": 663,
+          "failureRate": 0.0636
+        },
+        {
+          "velocityBin": "20-30",
+          "txCount": 2743,
+          "rxCount": 2597,
+          "failureRate": 0.0532
+        },
+        {
+          "velocityBin": "30-40",
+          "txCount": 1739,
+          "rxCount": 1573,
+          "failureRate": 0.0955
+        },
+        {
+          "velocityBin": "40-50",
+          "txCount": 349,
+          "rxCount": 346,
+          "failureRate": 0.0086
+        },
+        {
+          "velocityBin": "50-60",
+          "txCount": 15,
+          "rxCount": 15,
+          "failureRate": 0.0
+        }
+      ],
+      "throughputPerSec": [
+        {
+          "time": 0,
+          "tasks": 0
+        },
+        {
+          "time": 1,
+          "tasks": 169
+        },
+        {
+          "time": 2,
+          "tasks": 160
+        },
+        {
+          "time": 3,
+          "tasks": 181
+        },
+        {
+          "time": 4,
+          "tasks": 177
+        },
+        {
+          "time": 5,
+          "tasks": 183
+        },
+        {
+          "time": 6,
+          "tasks": 165
+        },
+        {
+          "time": 7,
+          "tasks": 187
+        },
+        {
+          "time": 8,
+          "tasks": 182
+        },
+        {
+          "time": 9,
+          "tasks": 213
+        },
+        {
+          "time": 10,
+          "tasks": 166
+        },
+        {
+          "time": 11,
+          "tasks": 159
+        },
+        {
+          "time": 12,
+          "tasks": 186
+        },
+        {
+          "time": 13,
+          "tasks": 198
+        },
+        {
+          "time": 14,
+          "tasks": 159
+        },
+        {
+          "time": 15,
+          "tasks": 179
+        },
+        {
+          "time": 16,
+          "tasks": 186
+        },
+        {
+          "time": 17,
+          "tasks": 192
+        },
+        {
+          "time": 18,
+          "tasks": 202
+        },
+        {
+          "time": 19,
+          "tasks": 170
+        },
+        {
+          "time": 20,
+          "tasks": 173
+        },
+        {
+          "time": 21,
+          "tasks": 178
+        },
+        {
+          "time": 22,
+          "tasks": 186
+        },
+        {
+          "time": 23,
+          "tasks": 168
+        },
+        {
+          "time": 24,
+          "tasks": 205
+        },
+        {
+          "time": 25,
+          "tasks": 169
+        },
+        {
+          "time": 26,
+          "tasks": 180
+        },
+        {
+          "time": 27,
+          "tasks": 191
+        },
+        {
+          "time": 28,
+          "tasks": 197
+        },
+        {
+          "time": 29,
+          "tasks": 163
+        },
+        {
+          "time": 30,
+          "tasks": 176
+        },
+        {
+          "time": 31,
+          "tasks": 158
+        },
+        {
+          "time": 32,
+          "tasks": 184
+        },
+        {
+          "time": 33,
+          "tasks": 189
+        },
+        {
+          "time": 34,
+          "tasks": 139
+        },
+        {
+          "time": 35,
+          "tasks": 187
+        },
+        {
+          "time": 36,
+          "tasks": 205
+        },
+        {
+          "time": 37,
+          "tasks": 162
+        },
+        {
+          "time": 38,
+          "tasks": 171
+        },
+        {
+          "time": 39,
+          "tasks": 170
+        },
+        {
+          "time": 40,
+          "tasks": 206
+        },
+        {
+          "time": 41,
+          "tasks": 174
+        },
+        {
+          "time": 42,
+          "tasks": 164
+        },
+        {
+          "time": 43,
+          "tasks": 171
+        },
+        {
+          "time": 44,
+          "tasks": 163
+        },
+        {
+          "time": 45,
+          "tasks": 178
+        },
+        {
+          "time": 46,
+          "tasks": 177
+        },
+        {
+          "time": 47,
+          "tasks": 152
+        },
+        {
+          "time": 48,
+          "tasks": 172
+        },
+        {
+          "time": 49,
+          "tasks": 188
+        },
+        {
+          "time": 50,
+          "tasks": 156
+        },
+        {
+          "time": 51,
+          "tasks": 198
+        },
+        {
+          "time": 52,
+          "tasks": 193
+        },
+        {
+          "time": 53,
+          "tasks": 161
+        },
+        {
+          "time": 54,
+          "tasks": 199
+        },
+        {
+          "time": 55,
+          "tasks": 169
+        },
+        {
+          "time": 56,
+          "tasks": 159
+        },
+        {
+          "time": 57,
+          "tasks": 161
+        },
+        {
+          "time": 58,
+          "tasks": 154
+        },
+        {
+          "time": 59,
+          "tasks": 146
+        },
+        {
+          "time": 60,
+          "tasks": 140
+        },
+        {
+          "time": 61,
+          "tasks": 165
+        },
+        {
+          "time": 62,
+          "tasks": 205
+        },
+        {
+          "time": 63,
+          "tasks": 163
+        },
+        {
+          "time": 64,
+          "tasks": 159
+        },
+        {
+          "time": 65,
+          "tasks": 190
+        },
+        {
+          "time": 66,
+          "tasks": 173
+        },
+        {
+          "time": 67,
+          "tasks": 181
+        },
+        {
+          "time": 68,
+          "tasks": 192
+        },
+        {
+          "time": 69,
+          "tasks": 180
+        },
+        {
+          "time": 70,
+          "tasks": 155
+        },
+        {
+          "time": 71,
+          "tasks": 173
+        },
+        {
+          "time": 72,
+          "tasks": 149
+        },
+        {
+          "time": 73,
+          "tasks": 122
+        },
+        {
+          "time": 74,
+          "tasks": 158
+        },
+        {
+          "time": 75,
+          "tasks": 156
+        },
+        {
+          "time": 76,
+          "tasks": 174
+        },
+        {
+          "time": 77,
+          "tasks": 160
+        },
+        {
+          "time": 78,
+          "tasks": 149
+        },
+        {
+          "time": 79,
+          "tasks": 180
+        },
+        {
+          "time": 80,
+          "tasks": 175
+        },
+        {
+          "time": 81,
+          "tasks": 174
+        },
+        {
+          "time": 82,
+          "tasks": 150
+        },
+        {
+          "time": 83,
+          "tasks": 164
+        },
+        {
+          "time": 84,
+          "tasks": 155
+        },
+        {
+          "time": 85,
+          "tasks": 133
+        },
+        {
+          "time": 86,
+          "tasks": 162
+        },
+        {
+          "time": 87,
+          "tasks": 169
+        },
+        {
+          "time": 88,
+          "tasks": 179
+        },
+        {
+          "time": 89,
+          "tasks": 143
+        },
+        {
+          "time": 90,
+          "tasks": 143
+        },
+        {
+          "time": 91,
+          "tasks": 125
+        },
+        {
+          "time": 92,
+          "tasks": 153
+        },
+        {
+          "time": 93,
+          "tasks": 188
+        },
+        {
+          "time": 94,
+          "tasks": 175
+        },
+        {
+          "time": 95,
+          "tasks": 142
+        },
+        {
+          "time": 96,
+          "tasks": 154
+        },
+        {
+          "time": 97,
+          "tasks": 134
+        },
+        {
+          "time": 98,
+          "tasks": 176
+        },
+        {
+          "time": 99,
+          "tasks": 168
+        }
+      ]
+    },
+    {
+      "id": "eebba4",
+      "label": "100 Vehicles \u2022 VFN",
+      "vehicles": 100,
+      "architecture": "VFN",
+      "metrics": {
+        "totalTasks": 14776,
+        "successTasks": 14723,
+        "successRate": 0.9964,
+        "avgQueueDelay": 0.214,
+        "avgMigrationDelay": 5.355,
+        "avgCompletionDelay": 10.936
+      },
+      "reliability": {
+        "totalTx": 17320,
+        "totalRx": 14777,
+        "radioLossRatio": 0.1468,
+        "avgRadioDelay": 5.723
+      },
+      "delayDistribution": [
+        {
+          "bucket": "5-10ms",
+          "count": 9785
+        },
+        {
+          "bucket": "10-15ms",
+          "count": 4431
+        },
+        {
+          "bucket": "15-20ms",
+          "count": 153
+        },
+        {
+          "bucket": "20-25ms",
+          "count": 150
+        },
+        {
+          "bucket": "25-30ms",
+          "count": 74
+        },
+        {
+          "bucket": "30-35ms",
+          "count": 39
+        },
+        {
+          "bucket": "35-40ms",
+          "count": 21
+        },
+        {
+          "bucket": "40-45ms",
+          "count": 24
+        },
+        {
+          "bucket": "45-50ms",
+          "count": 16
+        },
+        {
+          "bucket": "50-55ms",
+          "count": 11
+        },
+        {
+          "bucket": "55-60ms",
+          "count": 3
+        },
+        {
+          "bucket": "60-65ms",
+          "count": 4
+        },
+        {
+          "bucket": "65-70ms",
+          "count": 2
+        },
+        {
+          "bucket": "70-75ms",
+          "count": 2
+        },
+        {
+          "bucket": "75-80ms",
+          "count": 1
+        },
+        {
+          "bucket": "80-85ms",
+          "count": 3
+        },
+        {
+          "bucket": "85-90ms",
+          "count": 1
+        },
+        {
+          "bucket": "95-100ms",
+          "count": 3
+        },
+        {
+          "bucket": "100-105ms",
+          "count": 1
+        },
+        {
+          "bucket": "105-110ms",
+          "count": 52
+        }
+      ],
+      "velocityFailure": [
+        {
+          "velocityBin": "0-10",
+          "txCount": 11887,
+          "rxCount": 9486,
+          "failureRate": 0.202
+        },
+        {
+          "velocityBin": "10-20",
+          "txCount": 804,
+          "rxCount": 779,
+          "failureRate": 0.0311
+        },
+        {
+          "velocityBin": "20-30",
+          "txCount": 2207,
+          "rxCount": 2113,
+          "failureRate": 0.0426
+        },
+        {
+          "velocityBin": "30-40",
+          "txCount": 1709,
+          "rxCount": 1689,
+          "failureRate": 0.0117
+        },
+        {
+          "velocityBin": "40-50",
+          "txCount": 430,
+          "rxCount": 423,
+          "failureRate": 0.0163
+        },
+        {
+          "velocityBin": "50-60",
+          "txCount": 206,
+          "rxCount": 201,
+          "failureRate": 0.0243
+        },
+        {
+          "velocityBin": "60-70",
+          "txCount": 64,
+          "rxCount": 57,
+          "failureRate": 0.1094
+        },
+        {
+          "velocityBin": "70-80",
+          "txCount": 11,
+          "rxCount": 11,
+          "failureRate": 0.0
+        },
+        {
+          "velocityBin": "80-90",
+          "txCount": 2,
+          "rxCount": 1,
+          "failureRate": 0.5
+        }
+      ],
+      "throughputPerSec": [
+        {
+          "time": 0,
+          "tasks": 0
+        },
+        {
+          "time": 1,
+          "tasks": 143
+        },
+        {
+          "time": 2,
+          "tasks": 130
+        },
+        {
+          "time": 3,
+          "tasks": 160
+        },
+        {
+          "time": 4,
+          "tasks": 152
+        },
+        {
+          "time": 5,
+          "tasks": 165
+        },
+        {
+          "time": 6,
+          "tasks": 142
+        },
+        {
+          "time": 7,
+          "tasks": 163
+        },
+        {
+          "time": 8,
+          "tasks": 149
+        },
+        {
+          "time": 9,
+          "tasks": 183
+        },
+        {
+          "time": 10,
+          "tasks": 144
+        },
+        {
+          "time": 11,
+          "tasks": 137
+        },
+        {
+          "time": 12,
+          "tasks": 155
+        },
+        {
+          "time": 13,
+          "tasks": 164
+        },
+        {
+          "time": 14,
+          "tasks": 139
+        },
+        {
+          "time": 15,
+          "tasks": 151
+        },
+        {
+          "time": 16,
+          "tasks": 165
+        },
+        {
+          "time": 17,
+          "tasks": 167
+        },
+        {
+          "time": 18,
+          "tasks": 180
+        },
+        {
+          "time": 19,
+          "tasks": 137
+        },
+        {
+          "time": 20,
+          "tasks": 139
+        },
+        {
+          "time": 21,
+          "tasks": 153
+        },
+        {
+          "time": 22,
+          "tasks": 165
+        },
+        {
+          "time": 23,
+          "tasks": 138
+        },
+        {
+          "time": 24,
+          "tasks": 164
+        },
+        {
+          "time": 25,
+          "tasks": 148
+        },
+        {
+          "time": 26,
+          "tasks": 160
+        },
+        {
+          "time": 27,
+          "tasks": 173
+        },
+        {
+          "time": 28,
+          "tasks": 163
+        },
+        {
+          "time": 29,
+          "tasks": 137
+        },
+        {
+          "time": 30,
+          "tasks": 147
+        },
+        {
+          "time": 31,
+          "tasks": 141
+        },
+        {
+          "time": 32,
+          "tasks": 159
+        },
+        {
+          "time": 33,
+          "tasks": 165
+        },
+        {
+          "time": 34,
+          "tasks": 122
+        },
+        {
+          "time": 35,
+          "tasks": 161
+        },
+        {
+          "time": 36,
+          "tasks": 174
+        },
+        {
+          "time": 37,
+          "tasks": 141
+        },
+        {
+          "time": 38,
+          "tasks": 147
+        },
+        {
+          "time": 39,
+          "tasks": 147
+        },
+        {
+          "time": 40,
+          "tasks": 177
+        },
+        {
+          "time": 41,
+          "tasks": 155
+        },
+        {
+          "time": 42,
+          "tasks": 143
+        },
+        {
+          "time": 43,
+          "tasks": 155
+        },
+        {
+          "time": 44,
+          "tasks": 139
+        },
+        {
+          "time": 45,
+          "tasks": 152
+        },
+        {
+          "time": 46,
+          "tasks": 158
+        },
+        {
+          "time": 47,
+          "tasks": 125
+        },
+        {
+          "time": 48,
+          "tasks": 149
+        },
+        {
+          "time": 49,
+          "tasks": 171
+        },
+        {
+          "time": 50,
+          "tasks": 134
+        },
+        {
+          "time": 51,
+          "tasks": 164
+        },
+        {
+          "time": 52,
+          "tasks": 162
+        },
+        {
+          "time": 53,
+          "tasks": 141
+        },
+        {
+          "time": 54,
+          "tasks": 169
+        },
+        {
+          "time": 55,
+          "tasks": 147
+        },
+        {
+          "time": 56,
+          "tasks": 148
+        },
+        {
+          "time": 57,
+          "tasks": 143
+        },
+        {
+          "time": 58,
+          "tasks": 146
+        },
+        {
+          "time": 59,
+          "tasks": 130
+        },
+        {
+          "time": 60,
+          "tasks": 127
+        },
+        {
+          "time": 61,
+          "tasks": 145
+        },
+        {
+          "time": 62,
+          "tasks": 180
+        },
+        {
+          "time": 63,
+          "tasks": 146
+        },
+        {
+          "time": 64,
+          "tasks": 137
+        },
+        {
+          "time": 65,
+          "tasks": 166
+        },
+        {
+          "time": 66,
+          "tasks": 152
+        },
+        {
+          "time": 67,
+          "tasks": 157
+        },
+        {
+          "time": 68,
+          "tasks": 174
+        },
+        {
+          "time": 69,
+          "tasks": 157
+        },
+        {
+          "time": 70,
+          "tasks": 132
+        },
+        {
+          "time": 71,
+          "tasks": 146
+        },
+        {
+          "time": 72,
+          "tasks": 137
+        },
+        {
+          "time": 73,
+          "tasks": 108
+        },
+        {
+          "time": 74,
+          "tasks": 140
+        },
+        {
+          "time": 75,
+          "tasks": 139
+        },
+        {
+          "time": 76,
+          "tasks": 165
+        },
+        {
+          "time": 77,
+          "tasks": 147
+        },
+        {
+          "time": 78,
+          "tasks": 127
+        },
+        {
+          "time": 79,
+          "tasks": 159
+        },
+        {
+          "time": 80,
+          "tasks": 152
+        },
+        {
+          "time": 81,
+          "tasks": 149
+        },
+        {
+          "time": 82,
+          "tasks": 136
+        },
+        {
+          "time": 83,
+          "tasks": 149
+        },
+        {
+          "time": 84,
+          "tasks": 138
+        },
+        {
+          "time": 85,
+          "tasks": 111
+        },
+        {
+          "time": 86,
+          "tasks": 146
+        },
+        {
+          "time": 87,
+          "tasks": 146
+        },
+        {
+          "time": 88,
+          "tasks": 156
+        },
+        {
+          "time": 89,
+          "tasks": 124
+        },
+        {
+          "time": 90,
+          "tasks": 129
+        },
+        {
+          "time": 91,
+          "tasks": 115
+        },
+        {
+          "time": 92,
+          "tasks": 136
+        },
+        {
+          "time": 93,
+          "tasks": 167
+        },
+        {
+          "time": 94,
+          "tasks": 151
+        },
+        {
+          "time": 95,
+          "tasks": 130
+        },
+        {
+          "time": 96,
+          "tasks": 139
+        },
+        {
+          "time": 97,
+          "tasks": 121
+        },
+        {
+          "time": 98,
+          "tasks": 157
+        },
+        {
+          "time": 99,
+          "tasks": 152
+        }
+      ]
+    },
+    {
+      "id": "922747",
+      "label": "150 Vehicles \u2022 CFN",
+      "vehicles": 150,
+      "architecture": "CFN",
+      "metrics": {
+        "totalTasks": 15486,
+        "successTasks": 15410,
+        "successRate": 0.9951,
+        "avgQueueDelay": 0.164,
+        "avgMigrationDelay": 4.205,
+        "avgCompletionDelay": 10.575
+      },
+      "reliability": {
+        "totalTx": 29640,
+        "totalRx": 15486,
+        "radioLossRatio": 0.4775,
+        "avgRadioDelay": 5.411
+      },
+      "delayDistribution": [
+        {
+          "bucket": "5-10ms",
+          "count": 10819
+        },
+        {
+          "bucket": "10-15ms",
+          "count": 4378
+        },
+        {
+          "bucket": "15-20ms",
+          "count": 181
+        },
+        {
+          "bucket": "20-25ms",
+          "count": 5
+        },
+        {
+          "bucket": "25-30ms",
+          "count": 1
+        },
+        {
+          "bucket": "30-35ms",
+          "count": 2
+        },
+        {
+          "bucket": "35-40ms",
+          "count": 2
+        },
+        {
+          "bucket": "40-45ms",
+          "count": 1
+        },
+        {
+          "bucket": "45-50ms",
+          "count": 3
+        },
+        {
+          "bucket": "50-55ms",
+          "count": 2
+        },
+        {
+          "bucket": "55-60ms",
+          "count": 2
+        },
+        {
+          "bucket": "60-65ms",
+          "count": 2
+        },
+        {
+          "bucket": "70-75ms",
+          "count": 3
+        },
+        {
+          "bucket": "75-80ms",
+          "count": 3
+        },
+        {
+          "bucket": "80-85ms",
+          "count": 1
+        },
+        {
+          "bucket": "85-90ms",
+          "count": 2
+        },
+        {
+          "bucket": "90-95ms",
+          "count": 2
+        },
+        {
+          "bucket": "95-100ms",
+          "count": 1
+        },
+        {
+          "bucket": "100-105ms",
+          "count": 2
+        },
+        {
+          "bucket": "105-110ms",
+          "count": 74
+        }
+      ],
+      "velocityFailure": [
+        {
+          "velocityBin": "0-10",
+          "txCount": 23963,
+          "rxCount": 10654,
+          "failureRate": 0.5554
+        },
+        {
+          "velocityBin": "10-20",
+          "txCount": 768,
+          "rxCount": 680,
+          "failureRate": 0.1146
+        },
+        {
+          "velocityBin": "20-30",
+          "txCount": 2817,
+          "rxCount": 2401,
+          "failureRate": 0.1477
+        },
+        {
+          "velocityBin": "30-40",
+          "txCount": 1738,
+          "rxCount": 1391,
+          "failureRate": 0.1997
+        },
+        {
+          "velocityBin": "40-50",
+          "txCount": 333,
+          "rxCount": 327,
+          "failureRate": 0.018
+        },
+        {
+          "velocityBin": "50-60",
+          "txCount": 21,
+          "rxCount": 21,
+          "failureRate": 0.0
+        }
+      ],
+      "throughputPerSec": [
+        {
+          "time": 0,
+          "tasks": 0
+        },
+        {
+          "time": 1,
+          "tasks": 152
+        },
+        {
+          "time": 2,
+          "tasks": 163
+        },
+        {
+          "time": 3,
+          "tasks": 157
+        },
+        {
+          "time": 4,
+          "tasks": 158
+        },
+        {
+          "time": 5,
+          "tasks": 163
+        },
+        {
+          "time": 6,
+          "tasks": 165
+        },
+        {
+          "time": 7,
+          "tasks": 167
+        },
+        {
+          "time": 8,
+          "tasks": 157
+        },
+        {
+          "time": 9,
+          "tasks": 175
+        },
+        {
+          "time": 10,
+          "tasks": 130
+        },
+        {
+          "time": 11,
+          "tasks": 173
+        },
+        {
+          "time": 12,
+          "tasks": 143
+        },
+        {
+          "time": 13,
+          "tasks": 143
+        },
+        {
+          "time": 14,
+          "tasks": 170
+        },
+        {
+          "time": 15,
+          "tasks": 156
+        },
+        {
+          "time": 16,
+          "tasks": 170
+        },
+        {
+          "time": 17,
+          "tasks": 158
+        },
+        {
+          "time": 18,
+          "tasks": 175
+        },
+        {
+          "time": 19,
+          "tasks": 150
+        },
+        {
+          "time": 20,
+          "tasks": 165
+        },
+        {
+          "time": 21,
+          "tasks": 177
+        },
+        {
+          "time": 22,
+          "tasks": 162
+        },
+        {
+          "time": 23,
+          "tasks": 174
+        },
+        {
+          "time": 24,
+          "tasks": 154
+        },
+        {
+          "time": 25,
+          "tasks": 147
+        },
+        {
+          "time": 26,
+          "tasks": 144
+        },
+        {
+          "time": 27,
+          "tasks": 183
+        },
+        {
+          "time": 28,
+          "tasks": 151
+        },
+        {
+          "time": 29,
+          "tasks": 168
+        },
+        {
+          "time": 30,
+          "tasks": 176
+        },
+        {
+          "time": 31,
+          "tasks": 165
+        },
+        {
+          "time": 32,
+          "tasks": 165
+        },
+        {
+          "time": 33,
+          "tasks": 142
+        },
+        {
+          "time": 34,
+          "tasks": 138
+        },
+        {
+          "time": 35,
+          "tasks": 158
+        },
+        {
+          "time": 36,
+          "tasks": 155
+        },
+        {
+          "time": 37,
+          "tasks": 151
+        },
+        {
+          "time": 38,
+          "tasks": 158
+        },
+        {
+          "time": 39,
+          "tasks": 156
+        },
+        {
+          "time": 40,
+          "tasks": 170
+        },
+        {
+          "time": 41,
+          "tasks": 169
+        },
+        {
+          "time": 42,
+          "tasks": 137
+        },
+        {
+          "time": 43,
+          "tasks": 181
+        },
+        {
+          "time": 44,
+          "tasks": 123
+        },
+        {
+          "time": 45,
+          "tasks": 145
+        },
+        {
+          "time": 46,
+          "tasks": 148
+        },
+        {
+          "time": 47,
+          "tasks": 147
+        },
+        {
+          "time": 48,
+          "tasks": 159
+        },
+        {
+          "time": 49,
+          "tasks": 163
+        },
+        {
+          "time": 50,
+          "tasks": 159
+        },
+        {
+          "time": 51,
+          "tasks": 188
+        },
+        {
+          "time": 52,
+          "tasks": 141
+        },
+        {
+          "time": 53,
+          "tasks": 157
+        },
+        {
+          "time": 54,
+          "tasks": 163
+        },
+        {
+          "time": 55,
+          "tasks": 168
+        },
+        {
+          "time": 56,
+          "tasks": 166
+        },
+        {
+          "time": 57,
+          "tasks": 181
+        },
+        {
+          "time": 58,
+          "tasks": 164
+        },
+        {
+          "time": 59,
+          "tasks": 159
+        },
+        {
+          "time": 60,
+          "tasks": 168
+        },
+        {
+          "time": 61,
+          "tasks": 143
+        },
+        {
+          "time": 62,
+          "tasks": 140
+        },
+        {
+          "time": 63,
+          "tasks": 157
+        },
+        {
+          "time": 64,
+          "tasks": 147
+        },
+        {
+          "time": 65,
+          "tasks": 145
+        },
+        {
+          "time": 66,
+          "tasks": 136
+        },
+        {
+          "time": 67,
+          "tasks": 145
+        },
+        {
+          "time": 68,
+          "tasks": 156
+        },
+        {
+          "time": 69,
+          "tasks": 138
+        },
+        {
+          "time": 70,
+          "tasks": 151
+        },
+        {
+          "time": 71,
+          "tasks": 148
+        },
+        {
+          "time": 72,
+          "tasks": 154
+        },
+        {
+          "time": 73,
+          "tasks": 142
+        },
+        {
+          "time": 74,
+          "tasks": 157
+        },
+        {
+          "time": 75,
+          "tasks": 151
+        },
+        {
+          "time": 76,
+          "tasks": 177
+        },
+        {
+          "time": 77,
+          "tasks": 157
+        },
+        {
+          "time": 78,
+          "tasks": 153
+        },
+        {
+          "time": 79,
+          "tasks": 149
+        },
+        {
+          "time": 80,
+          "tasks": 146
+        },
+        {
+          "time": 81,
+          "tasks": 165
+        },
+        {
+          "time": 82,
+          "tasks": 132
+        },
+        {
+          "time": 83,
+          "tasks": 150
+        },
+        {
+          "time": 84,
+          "tasks": 155
+        },
+        {
+          "time": 85,
+          "tasks": 153
+        },
+        {
+          "time": 86,
+          "tasks": 140
+        },
+        {
+          "time": 87,
+          "tasks": 144
+        },
+        {
+          "time": 88,
+          "tasks": 153
+        },
+        {
+          "time": 89,
+          "tasks": 168
+        },
+        {
+          "time": 90,
+          "tasks": 141
+        },
+        {
+          "time": 91,
+          "tasks": 142
+        },
+        {
+          "time": 92,
+          "tasks": 141
+        },
+        {
+          "time": 93,
+          "tasks": 141
+        },
+        {
+          "time": 94,
+          "tasks": 144
+        },
+        {
+          "time": 95,
+          "tasks": 152
+        },
+        {
+          "time": 96,
+          "tasks": 168
+        },
+        {
+          "time": 97,
+          "tasks": 155
+        },
+        {
+          "time": 98,
+          "tasks": 162
+        },
+        {
+          "time": 99,
+          "tasks": 142
+        }
+      ]
+    },
+    {
+      "id": "47df1c",
+      "label": "150 Vehicles \u2022 VFN",
+      "vehicles": 150,
+      "architecture": "VFN",
+      "metrics": {
+        "totalTasks": 11060,
+        "successTasks": 11025,
+        "successRate": 0.9968,
+        "avgQueueDelay": 0.186,
+        "avgMigrationDelay": 3.999,
+        "avgCompletionDelay": 10.183
+      },
+      "reliability": {
+        "totalTx": 23172,
+        "totalRx": 11060,
+        "radioLossRatio": 0.5227,
+        "avgRadioDelay": 4.997
+      },
+      "delayDistribution": [
+        {
+          "bucket": "5-10ms",
+          "count": 8447
+        },
+        {
+          "bucket": "10-15ms",
+          "count": 2485
+        },
+        {
+          "bucket": "15-20ms",
+          "count": 78
+        },
+        {
+          "bucket": "20-25ms",
+          "count": 1
+        },
+        {
+          "bucket": "25-30ms",
+          "count": 1
+        },
+        {
+          "bucket": "30-35ms",
+          "count": 1
+        },
+        {
+          "bucket": "35-40ms",
+          "count": 3
+        },
+        {
+          "bucket": "50-55ms",
+          "count": 3
+        },
+        {
+          "bucket": "55-60ms",
+          "count": 4
+        },
+        {
+          "bucket": "75-80ms",
+          "count": 1
+        },
+        {
+          "bucket": "85-90ms",
+          "count": 1
+        },
+        {
+          "bucket": "105-110ms",
+          "count": 35
+        }
+      ],
+      "velocityFailure": [
+        {
+          "velocityBin": "0-10",
+          "txCount": 19257,
+          "rxCount": 7207,
+          "failureRate": 0.6257
+        },
+        {
+          "velocityBin": "10-20",
+          "txCount": 677,
+          "rxCount": 672,
+          "failureRate": 0.0074
+        },
+        {
+          "velocityBin": "20-30",
+          "txCount": 1618,
+          "rxCount": 1591,
+          "failureRate": 0.0167
+        },
+        {
+          "velocityBin": "30-40",
+          "txCount": 1148,
+          "rxCount": 1132,
+          "failureRate": 0.0139
+        },
+        {
+          "velocityBin": "40-50",
+          "txCount": 292,
+          "rxCount": 287,
+          "failureRate": 0.0171
+        },
+        {
+          "velocityBin": "50-60",
+          "txCount": 129,
+          "rxCount": 121,
+          "failureRate": 0.062
+        },
+        {
+          "velocityBin": "60-70",
+          "txCount": 41,
+          "rxCount": 37,
+          "failureRate": 0.0976
+        },
+        {
+          "velocityBin": "70-80",
+          "txCount": 7,
+          "rxCount": 7,
+          "failureRate": 0.0
+        },
+        {
+          "velocityBin": "80-90",
+          "txCount": 3,
+          "rxCount": 3,
+          "failureRate": 0.0
+        }
+      ],
+      "throughputPerSec": [
+        {
+          "time": 0,
+          "tasks": 0
+        },
+        {
+          "time": 1,
+          "tasks": 114
+        },
+        {
+          "time": 2,
+          "tasks": 121
+        },
+        {
+          "time": 3,
+          "tasks": 108
+        },
+        {
+          "time": 4,
+          "tasks": 109
+        },
+        {
+          "time": 5,
+          "tasks": 113
+        },
+        {
+          "time": 6,
+          "tasks": 116
+        },
+        {
+          "time": 7,
+          "tasks": 120
+        },
+        {
+          "time": 8,
+          "tasks": 121
+        },
+        {
+          "time": 9,
+          "tasks": 121
+        },
+        {
+          "time": 10,
+          "tasks": 93
+        },
+        {
+          "time": 11,
+          "tasks": 138
+        },
+        {
+          "time": 12,
+          "tasks": 105
+        },
+        {
+          "time": 13,
+          "tasks": 104
+        },
+        {
+          "time": 14,
+          "tasks": 123
+        },
+        {
+          "time": 15,
+          "tasks": 103
+        },
+        {
+          "time": 16,
+          "tasks": 127
+        },
+        {
+          "time": 17,
+          "tasks": 117
+        },
+        {
+          "time": 18,
+          "tasks": 127
+        },
+        {
+          "time": 19,
+          "tasks": 103
+        },
+        {
+          "time": 20,
+          "tasks": 120
+        },
+        {
+          "time": 21,
+          "tasks": 130
+        },
+        {
+          "time": 22,
+          "tasks": 112
+        },
+        {
+          "time": 23,
+          "tasks": 132
+        },
+        {
+          "time": 24,
+          "tasks": 108
+        },
+        {
+          "time": 25,
+          "tasks": 106
+        },
+        {
+          "time": 26,
+          "tasks": 104
+        },
+        {
+          "time": 27,
+          "tasks": 130
+        },
+        {
+          "time": 28,
+          "tasks": 106
+        },
+        {
+          "time": 29,
+          "tasks": 114
+        },
+        {
+          "time": 30,
+          "tasks": 118
+        },
+        {
+          "time": 31,
+          "tasks": 117
+        },
+        {
+          "time": 32,
+          "tasks": 125
+        },
+        {
+          "time": 33,
+          "tasks": 96
+        },
+        {
+          "time": 34,
+          "tasks": 96
+        },
+        {
+          "time": 35,
+          "tasks": 111
+        },
+        {
+          "time": 36,
+          "tasks": 108
+        },
+        {
+          "time": 37,
+          "tasks": 105
+        },
+        {
+          "time": 38,
+          "tasks": 112
+        },
+        {
+          "time": 39,
+          "tasks": 109
+        },
+        {
+          "time": 40,
+          "tasks": 117
+        },
+        {
+          "time": 41,
+          "tasks": 119
+        },
+        {
+          "time": 42,
+          "tasks": 101
+        },
+        {
+          "time": 43,
+          "tasks": 129
+        },
+        {
+          "time": 44,
+          "tasks": 81
+        },
+        {
+          "time": 45,
+          "tasks": 101
+        },
+        {
+          "time": 46,
+          "tasks": 105
+        },
+        {
+          "time": 47,
+          "tasks": 110
+        },
+        {
+          "time": 48,
+          "tasks": 114
+        },
+        {
+          "time": 49,
+          "tasks": 127
+        },
+        {
+          "time": 50,
+          "tasks": 112
+        },
+        {
+          "time": 51,
+          "tasks": 135
+        },
+        {
+          "time": 52,
+          "tasks": 101
+        },
+        {
+          "time": 53,
+          "tasks": 112
+        },
+        {
+          "time": 54,
+          "tasks": 108
+        },
+        {
+          "time": 55,
+          "tasks": 115
+        },
+        {
+          "time": 56,
+          "tasks": 119
+        },
+        {
+          "time": 57,
+          "tasks": 131
+        },
+        {
+          "time": 58,
+          "tasks": 115
+        },
+        {
+          "time": 59,
+          "tasks": 116
+        },
+        {
+          "time": 60,
+          "tasks": 112
+        },
+        {
+          "time": 61,
+          "tasks": 94
+        },
+        {
+          "time": 62,
+          "tasks": 113
+        },
+        {
+          "time": 63,
+          "tasks": 129
+        },
+        {
+          "time": 64,
+          "tasks": 107
+        },
+        {
+          "time": 65,
+          "tasks": 110
+        },
+        {
+          "time": 66,
+          "tasks": 96
+        },
+        {
+          "time": 67,
+          "tasks": 110
+        },
+        {
+          "time": 68,
+          "tasks": 106
+        },
+        {
+          "time": 69,
+          "tasks": 106
+        },
+        {
+          "time": 70,
+          "tasks": 114
+        },
+        {
+          "time": 71,
+          "tasks": 103
+        },
+        {
+          "time": 72,
+          "tasks": 107
+        },
+        {
+          "time": 73,
+          "tasks": 104
+        },
+        {
+          "time": 74,
+          "tasks": 110
+        },
+        {
+          "time": 75,
+          "tasks": 120
+        },
+        {
+          "time": 76,
+          "tasks": 129
+        },
+        {
+          "time": 77,
+          "tasks": 107
+        },
+        {
+          "time": 78,
+          "tasks": 118
+        },
+        {
+          "time": 79,
+          "tasks": 96
+        },
+        {
+          "time": 80,
+          "tasks": 104
+        },
+        {
+          "time": 81,
+          "tasks": 120
+        },
+        {
+          "time": 82,
+          "tasks": 91
+        },
+        {
+          "time": 83,
+          "tasks": 109
+        },
+        {
+          "time": 84,
+          "tasks": 111
+        },
+        {
+          "time": 85,
+          "tasks": 110
+        },
+        {
+          "time": 86,
+          "tasks": 103
+        },
+        {
+          "time": 87,
+          "tasks": 111
+        },
+        {
+          "time": 88,
+          "tasks": 113
+        },
+        {
+          "time": 89,
+          "tasks": 114
+        },
+        {
+          "time": 90,
+          "tasks": 103
+        },
+        {
+          "time": 91,
+          "tasks": 105
+        },
+        {
+          "time": 92,
+          "tasks": 99
+        },
+        {
+          "time": 93,
+          "tasks": 106
+        },
+        {
+          "time": 94,
+          "tasks": 99
+        },
+        {
+          "time": 95,
+          "tasks": 103
+        },
+        {
+          "time": 96,
+          "tasks": 113
+        },
+        {
+          "time": 97,
+          "tasks": 103
+        },
+        {
+          "time": 98,
+          "tasks": 113
+        },
+        {
+          "time": 99,
+          "tasks": 94
+        }
+      ]
+    }
+  ]
+}

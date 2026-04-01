@@ -21,10 +21,14 @@ const PORT = Number.parseInt(process.env.PORT ?? '8080', 10);
 const RUNNER_MODE = process.env.SIM_RUNNER ?? 'docker_exec';
 const DOCKER_CONTAINER = process.env.NS3_DOCKER_CONTAINER ?? 'ns3-dev';
 const NS3_RUN_WORKDIR = process.env.NS3_RUN_WORKDIR ?? '/workspace/ns-3.46';
-const NS3_BINARY_REL =
+const NS3_NR_BINARY_REL =
   process.env.NS3_BINARY_REL ?? 'build-linux-out/scratch/ns3.46-v2x-5g-sumo-default';
-const NS3_TRACE_FILE =
+const NS3_NR_TRACE_FILE =
   process.env.NS3_TRACE_FILE ?? '/workspace/ns-3.46/scratch/manchester_city_ns3.tcl';
+const NS3_DSRC_BINARY_REL =
+  process.env.NS3_DSRC_BINARY_REL ?? 'build-linux-out/scratch/ns3.46-v2x-dsrc-sumo-direct-default';
+const NS3_DSRC_TRACE_FILE =
+  process.env.NS3_DSRC_TRACE_FILE ?? '/workspace/ns-3.46/scratch/manchester_city_ns3.tcl';
 const NS3_LOCAL_ROOT =
   process.env.NS3_LOCAL_ROOT ??
   (await detectNs3Root()) ??
@@ -38,11 +42,12 @@ const MAP_CENTER_LON = Number.parseFloat(process.env.MAP_CENTER_LON ?? '-2.2426'
 
 const PARAM_LIMITS = {
   numVehicles: { min: 1, max: 150 },
-  numGnbs: { min: 1, max: 30 },
+  numGnbs: { min: 0, max: 30 },
   numVFCs: { min: 0, max: 50 },
   numCFNs: { min: 0, max: 50 },
   simTime: { min: 5, max: 120 },
 };
+const ACCESS_MODE_VALUES = new Set(['NR', 'DSRC_DIRECT']);
 const SCENARIO_VALUES = new Set([
   'AUTO',
   'S1_CFN_ONLY',
@@ -124,7 +129,7 @@ app.patch('/api/simulations/:id', async (req, res) => {
 
   if ('scenario' in next) {
     try {
-      run.scenario = sanitizeScenario(next.scenario, run.params);
+      run.scenario = sanitizeScenario(next.scenario, run.params, run.accessMode ?? 'NR');
     } catch (error) {
       return res.status(400).json({ error: error.message });
     }
@@ -168,7 +173,7 @@ app.post('/api/simulations/:id/cancel', async (req, res) => {
 
   // Best effort to terminate ns-3 inside the container in docker_exec mode.
   if (RUNNER_MODE === 'docker_exec') {
-    const binaryName = path.basename(NS3_BINARY_REL);
+    const binaryName = path.basename(NS3_NR_BINARY_REL);
     await executeCommand(
       `docker exec ${shQuote(DOCKER_CONTAINER)} pkill -f ${shQuote(binaryName)} >/dev/null 2>&1 || true`
     );
@@ -228,10 +233,11 @@ app.post('/api/simulations', async (req, res) => {
     return res.status(400).json({ error: error.message });
   }
 
-  const { params, name, scenario } = runRequest;
+  const { accessMode, params, name, scenario } = runRequest;
   const run = {
     id: createRunId(),
     name: name ?? null,
+    accessMode,
     scenario,
     status: 'queued',
     createdAt: new Date().toISOString(),
@@ -280,18 +286,49 @@ async function initializeState() {
     if (Array.isArray(parsed)) {
       runs = parsed.map((run) => {
         const params = run.params ?? {};
+        let accessMode;
+        try {
+          accessMode = sanitizeAccessMode(run.accessMode ?? 'NR');
+        } catch {
+          accessMode = 'NR';
+        }
+
+        let normalizedParams;
+        try {
+          normalizedParams = normalizeParamsForAccessMode(params, accessMode);
+        } catch {
+          normalizedParams = params;
+        }
+
         let scenario;
         try {
-          scenario = sanitizeScenario(run.scenario ?? 'AUTO', params);
+          scenario = sanitizeScenario(run.scenario ?? 'AUTO', normalizedParams, accessMode);
         } catch {
-          scenario = inferScenario(params);
+          scenario = inferScenario(normalizedParams);
         }
 
         const stalePending = run.status === 'running' || run.status === 'queued';
+        let outputDirLocal = run.outputDirLocal ?? path.join(NS3_LOCAL_RESULTS_ROOT, run.id);
+        if (RUNNER_MODE === 'docker_exec' && !outputDirLocal.startsWith(NS3_LOCAL_RESULTS_ROOT)) {
+          // Old runs may contain host-only absolute paths; normalize to container-visible mount.
+          outputDirLocal = path.join(NS3_LOCAL_RESULTS_ROOT, run.id);
+        }
+
+        const outputDirRunner = run.outputDirRunner ?? `${NS3_RUN_RESULTS_ROOT}/${run.id}`;
+        let logPath = run.logPath ?? path.join(outputDirLocal, 'runner.log');
+        if (RUNNER_MODE === 'docker_exec' && !logPath.startsWith(outputDirLocal)) {
+          logPath = path.join(outputDirLocal, 'runner.log');
+        }
+
+        let mapFilePath = run.mapFilePath ?? path.join(outputDirLocal, 'map-animation.json');
+        if (RUNNER_MODE === 'docker_exec' && !mapFilePath.startsWith(outputDirLocal)) {
+          mapFilePath = path.join(outputDirLocal, 'map-animation.json');
+        }
 
         return {
           ...run,
-          params,
+          accessMode,
+          params: normalizedParams,
           scenario,
           name: sanitizeRunName(run.name) ?? defaultRunName(run.id, scenario),
           status: stalePending ? 'failed' : run.status,
@@ -299,10 +336,39 @@ async function initializeState() {
             ? run.error ?? 'Recovered after API restart before execution completed. Please queue again.'
             : run.error ?? null,
           finishedAt: stalePending ? run.finishedAt ?? new Date().toISOString() : run.finishedAt,
+          outputDirLocal,
+          outputDirRunner,
+          logPath,
+          mapFilePath,
         };
       });
       queue = [];
       activeRunId = null;
+
+      // Recovered history entries may have missing analysis blobs when runs.json was rebuilt.
+      // Backfill from existing CSV/XML artifacts so detailed panels render correctly.
+      const recoveredCompleted = runs.filter(
+        (run) =>
+          run.status === 'completed' &&
+          run.outputDirLocal &&
+          (!run.analysis || !run.metrics || !run.mapFilePath)
+      );
+      for (const run of recoveredCompleted) {
+        try {
+          const analysis = await parseRunOutputs(run);
+          run.analysis = analysis;
+          run.metrics = analysis.metrics;
+          run.mapFilePath = analysis.mapFilePath;
+          if (typeof run.error === 'string' && run.error.startsWith('Recovered')) {
+            run.error = null;
+          }
+        } catch (error) {
+          if (!run.error) {
+            run.error = `Recovered run analysis unavailable: ${error.message}`;
+          }
+        }
+      }
+
       await persistRuns();
       return;
     }
@@ -317,10 +383,12 @@ async function initializeState() {
 }
 
 function sanitizeRunRequest(payload) {
+  const accessMode = sanitizeAccessMode(payload.accessMode);
   const params = sanitizeParams(payload);
-  const scenario = sanitizeScenario(payload.scenario ?? 'AUTO', params);
+  const normalizedParams = normalizeParamsForAccessMode(params, accessMode);
+  const scenario = sanitizeScenario(payload.scenario ?? 'AUTO', normalizedParams, accessMode);
   const name = sanitizeRunName(payload.name ?? payload.runName);
-  return { params, scenario, name };
+  return { accessMode, params: normalizedParams, scenario, name };
 }
 
 function sanitizeParams(payload) {
@@ -339,6 +407,30 @@ function sanitizeParams(payload) {
   return values;
 }
 
+function sanitizeAccessMode(value) {
+  const normalized = String(value ?? 'NR').trim().toUpperCase();
+  if (!ACCESS_MODE_VALUES.has(normalized)) {
+    throw new Error('accessMode must be one of NR, DSRC_DIRECT');
+  }
+  return normalized;
+}
+
+function normalizeParamsForAccessMode(params, accessMode) {
+  const normalized = { ...params };
+  if (accessMode === 'DSRC_DIRECT') {
+    normalized.numGnbs = 0;
+    normalized.numCFNs = 0;
+    if (normalized.numVFCs < 1) {
+      throw new Error('numVFCs must be >= 1 for DSRC_DIRECT mode');
+    }
+  } else {
+    if (normalized.numGnbs < 1) {
+      throw new Error('numGnbs must be >= 1 for NR mode');
+    }
+  }
+  return normalized;
+}
+
 function inferScenario(params) {
   const hasCfn = (params?.numCFNs ?? 0) > 0;
   const hasVfn = (params?.numVFCs ?? 0) > 0;
@@ -354,10 +446,18 @@ function inferScenario(params) {
   return 'S0_NO_EDGE';
 }
 
-function sanitizeScenario(value, params) {
+function sanitizeScenario(value, params, accessMode = 'NR') {
   const normalized = String(value ?? 'AUTO').trim().toUpperCase();
   if (!SCENARIO_VALUES.has(normalized)) {
     throw new Error('scenario must be one of AUTO, S1_CFN_ONLY, S2_VFN_ONLY, S3_HYBRID, S0_NO_EDGE');
+  }
+  if (accessMode === 'DSRC_DIRECT') {
+    if (normalized === 'AUTO') {
+      return 'S2_VFN_ONLY';
+    }
+    if (normalized !== 'S2_VFN_ONLY') {
+      throw new Error('scenario must be S2_VFN_ONLY (or AUTO) for DSRC_DIRECT mode');
+    }
   }
   if (normalized === 'AUTO') {
     return inferScenario(params);
@@ -410,6 +510,7 @@ function summarizeRun(run) {
   return {
     id: run.id,
     name: run.name,
+    accessMode: run.accessMode ?? 'NR',
     scenario: run.scenario,
     status: run.status,
     createdAt: run.createdAt,
@@ -509,25 +610,41 @@ async function processQueue() {
 
 function buildNs3Command(run) {
   const { numVehicles, numGnbs, numVFCs, numCFNs, simTime } = run.params;
+  const accessMode = run.accessMode ?? 'NR';
   const outputDir = run.outputDirRunner;
   const animFile = `${outputDir}/anim.xml`;
+  const binaryRel = accessMode === 'DSRC_DIRECT' ? NS3_DSRC_BINARY_REL : NS3_NR_BINARY_REL;
+  const traceFile = accessMode === 'DSRC_DIRECT' ? NS3_DSRC_TRACE_FILE : NS3_NR_TRACE_FILE;
   const binaryPath =
     RUNNER_MODE === 'local'
-      ? path.join(NS3_LOCAL_ROOT, NS3_BINARY_REL)
-      : `${NS3_RUN_WORKDIR}/${NS3_BINARY_REL}`;
+      ? path.join(NS3_LOCAL_ROOT, binaryRel)
+      : `${NS3_RUN_WORKDIR}/${binaryRel}`;
 
-  const ns3Command = [
-    shQuote(binaryPath),
-    `--traceFile=${shQuote(NS3_TRACE_FILE)}`,
-    `--numVehicles=${numVehicles}`,
-    `--numGnbs=${numGnbs}`,
-    `--numBuses=${numVFCs}`,
-    `--numRsus=${numCFNs}`,
-    '--testMode=1',
-    `--simTime=${simTime}`,
-    `--outputDir=${shQuote(outputDir)}`,
-    `--animFile=${shQuote(animFile)}`,
-  ].join(' ');
+  let ns3Command;
+  if (accessMode === 'DSRC_DIRECT') {
+    ns3Command = [
+      shQuote(binaryPath),
+      `--traceFile=${shQuote(traceFile)}`,
+      `--numVehicles=${numVehicles}`,
+      `--numBuses=${numVFCs}`,
+      `--simTime=${simTime}`,
+      `--outputDir=${shQuote(outputDir)}`,
+      `--animFile=${shQuote(animFile)}`,
+    ].join(' ');
+  } else {
+    ns3Command = [
+      shQuote(binaryPath),
+      `--traceFile=${shQuote(traceFile)}`,
+      `--numVehicles=${numVehicles}`,
+      `--numGnbs=${numGnbs}`,
+      `--numBuses=${numVFCs}`,
+      `--numRsus=${numCFNs}`,
+      '--testMode=1',
+      `--simTime=${simTime}`,
+      `--outputDir=${shQuote(outputDir)}`,
+      `--animFile=${shQuote(animFile)}`,
+    ].join(' ');
+  }
 
   if (RUNNER_MODE === 'local') {
     return `cd ${shQuote(NS3_LOCAL_ROOT)} && mkdir -p ${shQuote(outputDir)} && ${ns3Command}`;
@@ -574,21 +691,26 @@ function executeCommand(command, options = {}) {
 }
 
 async function parseRunOutputs(run) {
+  const accessMode = run.accessMode ?? 'NR';
   const methodologyPath = path.join(run.outputDirLocal, 'results_methodology_a.csv');
   const tasksPath = path.join(run.outputDirLocal, 'results_tasks.csv');
-  const summaryPath = path.join(run.outputDirLocal, 'v2x-summary.csv');
+  const summaryPath = path.join(
+    run.outputDirLocal,
+    accessMode === 'DSRC_DIRECT' ? 'dsrc-direct-summary.csv' : 'v2x-summary.csv'
+  );
   const responsePath = path.join(run.outputDirLocal, 'results_response_path.csv');
   const radioPath = path.join(run.outputDirLocal, 'results_downlink_radio.csv');
+  const reliabilityPath = path.join(run.outputDirLocal, 'results_reliability.csv');
   const animPath = path.join(run.outputDirLocal, 'anim.xml');
 
   const [failureByBin, delayComponents, summaryMetrics, reliability] = await Promise.all([
-    parseFailureByVelocity(methodologyPath),
+    parseFailureByVelocity(methodologyPath, tasksPath, accessMode),
     parseDelayComponents(tasksPath),
-    parseSummary(summaryPath),
-    parseReliability(methodologyPath, tasksPath, responsePath, radioPath),
+    parseSummary(summaryPath, accessMode),
+    parseReliability(methodologyPath, tasksPath, responsePath, radioPath, reliabilityPath, accessMode),
   ]);
 
-  const mapAnimation = await parseMapAnimation(animPath, run.params);
+  const mapAnimation = await parseMapAnimation(animPath, run.params, accessMode);
   const mapFilePath = path.join(run.outputDirLocal, 'map-animation.json');
   await fs.writeFile(mapFilePath, `${JSON.stringify(mapAnimation, null, 2)}\n`, 'utf8');
 
@@ -654,35 +776,58 @@ function velocityBinLabel(value) {
   return `${lower}-${lower + 10}`;
 }
 
-async function parseFailureByVelocity(methodologyPath) {
+async function parseFailureByVelocity(methodologyPath, tasksPath, accessMode = 'NR') {
   const rows = await parseCsv(methodologyPath);
   const grouped = new Map();
 
-  for (const row of rows) {
-    const nodeType = row.Connected_Node_Type;
-    if (!['gNB', 'VFN'].includes(nodeType)) {
-      continue;
-    }
-    if (!['Tx', 'Rx'].includes(row.Packet_State)) {
-      continue;
-    }
+  if (rows.length > 0) {
+    for (const row of rows) {
+      const nodeType = row.Connected_Node_Type;
+      // Accept both old 'gNB' and new 'CFN' labels for backward compatibility
+      const normalizedType = nodeType === 'gNB' ? 'CFN' : nodeType;
+      if (!['CFN', 'VFN'].includes(normalizedType)) {
+        continue;
+      }
+      if (!['Tx', 'Rx'].includes(row.Packet_State)) {
+        continue;
+      }
 
-    const bin = velocityBinLabel(row.Relative_Velocity_kmh);
-    const key = `${bin}|${nodeType}`;
-    if (!grouped.has(key)) {
-      grouped.set(key, {
-        velocityBin: bin,
-        nodeType,
-        sent: 0,
-        received: 0,
-      });
-    }
+      const bin = velocityBinLabel(row.Relative_Velocity_kmh);
+      const key = `${bin}|${normalizedType}`;
+      if (!grouped.has(key)) {
+        grouped.set(key, {
+          velocityBin: bin,
+          nodeType: normalizedType,
+          sent: 0,
+          received: 0,
+        });
+      }
 
-    const stats = grouped.get(key);
-    if (row.Packet_State === 'Tx') {
+      const stats = grouped.get(key);
+      if (row.Packet_State === 'Tx') {
+        stats.sent += 1;
+      } else {
+        stats.received += 1;
+      }
+    }
+  } else if (accessMode === 'DSRC_DIRECT') {
+    const taskRows = await parseCsv(tasksPath);
+    for (const row of taskRows) {
+      const bin = velocityBinLabel(row.relative_velocity_kmh ?? row.Relative_Velocity_kmh);
+      const key = `${bin}|VFN`;
+      if (!grouped.has(key)) {
+        grouped.set(key, {
+          velocityBin: bin,
+          nodeType: 'VFN',
+          sent: 0,
+          received: 0,
+        });
+      }
+      const stats = grouped.get(key);
       stats.sent += 1;
-    } else {
-      stats.received += 1;
+      if (Number.parseInt(row.success ?? '0', 10) === 1) {
+        stats.received += 1;
+      }
     }
   }
 
@@ -691,13 +836,13 @@ async function parseFailureByVelocity(methodologyPath) {
   );
 
   return bins.map((bin) => {
-    const gnb = grouped.get(`${bin}|gNB`) ?? { sent: 0, received: 0 };
+    const cfn = grouped.get(`${bin}|CFN`) ?? { sent: 0, received: 0 };
     const vfn = grouped.get(`${bin}|VFN`) ?? { sent: 0, received: 0 };
     return {
       velocityBin: bin,
-      gNBFailureRate: gnb.sent > 0 ? 1 - Math.min(gnb.received, gnb.sent) / gnb.sent : null,
+      cfnFailureRate: cfn.sent > 0 ? 1 - Math.min(cfn.received, cfn.sent) / cfn.sent : null,
       vfnFailureRate: vfn.sent > 0 ? 1 - Math.min(vfn.received, vfn.sent) / vfn.sent : null,
-      gNBSent: gnb.sent,
+      cfnSent: cfn.sent,
       vfnSent: vfn.sent,
     };
   });
@@ -776,7 +921,14 @@ function safeDivide(num, den) {
   return den > 0 ? num / den : null;
 }
 
-async function parseReliability(methodologyPath, tasksPath, responsePath, radioPath) {
+async function parseReliability(
+  methodologyPath,
+  tasksPath,
+  responsePath,
+  radioPath,
+  reliabilityPath,
+  accessMode = 'NR'
+) {
   const [methodRows, taskRows, responseRows, radioRows] = await Promise.all([
     parseCsv(methodologyPath),
     parseCsv(tasksPath),
@@ -797,18 +949,20 @@ async function parseReliability(methodologyPath, tasksPath, responsePath, radioP
   for (const row of methodRows) {
     const state = row.Packet_State;
     const type = row.Connected_Node_Type;
+    // Accept both old 'gNB' and new 'CFN' labels
+    const nType = type === 'gNB' ? 'CFN' : type;
     if (state === 'Tx') {
       txTotal += 1;
-      if (type === 'gNB') {
+      if (nType === 'CFN') {
         gnbTx += 1;
-      } else if (type === 'VFN') {
+      } else if (nType === 'VFN') {
         vfnTx += 1;
       }
     } else if (state === 'Rx') {
       rxTotal += 1;
-      if (type === 'gNB') {
+      if (nType === 'CFN') {
         gnbRx += 1;
-      } else if (type === 'VFN') {
+      } else if (nType === 'VFN') {
         vfnRx += 1;
       }
     } else if (state === 'Dropped') {
@@ -844,6 +998,57 @@ async function parseReliability(methodologyPath, tasksPath, responsePath, radioP
   const deadlineReliability = safeDivide(tasksDeadlineOk, tasksReachingFog);
   const e2eReliability = safeDivide(tasksDeadlineOk, txTotal);
 
+  if (accessMode === 'DSRC_DIRECT' && methodRows.length === 0) {
+    const reliabilityRows = await parseCsv(reliabilityPath);
+    const busRow =
+      reliabilityRows.find((row) => String(row.NodeType).toUpperCase() === 'BUS') ?? {};
+    const busTx = Number.parseInt(busRow.TotalTx ?? '0', 10) || taskRows.length;
+    const busRx = Number.parseInt(busRow.TotalRx ?? '0', 10) || tasksDeadlineOk;
+    const busLossRatio =
+      Number.parseFloat(busRow.LossRatio ?? '') || (busTx > 0 ? 1 - busRx / busTx : 0);
+
+    return {
+      tasksSent: busTx,
+      tasksReachingFog: taskRows.length,
+      responsesSentByFog: taskRows.length,
+      responsesReceivedByCar: busRx,
+      tasksDeadlineOk: tasksDeadlineOk || busRx,
+      methodDroppedCount: busTx - busRx,
+      preFogLossCount: 0,
+      returnPathLossCount: Math.max(taskRows.length - busRx, 0),
+      deadlineMissAfterFogCount: Math.max(taskRows.length - (tasksDeadlineOk || busRx), 0),
+      uplinkReliability: null,
+      downlinkReliability: null,
+      deadlineReliability: safeDivide(tasksDeadlineOk || busRx, taskRows.length),
+      e2eReliability: safeDivide(tasksDeadlineOk || busRx, busTx),
+      e2ePlr: busLossRatio,
+      gnb: {
+        tx: 0,
+        rx: 0,
+        failureRate: null,
+      },
+      vfn: {
+        tx: busTx,
+        rx: busRx,
+        failureRate: busTx > 0 ? 1 - Math.min(busRx, busTx) / busTx : null,
+      },
+      handoverEvents: 0,
+      fogReassociationEvents: 0,
+      ulRlc: {
+        tx: 0,
+        rx: 0,
+        txDrop: 0,
+        reliability: null,
+      },
+      dlRlc: {
+        tx: 0,
+        rx: 0,
+        txDrop: 0,
+        reliability: null,
+      },
+    };
+  }
+
   return {
     tasksSent: txTotal,
     tasksReachingFog,
@@ -859,7 +1064,7 @@ async function parseReliability(methodologyPath, tasksPath, responsePath, radioP
     deadlineReliability,
     e2eReliability,
     e2ePlr: e2eReliability == null ? null : 1 - e2eReliability,
-    gnb: {
+    cfn: {
       tx: gnbTx,
       rx: gnbRx,
       failureRate: gnbTx > 0 ? 1 - Math.min(gnbRx, gnbTx) / gnbTx : null,
@@ -886,7 +1091,7 @@ async function parseReliability(methodologyPath, tasksPath, responsePath, radioP
   };
 }
 
-async function parseSummary(summaryPath) {
+async function parseSummary(summaryPath, accessMode = 'NR') {
   const rows = await parseCsv(summaryPath);
   if (rows.length === 0) {
     return {
@@ -898,22 +1103,57 @@ async function parseSummary(summaryPath) {
     };
   }
 
+  if (accessMode === 'DSRC_DIRECT' && rows[0]?.Metric) {
+    const byMetric = Object.fromEntries(rows.map((row) => [row.Metric, row.Value]));
+    const totalTasks = Number.parseInt(byMetric.TotalTasksSent ?? '0', 10) || 0;
+    const successTasks = Number.parseInt(byMetric.TotalResponsesReceived ?? '0', 10) || 0;
+    const successRate = Number.parseFloat(byMetric.SuccessRate ?? '0') || 0;
+    const avgCompletionDelayS = Number.parseFloat(byMetric.AvgCompletionDelayS ?? '0') || 0;
+    return {
+      totalTasks,
+      successTasks,
+      successRate,
+      avgQueueDelayS: 0,
+      avgCompletionDelayS,
+    };
+  }
+
   const row = rows[0];
-  return {
+  const result = {
     totalTasks: Number.parseInt(row.total_tasks ?? '0', 10) || 0,
     successTasks: Number.parseInt(row.success_tasks ?? '0', 10) || 0,
     successRate: Number.parseFloat(row.success_rate ?? '0') || 0,
     avgQueueDelayS: Number.parseFloat(row.avg_queue_delay_s ?? '0') || 0,
     avgCompletionDelayS: Number.parseFloat(row.avg_completion_delay_s ?? '0') || 0,
   };
+
+  // Try to load end-to-end summary (includes network round-trip delay)
+  const e2ePath = summaryPath.replace('-summary.csv', '-e2e-summary.csv');
+  try {
+    const e2eRows = await parseCsv(e2ePath);
+    if (e2eRows.length > 0) {
+      const e2e = e2eRows[0];
+      result.e2eTotalTasks = Number.parseInt(e2e.e2e_total_tasks ?? '0', 10) || 0;
+      result.e2eSuccessTasks = Number.parseInt(e2e.e2e_success_tasks ?? '0', 10) || 0;
+      result.e2eSuccessRate = Number.parseFloat(e2e.e2e_success_rate ?? '0') || 0;
+      result.e2eAvgDelayS = Number.parseFloat(e2e.e2e_avg_delay_s ?? '0') || 0;
+    }
+  } catch {
+    // e2e summary not available (older simulation run)
+  }
+
+  return result;
 }
 
-async function parseMapAnimation(animPath, params) {
+async function parseMapAnimation(animPath, params, accessMode = 'NR') {
   const xml = await fs.readFile(animPath, 'utf8');
   const nodeRe = /<node\s+id="(\d+)"[^>]*locX="([\d.+-]+)"\s+locY="([\d.+-]+)"\s*\/>/g;
   const updateRe = /<nu\s+p="p"\s+t="([\d.+-]+)"\s+id="(\d+)"\s+x="([\d.+-]+)"\s+y="([\d.+-]+)"\s*\/>/g;
 
-  const totalTracked = params.numGnbs + params.numVehicles + params.numCFNs + params.numVFCs;
+  const totalTracked =
+    accessMode === 'DSRC_DIRECT'
+      ? params.numVehicles + params.numVFCs
+      : params.numGnbs + params.numVehicles + params.numCFNs + params.numVFCs;
   const trackedIds = new Set(Array.from({ length: totalTracked }, (_, index) => index));
 
   const updatesById = new Map();
@@ -998,7 +1238,7 @@ async function parseMapAnimation(animPath, params) {
       const pos = history[pointer];
       const lat = MAP_CENTER_LAT + (pos.y - centerY) / 111320;
       const lon = MAP_CENTER_LON + (pos.x - centerX) / (111320 * Math.max(cosLat, 1e-6));
-      const type = classifyNode(id, params);
+      const type = classifyNode(id, params, accessMode);
       nodes.push({ id, type, lat, lon, x: pos.x, y: pos.y });
     }
 
@@ -1006,7 +1246,7 @@ async function parseMapAnimation(animPath, params) {
   }
 
   for (const id of trackedIds) {
-    const type = classifyNode(id, params);
+    const type = classifyNode(id, params, accessMode);
     if (nodeTypeCounts[type] !== undefined) {
       nodeTypeCounts[type] += 1;
     }
@@ -1026,7 +1266,19 @@ async function parseMapAnimation(animPath, params) {
   };
 }
 
-function classifyNode(id, params) {
+function classifyNode(id, params, accessMode = 'NR') {
+  if (accessMode === 'DSRC_DIRECT') {
+    const carUpper = params.numVehicles;
+    const vfcUpper = carUpper + params.numVFCs;
+    if (id < carUpper) {
+      return 'car';
+    }
+    if (id < vfcUpper) {
+      return 'VFC';
+    }
+    return 'other';
+  }
+
   const gnbUpper = params.numGnbs;
   const carUpper = gnbUpper + params.numVehicles;
   const cfnUpper = carUpper + params.numCFNs;

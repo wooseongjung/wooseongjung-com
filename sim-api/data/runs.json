@@ -1,235 +1,306 @@
 [
   {
-    "id": "run_20260309052232_3ab904",
-    "name": "P(150) VFN Only",
+    "id": "run_20260317091734_47df1c",
+    "name": "150 VFN",
+    "accessMode": "NR",
     "scenario": "S2_VFN_ONLY",
-    "status": "queued",
-    "createdAt": "2026-03-09T05:22:32.245Z",
-    "startedAt": null,
-    "finishedAt": null,
-    "params": {
-      "numVehicles": 150,
-      "numGnbs": 8,
-      "numVFCs": 20,
-      "numCFNs": 0,
-      "simTime": 100
-    },
-    "error": null,
-    "command": null,
-    "outputDirLocal": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260309052232_3ab904",
-    "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260309052232_3ab904",
-    "logPath": null,
-    "mapFilePath": null,
-    "metrics": null,
-    "analysis": null
-  },
-  {
-    "id": "run_20260309052225_cc60e0",
-    "name": "OP(100) VFN Only",
-    "scenario": "S2_VFN_ONLY",
-    "status": "queued",
-    "createdAt": "2026-03-09T05:22:25.910Z",
-    "startedAt": null,
-    "finishedAt": null,
-    "params": {
-      "numVehicles": 100,
-      "numGnbs": 8,
-      "numVFCs": 20,
-      "numCFNs": 0,
-      "simTime": 100
-    },
-    "error": null,
-    "command": null,
-    "outputDirLocal": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260309052225_cc60e0",
-    "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260309052225_cc60e0",
-    "logPath": null,
-    "mapFilePath": null,
-    "metrics": null,
-    "analysis": null
-  },
-  {
-    "id": "run_20260309052148_aef22c",
-    "name": "OP(50) VFN Only",
-    "scenario": "S2_VFN_ONLY",
-    "status": "queued",
-    "createdAt": "2026-03-09T05:21:48.220Z",
-    "startedAt": null,
-    "finishedAt": null,
-    "params": {
-      "numVehicles": 50,
-      "numGnbs": 8,
-      "numVFCs": 20,
-      "numCFNs": 0,
-      "simTime": 100
-    },
-    "error": null,
-    "command": null,
-    "outputDirLocal": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260309052148_aef22c",
-    "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260309052148_aef22c",
-    "logPath": null,
-    "mapFilePath": null,
-    "metrics": null,
-    "analysis": null
-  },
-  {
-    "id": "run_20260309052131_c1afce",
-    "name": "P(150) CFN Only",
-    "scenario": "S1_CFN_ONLY",
-    "status": "queued",
-    "createdAt": "2026-03-09T05:21:31.677Z",
-    "startedAt": null,
-    "finishedAt": null,
-    "params": {
-      "numVehicles": 150,
-      "numGnbs": 8,
-      "numVFCs": 0,
-      "numCFNs": 20,
-      "simTime": 100
-    },
-    "error": null,
-    "command": null,
-    "outputDirLocal": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260309052131_c1afce",
-    "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260309052131_c1afce",
-    "logPath": null,
-    "mapFilePath": null,
-    "metrics": null,
-    "analysis": null
-  },
-  {
-    "id": "run_20260309052123_a0da86",
-    "name": "OP(100) CFN Only",
-    "scenario": "S1_CFN_ONLY",
-    "status": "running",
-    "createdAt": "2026-03-09T05:21:23.094Z",
-    "startedAt": "2026-03-09T11:14:45.949Z",
-    "finishedAt": null,
-    "params": {
-      "numVehicles": 100,
-      "numGnbs": 8,
-      "numVFCs": 0,
-      "numCFNs": 20,
-      "simTime": 100
-    },
-    "error": null,
-    "command": "docker start 'ns3-dev' >/dev/null 2>&1 || true; docker exec 'ns3-dev' bash -lc 'cd /workspace/ns-3.46 && mkdir -p /workspace/ns-3.46/results_web/run_20260309052123_a0da86 && '\"'\"'/workspace/ns-3.46/build-linux-out/scratch/ns3.46-v2x-5g-sumo-default'\"'\"' --traceFile='\"'\"'/workspace/ns-3.46/scratch/manchester_city_ns3.tcl'\"'\"' --numVehicles=100 --numGnbs=8 --numBuses=0 --numRsus=20 --testMode=1 --simTime=100 --outputDir='\"'\"'/workspace/ns-3.46/results_web/run_20260309052123_a0da86'\"'\"' --animFile='\"'\"'/workspace/ns-3.46/results_web/run_20260309052123_a0da86/anim.xml'\"'\"''",
-    "outputDirLocal": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260309052123_a0da86",
-    "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260309052123_a0da86",
-    "logPath": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260309052123_a0da86/runner.log",
-    "mapFilePath": null,
-    "metrics": null,
-    "analysis": null
-  },
-  {
-    "id": "run_20260309051002_65204f",
-    "name": "OP(50) CFN Only",
-    "scenario": "S1_CFN_ONLY",
     "status": "completed",
-    "createdAt": "2026-03-09T05:10:02.552Z",
-    "startedAt": "2026-03-09T05:10:02.552Z",
-    "finishedAt": "2026-03-09T11:14:45.949Z",
+    "createdAt": "2026-03-17T09:17:34.010Z",
+    "startedAt": "2026-03-17T12:00:38.782Z",
+    "finishedAt": "2026-03-17T13:05:29.652Z",
     "params": {
-      "numVehicles": 50,
-      "numGnbs": 8,
-      "numVFCs": 0,
-      "numCFNs": 20,
+      "numVehicles": 150,
+      "numGnbs": 10,
+      "numVFCs": 20,
+      "numCFNs": 0,
       "simTime": 100
     },
     "error": null,
-    "command": "docker start 'ns3-dev' >/dev/null 2>&1 || true; docker exec 'ns3-dev' bash -lc 'cd /workspace/ns-3.46 && mkdir -p /workspace/ns-3.46/results_web/run_20260309051002_65204f && '\"'\"'/workspace/ns-3.46/build-linux-out/scratch/ns3.46-v2x-5g-sumo-default'\"'\"' --traceFile='\"'\"'/workspace/ns-3.46/scratch/manchester_city_ns3.tcl'\"'\"' --numVehicles=50 --numGnbs=8 --numBuses=0 --numRsus=20 --testMode=1 --simTime=100 --outputDir='\"'\"'/workspace/ns-3.46/results_web/run_20260309051002_65204f'\"'\"' --animFile='\"'\"'/workspace/ns-3.46/results_web/run_20260309051002_65204f/anim.xml'\"'\"''",
-    "outputDirLocal": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260309051002_65204f",
-    "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260309051002_65204f",
-    "logPath": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260309051002_65204f/runner.log",
-    "mapFilePath": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260309051002_65204f/map-animation.json",
+    "command": "docker start 'ns3-dev' >/dev/null 2>&1 || true; docker exec 'ns3-dev' bash -lc 'cd /workspace/ns-3.46 && mkdir -p /workspace/ns-3.46/results_web/run_20260317091734_47df1c && '\"'\"'/workspace/ns-3.46/build-linux-out/scratch/ns3.46-v2x-5g-sumo-default'\"'\"' --traceFile='\"'\"'/workspace/ns-3.46/scratch/manchester_city_ns3.tcl'\"'\"' --numVehicles=150 --numGnbs=10 --numBuses=20 --numRsus=0 --testMode=1 --simTime=100 --outputDir='\"'\"'/workspace/ns-3.46/results_web/run_20260317091734_47df1c'\"'\"' --animFile='\"'\"'/workspace/ns-3.46/results_web/run_20260317091734_47df1c/anim.xml'\"'\"''",
+    "outputDirLocal": "/mnt/ns3/results_web/run_20260317091734_47df1c",
+    "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260317091734_47df1c",
+    "logPath": "/mnt/ns3/results_web/run_20260317091734_47df1c/runner.log",
+    "mapFilePath": "/mnt/ns3/results_web/run_20260317091734_47df1c/map-animation.json",
     "metrics": {
-      "totalTasks": 1935,
-      "successTasks": 1661,
-      "successRate": 0.858398,
-      "avgQueueDelayS": 0.000173,
-      "avgCompletionDelayS": 0.04624035297157629,
-      "density": 50,
-      "processedTasks": 1935,
-      "e2eReliability": 0.16833890746934224,
-      "uplinkReliability": 0.19610823958650045,
-      "downlinkReliability": 0.9757105943152454,
-      "deadlineReliability": 0.8583979328165374
+      "totalTasks": 11060,
+      "successTasks": 11025,
+      "successRate": 0.996835,
+      "avgQueueDelayS": 0.000186,
+      "avgCompletionDelayS": 0.010182841410488273,
+      "density": 150,
+      "processedTasks": 11060,
+      "e2eReliability": 0.47578974624546866,
+      "uplinkReliability": 0.4773001898843432,
+      "downlinkReliability": 0.9997287522603978,
+      "deadlineReliability": 0.9968354430379747
     },
     "analysis": {
       "failureByBin": [
         {
           "velocityBin": "0-10",
-          "gNBFailureRate": 0.8121115254839283,
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.6257464817988264,
+          "cfnSent": 0,
+          "vfnSent": 19257
+        },
+        {
+          "velocityBin": "10-20",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.00738552437223039,
+          "cfnSent": 0,
+          "vfnSent": 677
+        },
+        {
+          "velocityBin": "20-30",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.016687268232385644,
+          "cfnSent": 0,
+          "vfnSent": 1618
+        },
+        {
+          "velocityBin": "30-40",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.013937282229965153,
+          "cfnSent": 0,
+          "vfnSent": 1148
+        },
+        {
+          "velocityBin": "40-50",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.017123287671232834,
+          "cfnSent": 0,
+          "vfnSent": 292
+        },
+        {
+          "velocityBin": "50-60",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.06201550387596899,
+          "cfnSent": 0,
+          "vfnSent": 129
+        },
+        {
+          "velocityBin": "60-70",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.09756097560975607,
+          "cfnSent": 0,
+          "vfnSent": 41
+        },
+        {
+          "velocityBin": "70-80",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0,
+          "cfnSent": 0,
+          "vfnSent": 7
+        },
+        {
+          "velocityBin": "80-90",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0,
+          "cfnSent": 0,
+          "vfnSent": 3
+        }
+      ],
+      "delayComponents": {
+        "processedTasks": 11060,
+        "completion": 0.010182841410488273,
+        "queueing": 0.0001860372513562381,
+        "service": 0.005000000000000889,
+        "migration": 0.003998631374321879,
+        "transport": 0.004996804159132022,
+        "shares": {
+          "transport": 0.4907082372887503,
+          "queueing": 0.018269679734440793,
+          "service": 0.49102208297680894
+        }
+      },
+      "reliability": {
+        "tasksSent": 23172,
+        "tasksReachingFog": 11060,
+        "responsesSentByFog": 11060,
+        "responsesReceivedByCar": 11057,
+        "tasksDeadlineOk": 11025,
+        "methodDroppedCount": 12115,
+        "preFogLossCount": 12112,
+        "returnPathLossCount": 3,
+        "deadlineMissAfterFogCount": 35,
+        "uplinkReliability": 0.4773001898843432,
+        "downlinkReliability": 0.9997287522603978,
+        "deadlineReliability": 0.9968354430379747,
+        "e2eReliability": 0.47578974624546866,
+        "e2ePlr": 0.5242102537545313,
+        "cfn": {
+          "tx": 0,
+          "rx": 0,
+          "failureRate": null
+        },
+        "vfn": {
+          "tx": 23172,
+          "rx": 11057,
+          "failureRate": 0.5228292767132746
+        },
+        "handoverEvents": 0,
+        "fogReassociationEvents": 0,
+        "ulRlc": {
+          "tx": 0,
+          "rx": 0,
+          "txDrop": 0,
+          "reliability": null
+        },
+        "dlRlc": {
+          "tx": 11062,
+          "rx": 11061,
+          "txDrop": 0,
+          "reliability": 0.999909600433918
+        }
+      },
+      "map": {
+        "center": {
+          "lat": 53.4808,
+          "lon": -2.2426
+        },
+        "bounds": {
+          "minLat": 53.472821918792675,
+          "maxLat": 53.48877808120733,
+          "minLon": -2.2647548867443152,
+          "maxLon": -2.2204451132556846
+        },
+        "frameStep": 1,
+        "frameCount": 101,
+        "nodeTypeCounts": {
+          "gNB": 10,
+          "car": 150,
+          "CFN": 0,
+          "VFC": 20
+        }
+      },
+      "metrics": {
+        "totalTasks": 11060,
+        "successTasks": 11025,
+        "successRate": 0.996835,
+        "avgQueueDelayS": 0.000186,
+        "avgCompletionDelayS": 0.010182841410488273,
+        "density": 150,
+        "processedTasks": 11060,
+        "e2eReliability": 0.47578974624546866,
+        "uplinkReliability": 0.4773001898843432,
+        "downlinkReliability": 0.9997287522603978,
+        "deadlineReliability": 0.9968354430379747
+      },
+      "mapFilePath": "/mnt/ns3/results_web/run_20260317091734_47df1c/map-animation.json"
+    }
+  },
+  {
+    "id": "run_20260317091721_922747",
+    "name": "150 CFN",
+    "accessMode": "NR",
+    "scenario": "S1_CFN_ONLY",
+    "status": "completed",
+    "createdAt": "2026-03-17T09:17:21.263Z",
+    "startedAt": "2026-03-17T10:51:15.029Z",
+    "finishedAt": "2026-03-17T12:00:38.781Z",
+    "params": {
+      "numVehicles": 150,
+      "numGnbs": 10,
+      "numVFCs": 0,
+      "numCFNs": 20,
+      "simTime": 100
+    },
+    "error": null,
+    "command": "docker start 'ns3-dev' >/dev/null 2>&1 || true; docker exec 'ns3-dev' bash -lc 'cd /workspace/ns-3.46 && mkdir -p /workspace/ns-3.46/results_web/run_20260317091721_922747 && '\"'\"'/workspace/ns-3.46/build-linux-out/scratch/ns3.46-v2x-5g-sumo-default'\"'\"' --traceFile='\"'\"'/workspace/ns-3.46/scratch/manchester_city_ns3.tcl'\"'\"' --numVehicles=150 --numGnbs=10 --numBuses=0 --numRsus=20 --testMode=1 --simTime=100 --outputDir='\"'\"'/workspace/ns-3.46/results_web/run_20260317091721_922747'\"'\"' --animFile='\"'\"'/workspace/ns-3.46/results_web/run_20260317091721_922747/anim.xml'\"'\"''",
+    "outputDirLocal": "/mnt/ns3/results_web/run_20260317091721_922747",
+    "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260317091721_922747",
+    "logPath": "/mnt/ns3/results_web/run_20260317091721_922747/runner.log",
+    "mapFilePath": "/mnt/ns3/results_web/run_20260317091721_922747/map-animation.json",
+    "metrics": {
+      "totalTasks": 15486,
+      "successTasks": 15410,
+      "successRate": 0.995092,
+      "avgQueueDelayS": 0.000164,
+      "avgCompletionDelayS": 0.010574535128503215,
+      "density": 150,
+      "processedTasks": 15486,
+      "e2eReliability": 0.5199055330634278,
+      "uplinkReliability": 0.5224696356275303,
+      "downlinkReliability": 0.9992251065478497,
+      "deadlineReliability": 0.9950923414697146
+    },
+    "analysis": {
+      "failureByBin": [
+        {
+          "velocityBin": "0-10",
+          "cfnFailureRate": 0.5553979051037015,
           "vfnFailureRate": null,
-          "gNBSent": 5631,
+          "cfnSent": 23963,
           "vfnSent": 0
         },
         {
           "velocityBin": "10-20",
-          "gNBFailureRate": 0.8018018018018018,
+          "cfnFailureRate": 0.11458333333333337,
           "vfnFailureRate": null,
-          "gNBSent": 555,
+          "cfnSent": 768,
           "vfnSent": 0
         },
         {
           "velocityBin": "20-30",
-          "gNBFailureRate": 0.8039667896678967,
+          "cfnFailureRate": 0.14767483138090165,
           "vfnFailureRate": null,
-          "gNBSent": 2168,
+          "cfnSent": 2817,
           "vfnSent": 0
         },
         {
           "velocityBin": "30-40",
-          "gNBFailureRate": 0.8583860759493671,
+          "cfnFailureRate": 0.1996547756041427,
           "vfnFailureRate": null,
-          "gNBSent": 1264,
+          "cfnSent": 1738,
           "vfnSent": 0
         },
         {
           "velocityBin": "40-50",
-          "gNBFailureRate": 0.5289256198347108,
+          "cfnFailureRate": 0.018018018018018056,
           "vfnFailureRate": null,
-          "gNBSent": 242,
+          "cfnSent": 333,
           "vfnSent": 0
         },
         {
           "velocityBin": "50-60",
-          "gNBFailureRate": 0.7142857142857143,
+          "cfnFailureRate": 0,
           "vfnFailureRate": null,
-          "gNBSent": 7,
+          "cfnSent": 21,
           "vfnSent": 0
         }
       ],
       "delayComponents": {
-        "processedTasks": 1935,
-        "completion": 0.04624035297157629,
-        "queueing": 0.0001731994832041344,
-        "service": 0.005000000000000058,
-        "migration": 0.007380385012919897,
-        "transport": 0.04106715348837205,
+        "processedTasks": 15486,
+        "completion": 0.010574535128503215,
+        "queueing": 0.0001638714968358511,
+        "service": 0.005000000000000134,
+        "migration": 0.004205347410564381,
+        "transport": 0.005410663631667325,
         "shares": {
-          "transport": 0.8881237025507972,
-          "queueing": 0.003745634971917265,
-          "service": 0.10813066247728553
+          "transport": 0.5116691718279945,
+          "queueing": 0.015496803863664976,
+          "service": 0.47283402430834043
         }
       },
       "reliability": {
-        "tasksSent": 9867,
-        "tasksReachingFog": 1935,
-        "responsesSentByFog": 1935,
-        "responsesReceivedByCar": 1888,
-        "tasksDeadlineOk": 1661,
-        "methodDroppedCount": 7979,
-        "preFogLossCount": 7932,
-        "returnPathLossCount": 47,
-        "deadlineMissAfterFogCount": 274,
-        "uplinkReliability": 0.19610823958650045,
-        "downlinkReliability": 0.9757105943152454,
-        "deadlineReliability": 0.8583979328165374,
-        "e2eReliability": 0.16833890746934224,
-        "e2ePlr": 0.8316610925306578,
-        "gnb": {
-          "tx": 9867,
-          "rx": 1888,
-          "failureRate": 0.8086551130029391
+        "tasksSent": 29640,
+        "tasksReachingFog": 15486,
+        "responsesSentByFog": 15486,
+        "responsesReceivedByCar": 15474,
+        "tasksDeadlineOk": 15410,
+        "methodDroppedCount": 14166,
+        "preFogLossCount": 14154,
+        "returnPathLossCount": 12,
+        "deadlineMissAfterFogCount": 76,
+        "uplinkReliability": 0.5224696356275303,
+        "downlinkReliability": 0.9992251065478497,
+        "deadlineReliability": 0.9950923414697146,
+        "e2eReliability": 0.5199055330634278,
+        "e2ePlr": 0.4800944669365722,
+        "cfn": {
+          "tx": 29640,
+          "rx": 15474,
+          "failureRate": 0.4779352226720648
         },
         "vfn": {
           "tx": 0,
@@ -239,16 +310,727 @@
         "handoverEvents": 0,
         "fogReassociationEvents": 0,
         "ulRlc": {
-          "tx": 244388,
-          "rx": 18405,
-          "txDrop": 787,
-          "reliability": 0.0753105717138321
+          "tx": 0,
+          "rx": 0,
+          "txDrop": 0,
+          "reliability": null
         },
         "dlRlc": {
-          "tx": 2522,
-          "rx": 2522,
-          "txDrop": 3,
+          "tx": 15476,
+          "rx": 15473,
+          "txDrop": 0,
+          "reliability": 0.9998061514603257
+        }
+      },
+      "map": {
+        "center": {
+          "lat": 53.4808,
+          "lon": -2.2426
+        },
+        "bounds": {
+          "minLat": 53.472810815055695,
+          "maxLat": 53.48878918494431,
+          "minLon": -2.2647548867443152,
+          "maxLon": -2.2204451132556846
+        },
+        "frameStep": 1,
+        "frameCount": 101,
+        "nodeTypeCounts": {
+          "gNB": 10,
+          "car": 150,
+          "CFN": 20,
+          "VFC": 0
+        }
+      },
+      "metrics": {
+        "totalTasks": 15486,
+        "successTasks": 15410,
+        "successRate": 0.995092,
+        "avgQueueDelayS": 0.000164,
+        "avgCompletionDelayS": 0.010574535128503215,
+        "density": 150,
+        "processedTasks": 15486,
+        "e2eReliability": 0.5199055330634278,
+        "uplinkReliability": 0.5224696356275303,
+        "downlinkReliability": 0.9992251065478497,
+        "deadlineReliability": 0.9950923414697146
+      },
+      "mapFilePath": "/mnt/ns3/results_web/run_20260317091721_922747/map-animation.json"
+    }
+  },
+  {
+    "id": "run_20260317091659_eebba4",
+    "name": "100 VFN",
+    "accessMode": "NR",
+    "scenario": "S2_VFN_ONLY",
+    "status": "completed",
+    "createdAt": "2026-03-17T09:16:59.597Z",
+    "startedAt": "2026-03-17T10:05:44.492Z",
+    "finishedAt": "2026-03-17T10:51:15.028Z",
+    "params": {
+      "numVehicles": 100,
+      "numGnbs": 10,
+      "numVFCs": 20,
+      "numCFNs": 0,
+      "simTime": 100
+    },
+    "error": null,
+    "command": "docker start 'ns3-dev' >/dev/null 2>&1 || true; docker exec 'ns3-dev' bash -lc 'cd /workspace/ns-3.46 && mkdir -p /workspace/ns-3.46/results_web/run_20260317091659_eebba4 && '\"'\"'/workspace/ns-3.46/build-linux-out/scratch/ns3.46-v2x-5g-sumo-default'\"'\"' --traceFile='\"'\"'/workspace/ns-3.46/scratch/manchester_city_ns3.tcl'\"'\"' --numVehicles=100 --numGnbs=10 --numBuses=20 --numRsus=0 --testMode=1 --simTime=100 --outputDir='\"'\"'/workspace/ns-3.46/results_web/run_20260317091659_eebba4'\"'\"' --animFile='\"'\"'/workspace/ns-3.46/results_web/run_20260317091659_eebba4/anim.xml'\"'\"''",
+    "outputDirLocal": "/mnt/ns3/results_web/run_20260317091659_eebba4",
+    "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260317091659_eebba4",
+    "logPath": "/mnt/ns3/results_web/run_20260317091659_eebba4/runner.log",
+    "mapFilePath": "/mnt/ns3/results_web/run_20260317091659_eebba4/map-animation.json",
+    "metrics": {
+      "totalTasks": 14776,
+      "successTasks": 14723,
+      "successRate": 0.996413,
+      "avgQueueDelayS": 0.000214,
+      "avgCompletionDelayS": 0.010935701678397372,
+      "density": 100,
+      "processedTasks": 14776,
+      "e2eReliability": 0.8500577367205543,
+      "uplinkReliability": 0.8531177829099307,
+      "downlinkReliability": 0.9989847715736041,
+      "deadlineReliability": 0.9964131023280997
+    },
+    "analysis": {
+      "failureByBin": [
+        {
+          "velocityBin": "0-10",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.20198536216034324,
+          "cfnSent": 0,
+          "vfnSent": 11887
+        },
+        {
+          "velocityBin": "10-20",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.031094527363184077,
+          "cfnSent": 0,
+          "vfnSent": 804
+        },
+        {
+          "velocityBin": "20-30",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.0425917535115542,
+          "cfnSent": 0,
+          "vfnSent": 2207
+        },
+        {
+          "velocityBin": "30-40",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.011702750146284413,
+          "cfnSent": 0,
+          "vfnSent": 1709
+        },
+        {
+          "velocityBin": "40-50",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.016279069767441867,
+          "cfnSent": 0,
+          "vfnSent": 430
+        },
+        {
+          "velocityBin": "50-60",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.024271844660194164,
+          "cfnSent": 0,
+          "vfnSent": 206
+        },
+        {
+          "velocityBin": "60-70",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.109375,
+          "cfnSent": 0,
+          "vfnSent": 64
+        },
+        {
+          "velocityBin": "70-80",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0,
+          "cfnSent": 0,
+          "vfnSent": 11
+        },
+        {
+          "velocityBin": "80-90",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.5,
+          "cfnSent": 0,
+          "vfnSent": 2
+        }
+      ],
+      "delayComponents": {
+        "processedTasks": 14776,
+        "completion": 0.010935701678397372,
+        "queueing": 0.00021360896047644749,
+        "service": 0.005000000000000358,
+        "migration": 0.005355058134813213,
+        "transport": 0.0057220927179209525,
+        "shares": {
+          "transport": 0.5232487942885549,
+          "queueing": 0.019533173705570978,
+          "service": 0.45721803200587424
+        }
+      },
+      "reliability": {
+        "tasksSent": 17320,
+        "tasksReachingFog": 14776,
+        "responsesSentByFog": 14775,
+        "responsesReceivedByCar": 14760,
+        "tasksDeadlineOk": 14723,
+        "methodDroppedCount": 2560,
+        "preFogLossCount": 2544,
+        "returnPathLossCount": 15,
+        "deadlineMissAfterFogCount": 53,
+        "uplinkReliability": 0.8531177829099307,
+        "downlinkReliability": 0.9989847715736041,
+        "deadlineReliability": 0.9964131023280997,
+        "e2eReliability": 0.8500577367205543,
+        "e2ePlr": 0.1499422632794457,
+        "cfn": {
+          "tx": 0,
+          "rx": 0,
+          "failureRate": null
+        },
+        "vfn": {
+          "tx": 17320,
+          "rx": 14760,
+          "failureRate": 0.14780600461893767
+        },
+        "handoverEvents": 0,
+        "fogReassociationEvents": 0,
+        "ulRlc": {
+          "tx": 0,
+          "rx": 0,
+          "txDrop": 0,
+          "reliability": null
+        },
+        "dlRlc": {
+          "tx": 15178,
+          "rx": 15175,
+          "txDrop": 0,
+          "reliability": 0.9998023455000659
+        }
+      },
+      "map": {
+        "center": {
+          "lat": 53.4808,
+          "lon": -2.2426
+        },
+        "bounds": {
+          "minLat": 53.472821918792675,
+          "maxLat": 53.48877808120733,
+          "minLon": -2.2647548867443152,
+          "maxLon": -2.2204451132556846
+        },
+        "frameStep": 1,
+        "frameCount": 101,
+        "nodeTypeCounts": {
+          "gNB": 10,
+          "car": 100,
+          "CFN": 0,
+          "VFC": 20
+        }
+      },
+      "metrics": {
+        "totalTasks": 14776,
+        "successTasks": 14723,
+        "successRate": 0.996413,
+        "avgQueueDelayS": 0.000214,
+        "avgCompletionDelayS": 0.010935701678397372,
+        "density": 100,
+        "processedTasks": 14776,
+        "e2eReliability": 0.8500577367205543,
+        "uplinkReliability": 0.8531177829099307,
+        "downlinkReliability": 0.9989847715736041,
+        "deadlineReliability": 0.9964131023280997
+      },
+      "mapFilePath": "/mnt/ns3/results_web/run_20260317091659_eebba4/map-animation.json"
+    }
+  },
+  {
+    "id": "run_20260317091648_13cae3",
+    "name": "100 CFN",
+    "accessMode": "NR",
+    "scenario": "S1_CFN_ONLY",
+    "status": "completed",
+    "createdAt": "2026-03-17T09:16:48.129Z",
+    "startedAt": "2026-03-17T09:16:48.135Z",
+    "finishedAt": "2026-03-17T10:05:44.490Z",
+    "params": {
+      "numVehicles": 100,
+      "numGnbs": 10,
+      "numVFCs": 0,
+      "numCFNs": 20,
+      "simTime": 100
+    },
+    "error": null,
+    "command": "docker start 'ns3-dev' >/dev/null 2>&1 || true; docker exec 'ns3-dev' bash -lc 'cd /workspace/ns-3.46 && mkdir -p /workspace/ns-3.46/results_web/run_20260317091648_13cae3 && '\"'\"'/workspace/ns-3.46/build-linux-out/scratch/ns3.46-v2x-5g-sumo-default'\"'\"' --traceFile='\"'\"'/workspace/ns-3.46/scratch/manchester_city_ns3.tcl'\"'\"' --numVehicles=100 --numGnbs=10 --numBuses=0 --numRsus=20 --testMode=1 --simTime=100 --outputDir='\"'\"'/workspace/ns-3.46/results_web/run_20260317091648_13cae3'\"'\"' --animFile='\"'\"'/workspace/ns-3.46/results_web/run_20260317091648_13cae3/anim.xml'\"'\"''",
+    "outputDirLocal": "/mnt/ns3/results_web/run_20260317091648_13cae3",
+    "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260317091648_13cae3",
+    "logPath": "/mnt/ns3/results_web/run_20260317091648_13cae3/runner.log",
+    "mapFilePath": "/mnt/ns3/results_web/run_20260317091648_13cae3/map-animation.json",
+    "metrics": {
+      "totalTasks": 16965,
+      "successTasks": 16892,
+      "successRate": 0.995697,
+      "avgQueueDelayS": 0.000171,
+      "avgCompletionDelayS": 0.010956928323018006,
+      "density": 100,
+      "processedTasks": 16965,
+      "e2eReliability": 0.852872866808038,
+      "uplinkReliability": 0.8565586186004241,
+      "downlinkReliability": 0.9990568262202311,
+      "deadlineReliability": 0.9956970232832302
+    },
+    "analysis": {
+      "failureByBin": [
+        {
+          "velocityBin": "0-10",
+          "cfnFailureRate": 0.17527364580409766,
+          "vfnFailureRate": null,
+          "cfnSent": 14252,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "10-20",
+          "cfnFailureRate": 0.06355932203389836,
+          "vfnFailureRate": null,
+          "cfnSent": 708,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "20-30",
+          "cfnFailureRate": 0.053226394458621984,
+          "vfnFailureRate": null,
+          "cfnSent": 2743,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "30-40",
+          "cfnFailureRate": 0.09545715928694654,
+          "vfnFailureRate": null,
+          "cfnSent": 1739,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "40-50",
+          "cfnFailureRate": 0.008595988538681931,
+          "vfnFailureRate": null,
+          "cfnSent": 349,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "50-60",
+          "cfnFailureRate": 0,
+          "vfnFailureRate": null,
+          "cfnSent": 15,
+          "vfnSent": 0
+        }
+      ],
+      "delayComponents": {
+        "processedTasks": 16965,
+        "completion": 0.010956928323018006,
+        "queueing": 0.0001712673150604177,
+        "service": 0.004999999999999725,
+        "migration": 0.004349519834954318,
+        "transport": 0.005785661007957515,
+        "shares": {
+          "transport": 0.5280367670018745,
+          "queueing": 0.0156309606133527,
+          "service": 0.4563322723847727
+        }
+      },
+      "reliability": {
+        "tasksSent": 19806,
+        "tasksReachingFog": 16965,
+        "responsesSentByFog": 16964,
+        "responsesReceivedByCar": 16948,
+        "tasksDeadlineOk": 16892,
+        "methodDroppedCount": 2858,
+        "preFogLossCount": 2841,
+        "returnPathLossCount": 16,
+        "deadlineMissAfterFogCount": 73,
+        "uplinkReliability": 0.8565586186004241,
+        "downlinkReliability": 0.9990568262202311,
+        "deadlineReliability": 0.9956970232832302,
+        "e2eReliability": 0.852872866808038,
+        "e2ePlr": 0.14712713319196202,
+        "cfn": {
+          "tx": 19806,
+          "rx": 16948,
+          "failureRate": 0.14429970715944662
+        },
+        "vfn": {
+          "tx": 0,
+          "rx": 0,
+          "failureRate": null
+        },
+        "handoverEvents": 0,
+        "fogReassociationEvents": 0,
+        "ulRlc": {
+          "tx": 0,
+          "rx": 0,
+          "txDrop": 0,
+          "reliability": null
+        },
+        "dlRlc": {
+          "tx": 17359,
+          "rx": 17359,
+          "txDrop": 0,
           "reliability": 1
+        }
+      },
+      "map": {
+        "center": {
+          "lat": 53.4808,
+          "lon": -2.2426
+        },
+        "bounds": {
+          "minLat": 53.472810815055695,
+          "maxLat": 53.48878918494431,
+          "minLon": -2.2647548867443152,
+          "maxLon": -2.2204451132556846
+        },
+        "frameStep": 1,
+        "frameCount": 101,
+        "nodeTypeCounts": {
+          "gNB": 10,
+          "car": 100,
+          "CFN": 20,
+          "VFC": 0
+        }
+      },
+      "metrics": {
+        "totalTasks": 16965,
+        "successTasks": 16892,
+        "successRate": 0.995697,
+        "avgQueueDelayS": 0.000171,
+        "avgCompletionDelayS": 0.010956928323018006,
+        "density": 100,
+        "processedTasks": 16965,
+        "e2eReliability": 0.852872866808038,
+        "uplinkReliability": 0.8565586186004241,
+        "downlinkReliability": 0.9990568262202311,
+        "deadlineReliability": 0.9956970232832302
+      },
+      "mapFilePath": "/mnt/ns3/results_web/run_20260317091648_13cae3/map-animation.json"
+    }
+  },
+  {
+    "id": "run_20260316175959_f0020a",
+    "name": "50 VFN",
+    "accessMode": "NR",
+    "scenario": "S2_VFN_ONLY",
+    "status": "completed",
+    "createdAt": "2026-03-16T17:59:59.475Z",
+    "startedAt": "2026-03-16T18:06:57.589Z",
+    "finishedAt": "2026-03-16T18:14:09.439Z",
+    "params": {
+      "numVehicles": 50,
+      "numGnbs": 10,
+      "numVFCs": 20,
+      "numCFNs": 0,
+      "simTime": 100
+    },
+    "error": null,
+    "command": "docker start 'ns3-dev' >/dev/null 2>&1 || true; docker exec 'ns3-dev' bash -lc 'cd /workspace/ns-3.46 && mkdir -p /workspace/ns-3.46/results_web/run_20260316175959_f0020a && '\"'\"'/workspace/ns-3.46/build-linux-out/scratch/ns3.46-v2x-5g-sumo-default'\"'\"' --traceFile='\"'\"'/workspace/ns-3.46/scratch/manchester_city_ns3.tcl'\"'\"' --numVehicles=50 --numGnbs=10 --numBuses=20 --numRsus=0 --testMode=1 --simTime=100 --outputDir='\"'\"'/workspace/ns-3.46/results_web/run_20260316175959_f0020a'\"'\"' --animFile='\"'\"'/workspace/ns-3.46/results_web/run_20260316175959_f0020a/anim.xml'\"'\"''",
+    "outputDirLocal": "/mnt/ns3/results_web/run_20260316175959_f0020a",
+    "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260316175959_f0020a",
+    "logPath": "/mnt/ns3/results_web/run_20260316175959_f0020a/runner.log",
+    "mapFilePath": "/mnt/ns3/results_web/run_20260316175959_f0020a/map-animation.json",
+    "metrics": {
+      "totalTasks": 8767,
+      "successTasks": 8722,
+      "successRate": 0.994867,
+      "avgQueueDelayS": 0.000113,
+      "avgCompletionDelayS": 0.010684914337857909,
+      "density": 50,
+      "processedTasks": 8767,
+      "e2eReliability": 0.9542669584245077,
+      "uplinkReliability": 0.9591903719912472,
+      "downlinkReliability": 0.9993156153758412,
+      "deadlineReliability": 0.9948671153188092
+    },
+    "analysis": {
+      "failureByBin": [
+        {
+          "velocityBin": "0-10",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.035057650358367054,
+          "cfnSent": 0,
+          "vfnSent": 6418
+        },
+        {
+          "velocityBin": "10-20",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.03389830508474578,
+          "cfnSent": 0,
+          "vfnSent": 472
+        },
+        {
+          "velocityBin": "20-30",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.052837573385518644,
+          "cfnSent": 0,
+          "vfnSent": 1022
+        },
+        {
+          "velocityBin": "30-40",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.06524633821571235,
+          "cfnSent": 0,
+          "vfnSent": 751
+        },
+        {
+          "velocityBin": "40-50",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.06976744186046513,
+          "cfnSent": 0,
+          "vfnSent": 301
+        },
+        {
+          "velocityBin": "50-60",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.11475409836065575,
+          "cfnSent": 0,
+          "vfnSent": 122
+        },
+        {
+          "velocityBin": "60-70",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0,
+          "cfnSent": 0,
+          "vfnSent": 39
+        },
+        {
+          "velocityBin": "70-80",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0,
+          "cfnSent": 0,
+          "vfnSent": 15
+        }
+      ],
+      "delayComponents": {
+        "processedTasks": 8767,
+        "completion": 0.010684914337857909,
+        "queueing": 0.00011269111440629606,
+        "service": 0.005000000000000453,
+        "migration": 0.006459549674917305,
+        "transport": 0.005572223223451568,
+        "shares": {
+          "transport": 0.5215037806815458,
+          "queueing": 0.010546749449082045,
+          "service": 0.4679494698693721
+        }
+      },
+      "reliability": {
+        "tasksSent": 9140,
+        "tasksReachingFog": 8767,
+        "responsesSentByFog": 8767,
+        "responsesReceivedByCar": 8761,
+        "tasksDeadlineOk": 8722,
+        "methodDroppedCount": 379,
+        "preFogLossCount": 373,
+        "returnPathLossCount": 6,
+        "deadlineMissAfterFogCount": 45,
+        "uplinkReliability": 0.9591903719912472,
+        "downlinkReliability": 0.9993156153758412,
+        "deadlineReliability": 0.9948671153188092,
+        "e2eReliability": 0.9542669584245077,
+        "e2ePlr": 0.045733041575492295,
+        "cfn": {
+          "tx": 0,
+          "rx": 0,
+          "failureRate": null
+        },
+        "vfn": {
+          "tx": 9140,
+          "rx": 8761,
+          "failureRate": 0.041466083150984656
+        },
+        "handoverEvents": 0,
+        "fogReassociationEvents": 0,
+        "ulRlc": {
+          "tx": 0,
+          "rx": 0,
+          "txDrop": 0,
+          "reliability": null
+        },
+        "dlRlc": {
+          "tx": 8751,
+          "rx": 8751,
+          "txDrop": 0,
+          "reliability": 1
+        }
+      },
+      "map": {
+        "center": {
+          "lat": 53.4808,
+          "lon": -2.2426
+        },
+        "bounds": {
+          "minLat": 53.475445481494795,
+          "maxLat": 53.48615451850521,
+          "minLon": -2.258800458553462,
+          "maxLon": -2.226399541446538
+        },
+        "frameStep": 1,
+        "frameCount": 101,
+        "nodeTypeCounts": {
+          "gNB": 10,
+          "car": 50,
+          "CFN": 0,
+          "VFC": 20
+        }
+      },
+      "metrics": {
+        "totalTasks": 8767,
+        "successTasks": 8722,
+        "successRate": 0.994867,
+        "avgQueueDelayS": 0.000113,
+        "avgCompletionDelayS": 0.010684914337857909,
+        "density": 50,
+        "processedTasks": 8767,
+        "e2eReliability": 0.9542669584245077,
+        "uplinkReliability": 0.9591903719912472,
+        "downlinkReliability": 0.9993156153758412,
+        "deadlineReliability": 0.9948671153188092
+      },
+      "mapFilePath": "/mnt/ns3/results_web/run_20260316175959_f0020a/map-animation.json"
+    }
+  },
+  {
+    "id": "run_20260316175945_cc579a",
+    "name": "50 CFN",
+    "accessMode": "NR",
+    "scenario": "S1_CFN_ONLY",
+    "status": "completed",
+    "createdAt": "2026-03-16T17:59:45.235Z",
+    "startedAt": "2026-03-16T17:59:45.238Z",
+    "finishedAt": "2026-03-16T18:06:57.588Z",
+    "params": {
+      "numVehicles": 50,
+      "numGnbs": 10,
+      "numVFCs": 0,
+      "numCFNs": 20,
+      "simTime": 100
+    },
+    "error": null,
+    "command": "docker start 'ns3-dev' >/dev/null 2>&1 || true; docker exec 'ns3-dev' bash -lc 'cd /workspace/ns-3.46 && mkdir -p /workspace/ns-3.46/results_web/run_20260316175945_cc579a && '\"'\"'/workspace/ns-3.46/build-linux-out/scratch/ns3.46-v2x-5g-sumo-default'\"'\"' --traceFile='\"'\"'/workspace/ns-3.46/scratch/manchester_city_ns3.tcl'\"'\"' --numVehicles=50 --numGnbs=10 --numBuses=0 --numRsus=20 --testMode=1 --simTime=100 --outputDir='\"'\"'/workspace/ns-3.46/results_web/run_20260316175945_cc579a'\"'\"' --animFile='\"'\"'/workspace/ns-3.46/results_web/run_20260316175945_cc579a/anim.xml'\"'\"''",
+    "outputDirLocal": "/mnt/ns3/results_web/run_20260316175945_cc579a",
+    "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260316175945_cc579a",
+    "logPath": "/mnt/ns3/results_web/run_20260316175945_cc579a/runner.log",
+    "mapFilePath": "/mnt/ns3/results_web/run_20260316175945_cc579a/map-animation.json",
+    "metrics": {
+      "totalTasks": 9556,
+      "successTasks": 9508,
+      "successRate": 0.994977,
+      "avgQueueDelayS": 0.000117,
+      "avgCompletionDelayS": 0.010631104750941794,
+      "density": 50,
+      "processedTasks": 9556,
+      "e2eReliability": 0.9544268219233085,
+      "uplinkReliability": 0.9592451314996988,
+      "downlinkReliability": 0.9993721222268732,
+      "deadlineReliability": 0.9949769778149854
+    },
+    "analysis": {
+      "failureByBin": [
+        {
+          "velocityBin": "0-10",
+          "cfnFailureRate": 0.045767803498851345,
+          "vfnFailureRate": null,
+          "cfnSent": 5659,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "10-20",
+          "cfnFailureRate": 0.03585657370517925,
+          "vfnFailureRate": null,
+          "cfnSent": 502,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "20-30",
+          "cfnFailureRate": 0.03452914798206275,
+          "vfnFailureRate": null,
+          "cfnSent": 2230,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "30-40",
+          "cfnFailureRate": 0.03795507358636718,
+          "vfnFailureRate": null,
+          "cfnSent": 1291,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "40-50",
+          "cfnFailureRate": 0.03383458646616544,
+          "vfnFailureRate": null,
+          "cfnSent": 266,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "50-60",
+          "cfnFailureRate": 0,
+          "vfnFailureRate": null,
+          "cfnSent": 14,
+          "vfnSent": 0
+        }
+      ],
+      "delayComponents": {
+        "processedTasks": 9556,
+        "completion": 0.010631104750941794,
+        "queueing": 0.00011691042277103364,
+        "service": 0.005000000000000627,
+        "migration": 0.004598401004604437,
+        "transport": 0.005514194328170737,
+        "shares": {
+          "transport": 0.5186849774650117,
+          "queueing": 0.010997015409961987,
+          "service": 0.4703180071250263
+        }
+      },
+      "reliability": {
+        "tasksSent": 9962,
+        "tasksReachingFog": 9556,
+        "responsesSentByFog": 9556,
+        "responsesReceivedByCar": 9550,
+        "tasksDeadlineOk": 9508,
+        "methodDroppedCount": 412,
+        "preFogLossCount": 406,
+        "returnPathLossCount": 6,
+        "deadlineMissAfterFogCount": 48,
+        "uplinkReliability": 0.9592451314996988,
+        "downlinkReliability": 0.9993721222268732,
+        "deadlineReliability": 0.9949769778149854,
+        "e2eReliability": 0.9544268219233085,
+        "e2ePlr": 0.04557317807669148,
+        "cfn": {
+          "tx": 9962,
+          "rx": 9550,
+          "failureRate": 0.04135715719734989
+        },
+        "vfn": {
+          "tx": 0,
+          "rx": 0,
+          "failureRate": null
+        },
+        "handoverEvents": 0,
+        "fogReassociationEvents": 0,
+        "ulRlc": {
+          "tx": 0,
+          "rx": 0,
+          "txDrop": 0,
+          "reliability": null
+        },
+        "dlRlc": {
+          "tx": 9547,
+          "rx": 9546,
+          "txDrop": 0,
+          "reliability": 0.9998952550539436
         }
       },
       "map": {
@@ -265,6 +1047,1908 @@
         "frameStep": 1,
         "frameCount": 101,
         "nodeTypeCounts": {
+          "gNB": 10,
+          "car": 50,
+          "CFN": 20,
+          "VFC": 0
+        }
+      },
+      "metrics": {
+        "totalTasks": 9556,
+        "successTasks": 9508,
+        "successRate": 0.994977,
+        "avgQueueDelayS": 0.000117,
+        "avgCompletionDelayS": 0.010631104750941794,
+        "density": 50,
+        "processedTasks": 9556,
+        "e2eReliability": 0.9544268219233085,
+        "uplinkReliability": 0.9592451314996988,
+        "downlinkReliability": 0.9993721222268732,
+        "deadlineReliability": 0.9949769778149854
+      },
+      "mapFilePath": "/mnt/ns3/results_web/run_20260316175945_cc579a/map-animation.json"
+    }
+  },
+  {
+    "id": "run_20260315200602_1136d7",
+    "name": "S3_HYBRID 1136d7",
+    "accessMode": "NR",
+    "scenario": "S3_HYBRID",
+    "status": "completed",
+    "createdAt": "2026-03-15T20:06:02Z",
+    "startedAt": "2026-03-15T20:06:02Z",
+    "finishedAt": "2026-03-15T20:06:02Z",
+    "params": {
+      "numVehicles": 40,
+      "numGnbs": 4,
+      "numVFCs": 7,
+      "numCFNs": 7,
+      "simTime": 100
+    },
+    "error": null,
+    "metrics": {
+      "totalTasks": 14637,
+      "successTasks": 14572,
+      "successRate": 0.995559,
+      "avgQueueDelayS": 0.000212,
+      "avgCompletionDelayS": 0.010983464576074336,
+      "density": 40,
+      "processedTasks": 14637,
+      "e2eReliability": 0.8413394919168591,
+      "uplinkReliability": 0.8450923787528868,
+      "downlinkReliability": 0.9990433891356337,
+      "deadlineReliability": 0.9955591992894719
+    },
+    "analysis": {
+      "failureByBin": [
+        {
+          "velocityBin": "0-10",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.20947253301926472,
+          "cfnSent": 0,
+          "vfnSent": 11887
+        },
+        {
+          "velocityBin": "10-20",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.04104477611940294,
+          "cfnSent": 0,
+          "vfnSent": 804
+        },
+        {
+          "velocityBin": "20-30",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.057544177616674186,
+          "cfnSent": 0,
+          "vfnSent": 2207
+        },
+        {
+          "velocityBin": "30-40",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.018139262726740824,
+          "cfnSent": 0,
+          "vfnSent": 1709
+        },
+        {
+          "velocityBin": "40-50",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.016279069767441867,
+          "cfnSent": 0,
+          "vfnSent": 430
+        },
+        {
+          "velocityBin": "50-60",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.024271844660194164,
+          "cfnSent": 0,
+          "vfnSent": 206
+        },
+        {
+          "velocityBin": "60-70",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.09375,
+          "cfnSent": 0,
+          "vfnSent": 64
+        },
+        {
+          "velocityBin": "70-80",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0,
+          "cfnSent": 0,
+          "vfnSent": 11
+        },
+        {
+          "velocityBin": "80-90",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0,
+          "cfnSent": 0,
+          "vfnSent": 2
+        }
+      ],
+      "delayComponents": {
+        "processedTasks": 14637,
+        "completion": 0.010983464576074336,
+        "queueing": 0.0002121642413062776,
+        "service": 0.005000000000000405,
+        "migration": 0.00525054136776662,
+        "transport": 0.005771300334768032,
+        "shares": {
+          "transport": 0.5254535392538761,
+          "queueing": 0.019316695550549236,
+          "service": 0.4552297651955748
+        }
+      },
+      "reliability": {
+        "tasksSent": 17320,
+        "tasksReachingFog": 14637,
+        "responsesSentByFog": 14635,
+        "responsesReceivedByCar": 14621,
+        "tasksDeadlineOk": 14572,
+        "methodDroppedCount": 2699,
+        "preFogLossCount": 2683,
+        "returnPathLossCount": 14,
+        "deadlineMissAfterFogCount": 65,
+        "uplinkReliability": 0.8450923787528868,
+        "downlinkReliability": 0.9990433891356337,
+        "deadlineReliability": 0.9955591992894719,
+        "e2eReliability": 0.8413394919168591,
+        "e2ePlr": 0.15866050808314092,
+        "cfn": {
+          "tx": 0,
+          "rx": 0,
+          "failureRate": null
+        },
+        "vfn": {
+          "tx": 17320,
+          "rx": 14621,
+          "failureRate": 0.15583140877598156
+        },
+        "handoverEvents": 0,
+        "fogReassociationEvents": 0,
+        "ulRlc": {
+          "tx": 0,
+          "rx": 0,
+          "txDrop": 0,
+          "reliability": null
+        },
+        "dlRlc": {
+          "tx": 15070,
+          "rx": 15064,
+          "txDrop": 0,
+          "reliability": 0.9996018579960185
+        }
+      },
+      "map": {
+        "center": {
+          "lat": 53.4808,
+          "lon": -2.2426
+        },
+        "bounds": {
+          "minLat": 53.47512069708947,
+          "maxLat": 53.48647930291053,
+          "minLon": -2.260495437624357,
+          "maxLon": -2.224704562375643
+        },
+        "frameStep": 1,
+        "frameCount": 101,
+        "nodeTypeCounts": {
+          "gNB": 4,
+          "car": 40,
+          "CFN": 7,
+          "VFC": 7
+        }
+      },
+      "metrics": {
+        "totalTasks": 14637,
+        "successTasks": 14572,
+        "successRate": 0.995559,
+        "avgQueueDelayS": 0.000212,
+        "avgCompletionDelayS": 0.010983464576074336,
+        "density": 40,
+        "processedTasks": 14637,
+        "e2eReliability": 0.8413394919168591,
+        "uplinkReliability": 0.8450923787528868,
+        "downlinkReliability": 0.9990433891356337,
+        "deadlineReliability": 0.9955591992894719
+      },
+      "mapFilePath": "/mnt/ns3/results_web/run_20260315200602_1136d7/map-animation.json"
+    },
+    "outputDirLocal": "/mnt/ns3/results_web/run_20260315200602_1136d7",
+    "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260315200602_1136d7",
+    "mapFilePath": "/mnt/ns3/results_web/run_20260315200602_1136d7/map-animation.json",
+    "logPath": "/mnt/ns3/results_web/run_20260315200602_1136d7/runner.log"
+  },
+  {
+    "id": "run_20260315200553_4947d2",
+    "name": "S1_CFN_ONLY 4947d2",
+    "accessMode": "NR",
+    "scenario": "S1_CFN_ONLY",
+    "status": "completed",
+    "createdAt": "2026-03-15T20:05:53Z",
+    "startedAt": "2026-03-15T20:05:53Z",
+    "finishedAt": "2026-03-15T20:05:53Z",
+    "params": {
+      "numVehicles": 100,
+      "numGnbs": 10,
+      "numVFCs": 0,
+      "numCFNs": 20,
+      "simTime": 100
+    },
+    "error": null,
+    "metrics": {
+      "totalTasks": 17013,
+      "successTasks": 16935,
+      "successRate": 0.995415,
+      "avgQueueDelayS": 0.000177,
+      "avgCompletionDelayS": 0.011293229883030645,
+      "density": 100,
+      "processedTasks": 17013,
+      "e2eReliability": 0.8550439260830052,
+      "uplinkReliability": 0.8589821266282944,
+      "downlinkReliability": 0.9997060898189514,
+      "deadlineReliability": 0.995415270675366
+    },
+    "analysis": {
+      "failureByBin": [
+        {
+          "velocityBin": "0-10",
+          "cfnFailureRate": 0.17387033398821217,
+          "vfnFailureRate": null,
+          "cfnSent": 14252,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "10-20",
+          "cfnFailureRate": 0.05649717514124297,
+          "vfnFailureRate": null,
+          "cfnSent": 708,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "20-30",
+          "cfnFailureRate": 0.042654028436018954,
+          "vfnFailureRate": null,
+          "cfnSent": 2743,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "30-40",
+          "cfnFailureRate": 0.09143185738930415,
+          "vfnFailureRate": null,
+          "cfnSent": 1739,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "40-50",
+          "cfnFailureRate": 0.014326647564469885,
+          "vfnFailureRate": null,
+          "cfnSent": 349,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "50-60",
+          "cfnFailureRate": 0,
+          "vfnFailureRate": null,
+          "cfnSent": 15,
+          "vfnSent": 0
+        }
+      ],
+      "delayComponents": {
+        "processedTasks": 17013,
+        "completion": 0.011293229883030645,
+        "queueing": 0.00017703867630635315,
+        "service": 0.004999999999999713,
+        "migration": 0.004431208428848528,
+        "transport": 0.006116191206724233,
+        "shares": {
+          "transport": 0.5415803335336943,
+          "queueing": 0.015676531704395674,
+          "service": 0.44274313476190996
+        }
+      },
+      "reliability": {
+        "tasksSent": 19806,
+        "tasksReachingFog": 17013,
+        "responsesSentByFog": 17012,
+        "responsesReceivedByCar": 17007,
+        "tasksDeadlineOk": 16935,
+        "methodDroppedCount": 2799,
+        "preFogLossCount": 2793,
+        "returnPathLossCount": 5,
+        "deadlineMissAfterFogCount": 78,
+        "uplinkReliability": 0.8589821266282944,
+        "downlinkReliability": 0.9997060898189514,
+        "deadlineReliability": 0.995415270675366,
+        "e2eReliability": 0.8550439260830052,
+        "e2ePlr": 0.14495607391699483,
+        "cfn": {
+          "tx": 19806,
+          "rx": 17007,
+          "failureRate": 0.1413208118751893
+        },
+        "vfn": {
+          "tx": 0,
+          "rx": 0,
+          "failureRate": null
+        },
+        "handoverEvents": 0,
+        "fogReassociationEvents": 0,
+        "ulRlc": {
+          "tx": 0,
+          "rx": 0,
+          "txDrop": 0,
+          "reliability": null
+        },
+        "dlRlc": {
+          "tx": 17482,
+          "rx": 17481,
+          "txDrop": 0,
+          "reliability": 0.9999427983068299
+        }
+      },
+      "map": {
+        "center": {
+          "lat": 53.4808,
+          "lon": -2.2426
+        },
+        "bounds": {
+          "minLat": 53.472810815055695,
+          "maxLat": 53.48878918494431,
+          "minLon": -2.2647548867443152,
+          "maxLon": -2.2204451132556846
+        },
+        "frameStep": 1,
+        "frameCount": 101,
+        "nodeTypeCounts": {
+          "gNB": 10,
+          "car": 100,
+          "CFN": 20,
+          "VFC": 0
+        }
+      },
+      "metrics": {
+        "totalTasks": 17013,
+        "successTasks": 16935,
+        "successRate": 0.995415,
+        "avgQueueDelayS": 0.000177,
+        "avgCompletionDelayS": 0.011293229883030645,
+        "density": 100,
+        "processedTasks": 17013,
+        "e2eReliability": 0.8550439260830052,
+        "uplinkReliability": 0.8589821266282944,
+        "downlinkReliability": 0.9997060898189514,
+        "deadlineReliability": 0.995415270675366
+      },
+      "mapFilePath": "/mnt/ns3/results_web/run_20260315200553_4947d2/map-animation.json"
+    },
+    "outputDirLocal": "/mnt/ns3/results_web/run_20260315200553_4947d2",
+    "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260315200553_4947d2",
+    "mapFilePath": "/mnt/ns3/results_web/run_20260315200553_4947d2/map-animation.json",
+    "logPath": "/mnt/ns3/results_web/run_20260315200553_4947d2/runner.log"
+  },
+  {
+    "id": "run_20260315200533_96db8e",
+    "name": "S2_VFN_ONLY 96db8e",
+    "accessMode": "NR",
+    "scenario": "S2_VFN_ONLY",
+    "status": "completed",
+    "createdAt": "2026-03-15T20:05:33Z",
+    "startedAt": "2026-03-15T20:05:33Z",
+    "finishedAt": "2026-03-15T20:05:33Z",
+    "params": {
+      "numVehicles": 50,
+      "numGnbs": 10,
+      "numVFCs": 20,
+      "numCFNs": 0,
+      "simTime": 100
+    },
+    "error": null,
+    "metrics": {
+      "totalTasks": 8757,
+      "successTasks": 8714,
+      "successRate": 0.99509,
+      "avgQueueDelayS": 0.000111,
+      "avgCompletionDelayS": 0.01066187347265046,
+      "density": 50,
+      "processedTasks": 8757,
+      "e2eReliability": 0.9533916849015317,
+      "uplinkReliability": 0.9580962800875273,
+      "downlinkReliability": 0.9994290282060067,
+      "deadlineReliability": 0.995089642571657
+    },
+    "analysis": {
+      "failureByBin": [
+        {
+          "velocityBin": "0-10",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.03614833281396068,
+          "cfnSent": 0,
+          "vfnSent": 6418
+        },
+        {
+          "velocityBin": "10-20",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.0423728813559322,
+          "cfnSent": 0,
+          "vfnSent": 472
+        },
+        {
+          "velocityBin": "20-30",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.050880626223091974,
+          "cfnSent": 0,
+          "vfnSent": 1022
+        },
+        {
+          "velocityBin": "30-40",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.06524633821571235,
+          "cfnSent": 0,
+          "vfnSent": 751
+        },
+        {
+          "velocityBin": "40-50",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.06312292358803984,
+          "cfnSent": 0,
+          "vfnSent": 301
+        },
+        {
+          "velocityBin": "50-60",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.1311475409836066,
+          "cfnSent": 0,
+          "vfnSent": 122
+        },
+        {
+          "velocityBin": "60-70",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0,
+          "cfnSent": 0,
+          "vfnSent": 39
+        },
+        {
+          "velocityBin": "70-80",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0,
+          "cfnSent": 0,
+          "vfnSent": 15
+        }
+      ],
+      "delayComponents": {
+        "processedTasks": 8757,
+        "completion": 0.01066187347265046,
+        "queueing": 0.00011126607285600064,
+        "service": 0.005000000000000451,
+        "migration": 0.006466926116249859,
+        "transport": 0.005550607399794431,
+        "shares": {
+          "transport": 0.5206033830763865,
+          "queueing": 0.01043588381923804,
+          "service": 0.46896073310437547
+        }
+      },
+      "reliability": {
+        "tasksSent": 9140,
+        "tasksReachingFog": 8757,
+        "responsesSentByFog": 8757,
+        "responsesReceivedByCar": 8752,
+        "tasksDeadlineOk": 8714,
+        "methodDroppedCount": 388,
+        "preFogLossCount": 383,
+        "returnPathLossCount": 5,
+        "deadlineMissAfterFogCount": 43,
+        "uplinkReliability": 0.9580962800875273,
+        "downlinkReliability": 0.9994290282060067,
+        "deadlineReliability": 0.995089642571657,
+        "e2eReliability": 0.9533916849015317,
+        "e2ePlr": 0.0466083150984683,
+        "cfn": {
+          "tx": 0,
+          "rx": 0,
+          "failureRate": null
+        },
+        "vfn": {
+          "tx": 9140,
+          "rx": 8752,
+          "failureRate": 0.04245076586433261
+        },
+        "handoverEvents": 0,
+        "fogReassociationEvents": 0,
+        "ulRlc": {
+          "tx": 0,
+          "rx": 0,
+          "txDrop": 0,
+          "reliability": null
+        },
+        "dlRlc": {
+          "tx": 8744,
+          "rx": 8744,
+          "txDrop": 0,
+          "reliability": 1
+        }
+      },
+      "map": {
+        "center": {
+          "lat": 53.4808,
+          "lon": -2.2426
+        },
+        "bounds": {
+          "minLat": 53.475445481494795,
+          "maxLat": 53.48615451850521,
+          "minLon": -2.258800458553462,
+          "maxLon": -2.226399541446538
+        },
+        "frameStep": 1,
+        "frameCount": 101,
+        "nodeTypeCounts": {
+          "gNB": 10,
+          "car": 50,
+          "CFN": 0,
+          "VFC": 20
+        }
+      },
+      "metrics": {
+        "totalTasks": 8757,
+        "successTasks": 8714,
+        "successRate": 0.99509,
+        "avgQueueDelayS": 0.000111,
+        "avgCompletionDelayS": 0.01066187347265046,
+        "density": 50,
+        "processedTasks": 8757,
+        "e2eReliability": 0.9533916849015317,
+        "uplinkReliability": 0.9580962800875273,
+        "downlinkReliability": 0.9994290282060067,
+        "deadlineReliability": 0.995089642571657
+      },
+      "mapFilePath": "/mnt/ns3/results_web/run_20260315200533_96db8e/map-animation.json"
+    },
+    "outputDirLocal": "/mnt/ns3/results_web/run_20260315200533_96db8e",
+    "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260315200533_96db8e",
+    "mapFilePath": "/mnt/ns3/results_web/run_20260315200533_96db8e/map-animation.json",
+    "logPath": "/mnt/ns3/results_web/run_20260315200533_96db8e/runner.log"
+  },
+  {
+    "id": "run_20260315200524_b79ad8",
+    "name": "S1_CFN_ONLY b79ad8",
+    "accessMode": "NR",
+    "scenario": "S1_CFN_ONLY",
+    "status": "completed",
+    "createdAt": "2026-03-15T20:05:24Z",
+    "startedAt": "2026-03-15T20:05:24Z",
+    "finishedAt": "2026-03-15T20:05:24Z",
+    "params": {
+      "numVehicles": 50,
+      "numGnbs": 10,
+      "numVFCs": 0,
+      "numCFNs": 20,
+      "simTime": 100
+    },
+    "error": null,
+    "metrics": {
+      "totalTasks": 9519,
+      "successTasks": 9472,
+      "successRate": 0.995063,
+      "avgQueueDelayS": 0.000118,
+      "avgCompletionDelayS": 0.010866406345204317,
+      "density": 50,
+      "processedTasks": 9519,
+      "e2eReliability": 0.9508130897410159,
+      "uplinkReliability": 0.955531017867898,
+      "downlinkReliability": 0.9993696816892531,
+      "deadlineReliability": 0.9950625065658157
+    },
+    "analysis": {
+      "failureByBin": [
+        {
+          "velocityBin": "0-10",
+          "cfnFailureRate": 0.049655416151263454,
+          "vfnFailureRate": null,
+          "cfnSent": 5659,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "10-20",
+          "cfnFailureRate": 0.043824701195219085,
+          "vfnFailureRate": null,
+          "cfnSent": 502,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "20-30",
+          "cfnFailureRate": 0.03811659192825112,
+          "vfnFailureRate": null,
+          "cfnSent": 2230,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "30-40",
+          "cfnFailureRate": 0.04260263361735084,
+          "vfnFailureRate": null,
+          "cfnSent": 1291,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "40-50",
+          "cfnFailureRate": 0.018796992481203034,
+          "vfnFailureRate": null,
+          "cfnSent": 266,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "50-60",
+          "cfnFailureRate": 0.0714285714285714,
+          "vfnFailureRate": null,
+          "cfnSent": 14,
+          "vfnSent": 0
+        }
+      ],
+      "delayComponents": {
+        "processedTasks": 9519,
+        "completion": 0.010866406345204317,
+        "queueing": 0.00011803645340897132,
+        "service": 0.005000000000000619,
+        "migration": 0.004617902510767938,
+        "transport": 0.005748369891795339,
+        "shares": {
+          "transport": 0.5290037671315273,
+          "queueing": 0.010862510535606634,
+          "service": 0.4601337223328661
+        }
+      },
+      "reliability": {
+        "tasksSent": 9962,
+        "tasksReachingFog": 9519,
+        "responsesSentByFog": 9519,
+        "responsesReceivedByCar": 9513,
+        "tasksDeadlineOk": 9472,
+        "methodDroppedCount": 449,
+        "preFogLossCount": 443,
+        "returnPathLossCount": 6,
+        "deadlineMissAfterFogCount": 47,
+        "uplinkReliability": 0.955531017867898,
+        "downlinkReliability": 0.9993696816892531,
+        "deadlineReliability": 0.9950625065658157,
+        "e2eReliability": 0.9508130897410159,
+        "e2ePlr": 0.04918691025898414,
+        "cfn": {
+          "tx": 9962,
+          "rx": 9513,
+          "failureRate": 0.045071270829150745
+        },
+        "vfn": {
+          "tx": 0,
+          "rx": 0,
+          "failureRate": null
+        },
+        "handoverEvents": 0,
+        "fogReassociationEvents": 0,
+        "ulRlc": {
+          "tx": 0,
+          "rx": 0,
+          "txDrop": 0,
+          "reliability": null
+        },
+        "dlRlc": {
+          "tx": 9511,
+          "rx": 9510,
+          "txDrop": 0,
+          "reliability": 0.9998948585847965
+        }
+      },
+      "map": {
+        "center": {
+          "lat": 53.4808,
+          "lon": -2.2426
+        },
+        "bounds": {
+          "minLat": 53.475434601679844,
+          "maxLat": 53.48616539832016,
+          "minLon": -2.258800458553462,
+          "maxLon": -2.226399541446538
+        },
+        "frameStep": 1,
+        "frameCount": 101,
+        "nodeTypeCounts": {
+          "gNB": 10,
+          "car": 50,
+          "CFN": 20,
+          "VFC": 0
+        }
+      },
+      "metrics": {
+        "totalTasks": 9519,
+        "successTasks": 9472,
+        "successRate": 0.995063,
+        "avgQueueDelayS": 0.000118,
+        "avgCompletionDelayS": 0.010866406345204317,
+        "density": 50,
+        "processedTasks": 9519,
+        "e2eReliability": 0.9508130897410159,
+        "uplinkReliability": 0.955531017867898,
+        "downlinkReliability": 0.9993696816892531,
+        "deadlineReliability": 0.9950625065658157
+      },
+      "mapFilePath": "/mnt/ns3/results_web/run_20260315200524_b79ad8/map-animation.json"
+    },
+    "outputDirLocal": "/mnt/ns3/results_web/run_20260315200524_b79ad8",
+    "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260315200524_b79ad8",
+    "mapFilePath": "/mnt/ns3/results_web/run_20260315200524_b79ad8/map-animation.json",
+    "logPath": "/mnt/ns3/results_web/run_20260315200524_b79ad8/runner.log"
+  },
+  {
+    "id": "run_20260311044501_89230d",
+    "name": "S2_VFN_ONLY 89230d",
+    "scenario": "S2_VFN_ONLY",
+    "status": "completed",
+    "createdAt": "2026-03-11T04:45:01Z",
+    "startedAt": "2026-03-11T04:45:01Z",
+    "finishedAt": "2026-03-11T04:45:01Z",
+    "params": {
+      "numVehicles": 150,
+      "numGnbs": 10,
+      "numVFCs": 20,
+      "numCFNs": 0,
+      "simTime": 100
+    },
+    "error": null,
+    "command": null,
+    "outputDirLocal": "/mnt/ns3/results_web/run_20260311044501_89230d",
+    "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260311044501_89230d",
+    "logPath": "/mnt/ns3/results_web/run_20260311044501_89230d/runner.log",
+    "mapFilePath": "/mnt/ns3/results_web/run_20260311044501_89230d/map-animation.json",
+    "metrics": {
+      "totalTasks": 11064,
+      "successTasks": 11034,
+      "successRate": 0.997289,
+      "avgQueueDelayS": 0.000188,
+      "avgCompletionDelayS": 0.010156491503976892,
+      "density": 150,
+      "processedTasks": 11064,
+      "e2eReliability": 0.4761781460383221,
+      "uplinkReliability": 0.47747281201450026,
+      "downlinkReliability": 0.9997288503253796,
+      "deadlineReliability": 0.9972885032537961
+    },
+    "analysis": {
+      "failureByBin": [
+        {
+          "velocityBin": "0-10",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.6257464817988264,
+          "cfnSent": 0,
+          "vfnSent": 19257
+        },
+        {
+          "velocityBin": "10-20",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.008862629246676468,
+          "cfnSent": 0,
+          "vfnSent": 677
+        },
+        {
+          "velocityBin": "20-30",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.014833127317676165,
+          "cfnSent": 0,
+          "vfnSent": 1618
+        },
+        {
+          "velocityBin": "30-40",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.013066202090592283,
+          "cfnSent": 0,
+          "vfnSent": 1148
+        },
+        {
+          "velocityBin": "40-50",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.013698630136986356,
+          "cfnSent": 0,
+          "vfnSent": 292
+        },
+        {
+          "velocityBin": "50-60",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.06201550387596899,
+          "cfnSent": 0,
+          "vfnSent": 129
+        },
+        {
+          "velocityBin": "60-70",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.09756097560975607,
+          "cfnSent": 0,
+          "vfnSent": 41
+        },
+        {
+          "velocityBin": "70-80",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0,
+          "cfnSent": 0,
+          "vfnSent": 7
+        },
+        {
+          "velocityBin": "80-90",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0,
+          "cfnSent": 0,
+          "vfnSent": 3
+        }
+      ],
+      "delayComponents": {
+        "processedTasks": 11064,
+        "completion": 0.010156491503976892,
+        "queueing": 0.0001879665582067962,
+        "service": 0.00500000000000089,
+        "migration": 0.004025800795372378,
+        "transport": 0.004968524945770079,
+        "shares": {
+          "transport": 0.48919697750194224,
+          "queueing": 0.018507036424259257,
+          "service": 0.4922959860737984
+        }
+      },
+      "reliability": {
+        "tasksSent": 23172,
+        "tasksReachingFog": 11064,
+        "responsesSentByFog": 11064,
+        "responsesReceivedByCar": 11061,
+        "tasksDeadlineOk": 11034,
+        "methodDroppedCount": 12111,
+        "preFogLossCount": 12108,
+        "returnPathLossCount": 3,
+        "deadlineMissAfterFogCount": 30,
+        "uplinkReliability": 0.47747281201450026,
+        "downlinkReliability": 0.9997288503253796,
+        "deadlineReliability": 0.9972885032537961,
+        "e2eReliability": 0.4761781460383221,
+        "e2ePlr": 0.5238218539616779,
+        "cfn": {
+          "tx": 0,
+          "rx": 0,
+          "failureRate": null
+        },
+        "vfn": {
+          "tx": 23172,
+          "rx": 11061,
+          "failureRate": 0.5226566545831175
+        },
+        "handoverEvents": 0,
+        "fogReassociationEvents": 0,
+        "ulRlc": {
+          "tx": 0,
+          "rx": 0,
+          "txDrop": 0,
+          "reliability": null
+        },
+        "dlRlc": {
+          "tx": 11065,
+          "rx": 11064,
+          "txDrop": 0,
+          "reliability": 0.9999096249435155
+        }
+      },
+      "map": {
+        "center": {
+          "lat": 53.4808,
+          "lon": -2.2426
+        },
+        "bounds": {
+          "minLat": 53.472821918792675,
+          "maxLat": 53.48877808120733,
+          "minLon": -2.2647548867443152,
+          "maxLon": -2.2204451132556846
+        },
+        "frameStep": 1,
+        "frameCount": 101,
+        "nodeTypeCounts": {
+          "gNB": 10,
+          "car": 150,
+          "CFN": 0,
+          "VFC": 20
+        }
+      },
+      "metrics": {
+        "totalTasks": 11064,
+        "successTasks": 11034,
+        "successRate": 0.997289,
+        "avgQueueDelayS": 0.000188,
+        "avgCompletionDelayS": 0.010156491503976892,
+        "density": 150,
+        "processedTasks": 11064,
+        "e2eReliability": 0.4761781460383221,
+        "uplinkReliability": 0.47747281201450026,
+        "downlinkReliability": 0.9997288503253796,
+        "deadlineReliability": 0.9972885032537961
+      },
+      "mapFilePath": "/mnt/ns3/results_web/run_20260311044501_89230d/map-animation.json"
+    },
+    "accessMode": "NR"
+  },
+  {
+    "id": "run_20260311044449_5ad119",
+    "name": "S1_CFN_ONLY 5ad119",
+    "scenario": "S1_CFN_ONLY",
+    "status": "completed",
+    "createdAt": "2026-03-11T04:44:49Z",
+    "startedAt": "2026-03-11T04:44:49Z",
+    "finishedAt": "2026-03-11T04:44:49Z",
+    "params": {
+      "numVehicles": 150,
+      "numGnbs": 10,
+      "numVFCs": 0,
+      "numCFNs": 20,
+      "simTime": 100
+    },
+    "error": null,
+    "command": null,
+    "outputDirLocal": "/mnt/ns3/results_web/run_20260311044449_5ad119",
+    "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260311044449_5ad119",
+    "logPath": "/mnt/ns3/results_web/run_20260311044449_5ad119/runner.log",
+    "mapFilePath": "/mnt/ns3/results_web/run_20260311044449_5ad119/map-animation.json",
+    "metrics": {
+      "totalTasks": 15483,
+      "successTasks": 15440,
+      "successRate": 0.997223,
+      "avgQueueDelayS": 0.000163,
+      "avgCompletionDelayS": 0.010615528967254415,
+      "density": 150,
+      "processedTasks": 15483,
+      "e2eReliability": 0.5209176788124157,
+      "uplinkReliability": 0.5223684210526316,
+      "downlinkReliability": 0.9998708260672996,
+      "deadlineReliability": 0.9972227604469418
+    },
+    "analysis": {
+      "failureByBin": [
+        {
+          "velocityBin": "0-10",
+          "cfnFailureRate": 0.5553561741017402,
+          "vfnFailureRate": null,
+          "cfnSent": 23963,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "10-20",
+          "cfnFailureRate": 0.10546875,
+          "vfnFailureRate": null,
+          "cfnSent": 768,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "20-30",
+          "cfnFailureRate": 0.14838480653177144,
+          "vfnFailureRate": null,
+          "cfnSent": 2817,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "30-40",
+          "cfnFailureRate": 0.1990794016110472,
+          "vfnFailureRate": null,
+          "cfnSent": 1738,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "40-50",
+          "cfnFailureRate": 0.018018018018018056,
+          "vfnFailureRate": null,
+          "cfnSent": 333,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "50-60",
+          "cfnFailureRate": 0,
+          "vfnFailureRate": null,
+          "cfnSent": 21,
+          "vfnSent": 0
+        }
+      ],
+      "delayComponents": {
+        "processedTasks": 15483,
+        "completion": 0.010615528967254415,
+        "queueing": 0.0001634382871536518,
+        "service": 0.0050000000000001345,
+        "migration": 0.004170411160627785,
+        "transport": 0.005452090680100769,
+        "shares": {
+          "transport": 0.5135957611644875,
+          "queueing": 0.015396151021565259,
+          "service": 0.47100808781394726
+        }
+      },
+      "reliability": {
+        "tasksSent": 29640,
+        "tasksReachingFog": 15483,
+        "responsesSentByFog": 15483,
+        "responsesReceivedByCar": 15481,
+        "tasksDeadlineOk": 15440,
+        "methodDroppedCount": 14159,
+        "preFogLossCount": 14157,
+        "returnPathLossCount": 2,
+        "deadlineMissAfterFogCount": 43,
+        "uplinkReliability": 0.5223684210526316,
+        "downlinkReliability": 0.9998708260672996,
+        "deadlineReliability": 0.9972227604469418,
+        "e2eReliability": 0.5209176788124157,
+        "e2ePlr": 0.4790823211875843,
+        "cfn": {
+          "tx": 29640,
+          "rx": 15481,
+          "failureRate": 0.4776990553306343
+        },
+        "vfn": {
+          "tx": 0,
+          "rx": 0,
+          "failureRate": null
+        },
+        "handoverEvents": 0,
+        "fogReassociationEvents": 0,
+        "ulRlc": {
+          "tx": 0,
+          "rx": 0,
+          "txDrop": 0,
+          "reliability": null
+        },
+        "dlRlc": {
+          "tx": 15487,
+          "rx": 15487,
+          "txDrop": 0,
+          "reliability": 1
+        }
+      },
+      "map": {
+        "center": {
+          "lat": 53.4808,
+          "lon": -2.2426
+        },
+        "bounds": {
+          "minLat": 53.472810815055695,
+          "maxLat": 53.48878918494431,
+          "minLon": -2.2647548867443152,
+          "maxLon": -2.2204451132556846
+        },
+        "frameStep": 1,
+        "frameCount": 101,
+        "nodeTypeCounts": {
+          "gNB": 10,
+          "car": 150,
+          "CFN": 20,
+          "VFC": 0
+        }
+      },
+      "metrics": {
+        "totalTasks": 15483,
+        "successTasks": 15440,
+        "successRate": 0.997223,
+        "avgQueueDelayS": 0.000163,
+        "avgCompletionDelayS": 0.010615528967254415,
+        "density": 150,
+        "processedTasks": 15483,
+        "e2eReliability": 0.5209176788124157,
+        "uplinkReliability": 0.5223684210526316,
+        "downlinkReliability": 0.9998708260672996,
+        "deadlineReliability": 0.9972227604469418
+      },
+      "mapFilePath": "/mnt/ns3/results_web/run_20260311044449_5ad119/map-animation.json"
+    },
+    "accessMode": "NR"
+  },
+  {
+    "id": "run_20260311044431_33fc63",
+    "name": "S2_VFN_ONLY 33fc63",
+    "scenario": "S2_VFN_ONLY",
+    "status": "completed",
+    "createdAt": "2026-03-11T04:44:31Z",
+    "startedAt": "2026-03-11T04:44:31Z",
+    "finishedAt": "2026-03-11T04:44:31Z",
+    "params": {
+      "numVehicles": 100,
+      "numGnbs": 10,
+      "numVFCs": 20,
+      "numCFNs": 0,
+      "simTime": 100
+    },
+    "error": null,
+    "command": null,
+    "outputDirLocal": "/mnt/ns3/results_web/run_20260311044431_33fc63",
+    "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260311044431_33fc63",
+    "logPath": "/mnt/ns3/results_web/run_20260311044431_33fc63/runner.log",
+    "mapFilePath": "/mnt/ns3/results_web/run_20260311044431_33fc63/map-animation.json",
+    "metrics": {
+      "totalTasks": 14637,
+      "successTasks": 14572,
+      "successRate": 0.995559,
+      "avgQueueDelayS": 0.000212,
+      "avgCompletionDelayS": 0.010983464576074336,
+      "density": 100,
+      "processedTasks": 14637,
+      "e2eReliability": 0.8413394919168591,
+      "uplinkReliability": 0.8450923787528868,
+      "downlinkReliability": 0.9990433891356337,
+      "deadlineReliability": 0.9955591992894719
+    },
+    "analysis": {
+      "failureByBin": [
+        {
+          "velocityBin": "0-10",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.20947253301926472,
+          "cfnSent": 0,
+          "vfnSent": 11887
+        },
+        {
+          "velocityBin": "10-20",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.04104477611940294,
+          "cfnSent": 0,
+          "vfnSent": 804
+        },
+        {
+          "velocityBin": "20-30",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.057544177616674186,
+          "cfnSent": 0,
+          "vfnSent": 2207
+        },
+        {
+          "velocityBin": "30-40",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.018139262726740824,
+          "cfnSent": 0,
+          "vfnSent": 1709
+        },
+        {
+          "velocityBin": "40-50",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.016279069767441867,
+          "cfnSent": 0,
+          "vfnSent": 430
+        },
+        {
+          "velocityBin": "50-60",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.024271844660194164,
+          "cfnSent": 0,
+          "vfnSent": 206
+        },
+        {
+          "velocityBin": "60-70",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.09375,
+          "cfnSent": 0,
+          "vfnSent": 64
+        },
+        {
+          "velocityBin": "70-80",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0,
+          "cfnSent": 0,
+          "vfnSent": 11
+        },
+        {
+          "velocityBin": "80-90",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0,
+          "cfnSent": 0,
+          "vfnSent": 2
+        }
+      ],
+      "delayComponents": {
+        "processedTasks": 14637,
+        "completion": 0.010983464576074336,
+        "queueing": 0.0002121642413062776,
+        "service": 0.005000000000000405,
+        "migration": 0.00525054136776662,
+        "transport": 0.005771300334768032,
+        "shares": {
+          "transport": 0.5254535392538761,
+          "queueing": 0.019316695550549236,
+          "service": 0.4552297651955748
+        }
+      },
+      "reliability": {
+        "tasksSent": 17320,
+        "tasksReachingFog": 14637,
+        "responsesSentByFog": 14635,
+        "responsesReceivedByCar": 14621,
+        "tasksDeadlineOk": 14572,
+        "methodDroppedCount": 2699,
+        "preFogLossCount": 2683,
+        "returnPathLossCount": 14,
+        "deadlineMissAfterFogCount": 65,
+        "uplinkReliability": 0.8450923787528868,
+        "downlinkReliability": 0.9990433891356337,
+        "deadlineReliability": 0.9955591992894719,
+        "e2eReliability": 0.8413394919168591,
+        "e2ePlr": 0.15866050808314092,
+        "cfn": {
+          "tx": 0,
+          "rx": 0,
+          "failureRate": null
+        },
+        "vfn": {
+          "tx": 17320,
+          "rx": 14621,
+          "failureRate": 0.15583140877598156
+        },
+        "handoverEvents": 0,
+        "fogReassociationEvents": 0,
+        "ulRlc": {
+          "tx": 0,
+          "rx": 0,
+          "txDrop": 0,
+          "reliability": null
+        },
+        "dlRlc": {
+          "tx": 15070,
+          "rx": 15064,
+          "txDrop": 0,
+          "reliability": 0.9996018579960185
+        }
+      },
+      "map": {
+        "center": {
+          "lat": 53.4808,
+          "lon": -2.2426
+        },
+        "bounds": {
+          "minLat": 53.472821918792675,
+          "maxLat": 53.48877808120733,
+          "minLon": -2.2647548867443152,
+          "maxLon": -2.2204451132556846
+        },
+        "frameStep": 1,
+        "frameCount": 101,
+        "nodeTypeCounts": {
+          "gNB": 10,
+          "car": 100,
+          "CFN": 0,
+          "VFC": 20
+        }
+      },
+      "metrics": {
+        "totalTasks": 14637,
+        "successTasks": 14572,
+        "successRate": 0.995559,
+        "avgQueueDelayS": 0.000212,
+        "avgCompletionDelayS": 0.010983464576074336,
+        "density": 100,
+        "processedTasks": 14637,
+        "e2eReliability": 0.8413394919168591,
+        "uplinkReliability": 0.8450923787528868,
+        "downlinkReliability": 0.9990433891356337,
+        "deadlineReliability": 0.9955591992894719
+      },
+      "mapFilePath": "/mnt/ns3/results_web/run_20260311044431_33fc63/map-animation.json"
+    },
+    "accessMode": "NR"
+  },
+  {
+    "id": "run_20260311044418_631345",
+    "name": "S1_CFN_ONLY 631345",
+    "scenario": "S1_CFN_ONLY",
+    "status": "completed",
+    "createdAt": "2026-03-11T04:44:18Z",
+    "startedAt": "2026-03-11T04:44:18Z",
+    "finishedAt": "2026-03-11T04:44:18Z",
+    "params": {
+      "numVehicles": 100,
+      "numGnbs": 10,
+      "numVFCs": 0,
+      "numCFNs": 20,
+      "simTime": 100
+    },
+    "error": null,
+    "command": null,
+    "outputDirLocal": "/mnt/ns3/results_web/run_20260311044418_631345",
+    "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260311044418_631345",
+    "logPath": "/mnt/ns3/results_web/run_20260311044418_631345/runner.log",
+    "mapFilePath": "/mnt/ns3/results_web/run_20260311044418_631345/map-animation.json",
+    "metrics": {
+      "totalTasks": 17013,
+      "successTasks": 16935,
+      "successRate": 0.995415,
+      "avgQueueDelayS": 0.000177,
+      "avgCompletionDelayS": 0.011293229883030645,
+      "density": 100,
+      "processedTasks": 17013,
+      "e2eReliability": 0.8550439260830052,
+      "uplinkReliability": 0.8589821266282944,
+      "downlinkReliability": 0.9997060898189514,
+      "deadlineReliability": 0.995415270675366
+    },
+    "analysis": {
+      "failureByBin": [
+        {
+          "velocityBin": "0-10",
+          "cfnFailureRate": 0.17387033398821217,
+          "vfnFailureRate": null,
+          "cfnSent": 14252,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "10-20",
+          "cfnFailureRate": 0.05649717514124297,
+          "vfnFailureRate": null,
+          "cfnSent": 708,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "20-30",
+          "cfnFailureRate": 0.042654028436018954,
+          "vfnFailureRate": null,
+          "cfnSent": 2743,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "30-40",
+          "cfnFailureRate": 0.09143185738930415,
+          "vfnFailureRate": null,
+          "cfnSent": 1739,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "40-50",
+          "cfnFailureRate": 0.014326647564469885,
+          "vfnFailureRate": null,
+          "cfnSent": 349,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "50-60",
+          "cfnFailureRate": 0,
+          "vfnFailureRate": null,
+          "cfnSent": 15,
+          "vfnSent": 0
+        }
+      ],
+      "delayComponents": {
+        "processedTasks": 17013,
+        "completion": 0.011293229883030645,
+        "queueing": 0.00017703867630635315,
+        "service": 0.004999999999999713,
+        "migration": 0.004431208428848528,
+        "transport": 0.006116191206724233,
+        "shares": {
+          "transport": 0.5415803335336943,
+          "queueing": 0.015676531704395674,
+          "service": 0.44274313476190996
+        }
+      },
+      "reliability": {
+        "tasksSent": 19806,
+        "tasksReachingFog": 17013,
+        "responsesSentByFog": 17012,
+        "responsesReceivedByCar": 17007,
+        "tasksDeadlineOk": 16935,
+        "methodDroppedCount": 2799,
+        "preFogLossCount": 2793,
+        "returnPathLossCount": 5,
+        "deadlineMissAfterFogCount": 78,
+        "uplinkReliability": 0.8589821266282944,
+        "downlinkReliability": 0.9997060898189514,
+        "deadlineReliability": 0.995415270675366,
+        "e2eReliability": 0.8550439260830052,
+        "e2ePlr": 0.14495607391699483,
+        "cfn": {
+          "tx": 19806,
+          "rx": 17007,
+          "failureRate": 0.1413208118751893
+        },
+        "vfn": {
+          "tx": 0,
+          "rx": 0,
+          "failureRate": null
+        },
+        "handoverEvents": 0,
+        "fogReassociationEvents": 0,
+        "ulRlc": {
+          "tx": 0,
+          "rx": 0,
+          "txDrop": 0,
+          "reliability": null
+        },
+        "dlRlc": {
+          "tx": 17482,
+          "rx": 17481,
+          "txDrop": 0,
+          "reliability": 0.9999427983068299
+        }
+      },
+      "map": {
+        "center": {
+          "lat": 53.4808,
+          "lon": -2.2426
+        },
+        "bounds": {
+          "minLat": 53.472810815055695,
+          "maxLat": 53.48878918494431,
+          "minLon": -2.2647548867443152,
+          "maxLon": -2.2204451132556846
+        },
+        "frameStep": 1,
+        "frameCount": 101,
+        "nodeTypeCounts": {
+          "gNB": 10,
+          "car": 100,
+          "CFN": 20,
+          "VFC": 0
+        }
+      },
+      "metrics": {
+        "totalTasks": 17013,
+        "successTasks": 16935,
+        "successRate": 0.995415,
+        "avgQueueDelayS": 0.000177,
+        "avgCompletionDelayS": 0.011293229883030645,
+        "density": 100,
+        "processedTasks": 17013,
+        "e2eReliability": 0.8550439260830052,
+        "uplinkReliability": 0.8589821266282944,
+        "downlinkReliability": 0.9997060898189514,
+        "deadlineReliability": 0.995415270675366
+      },
+      "mapFilePath": "/mnt/ns3/results_web/run_20260311044418_631345/map-animation.json"
+    },
+    "accessMode": "NR"
+  },
+  {
+    "id": "run_20260311044018_f874a5",
+    "name": "S2_VFN_ONLY f874a5",
+    "scenario": "S2_VFN_ONLY",
+    "status": "completed",
+    "createdAt": "2026-03-11T04:40:18Z",
+    "startedAt": "2026-03-11T04:40:18Z",
+    "finishedAt": "2026-03-11T04:40:18Z",
+    "params": {
+      "numVehicles": 50,
+      "numGnbs": 10,
+      "numVFCs": 20,
+      "numCFNs": 0,
+      "simTime": 100
+    },
+    "error": null,
+    "command": null,
+    "outputDirLocal": "/mnt/ns3/results_web/run_20260311044018_f874a5",
+    "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260311044018_f874a5",
+    "logPath": "/mnt/ns3/results_web/run_20260311044018_f874a5/runner.log",
+    "mapFilePath": "/mnt/ns3/results_web/run_20260311044018_f874a5/map-animation.json",
+    "metrics": {
+      "totalTasks": 8757,
+      "successTasks": 8714,
+      "successRate": 0.99509,
+      "avgQueueDelayS": 0.000111,
+      "avgCompletionDelayS": 0.01066187347265046,
+      "density": 50,
+      "processedTasks": 8757,
+      "e2eReliability": 0.9533916849015317,
+      "uplinkReliability": 0.9580962800875273,
+      "downlinkReliability": 0.9994290282060067,
+      "deadlineReliability": 0.995089642571657
+    },
+    "analysis": {
+      "failureByBin": [
+        {
+          "velocityBin": "0-10",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.03614833281396068,
+          "cfnSent": 0,
+          "vfnSent": 6418
+        },
+        {
+          "velocityBin": "10-20",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.0423728813559322,
+          "cfnSent": 0,
+          "vfnSent": 472
+        },
+        {
+          "velocityBin": "20-30",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.050880626223091974,
+          "cfnSent": 0,
+          "vfnSent": 1022
+        },
+        {
+          "velocityBin": "30-40",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.06524633821571235,
+          "cfnSent": 0,
+          "vfnSent": 751
+        },
+        {
+          "velocityBin": "40-50",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.06312292358803984,
+          "cfnSent": 0,
+          "vfnSent": 301
+        },
+        {
+          "velocityBin": "50-60",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0.1311475409836066,
+          "cfnSent": 0,
+          "vfnSent": 122
+        },
+        {
+          "velocityBin": "60-70",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0,
+          "cfnSent": 0,
+          "vfnSent": 39
+        },
+        {
+          "velocityBin": "70-80",
+          "cfnFailureRate": null,
+          "vfnFailureRate": 0,
+          "cfnSent": 0,
+          "vfnSent": 15
+        }
+      ],
+      "delayComponents": {
+        "processedTasks": 8757,
+        "completion": 0.01066187347265046,
+        "queueing": 0.00011126607285600064,
+        "service": 0.005000000000000451,
+        "migration": 0.006466926116249859,
+        "transport": 0.005550607399794431,
+        "shares": {
+          "transport": 0.5206033830763865,
+          "queueing": 0.01043588381923804,
+          "service": 0.46896073310437547
+        }
+      },
+      "reliability": {
+        "tasksSent": 9140,
+        "tasksReachingFog": 8757,
+        "responsesSentByFog": 8757,
+        "responsesReceivedByCar": 8752,
+        "tasksDeadlineOk": 8714,
+        "methodDroppedCount": 388,
+        "preFogLossCount": 383,
+        "returnPathLossCount": 5,
+        "deadlineMissAfterFogCount": 43,
+        "uplinkReliability": 0.9580962800875273,
+        "downlinkReliability": 0.9994290282060067,
+        "deadlineReliability": 0.995089642571657,
+        "e2eReliability": 0.9533916849015317,
+        "e2ePlr": 0.0466083150984683,
+        "cfn": {
+          "tx": 0,
+          "rx": 0,
+          "failureRate": null
+        },
+        "vfn": {
+          "tx": 9140,
+          "rx": 8752,
+          "failureRate": 0.04245076586433261
+        },
+        "handoverEvents": 0,
+        "fogReassociationEvents": 0,
+        "ulRlc": {
+          "tx": 0,
+          "rx": 0,
+          "txDrop": 0,
+          "reliability": null
+        },
+        "dlRlc": {
+          "tx": 8744,
+          "rx": 8744,
+          "txDrop": 0,
+          "reliability": 1
+        }
+      },
+      "map": {
+        "center": {
+          "lat": 53.4808,
+          "lon": -2.2426
+        },
+        "bounds": {
+          "minLat": 53.475445481494795,
+          "maxLat": 53.48615451850521,
+          "minLon": -2.258800458553462,
+          "maxLon": -2.226399541446538
+        },
+        "frameStep": 1,
+        "frameCount": 101,
+        "nodeTypeCounts": {
+          "gNB": 10,
+          "car": 50,
+          "CFN": 0,
+          "VFC": 20
+        }
+      },
+      "metrics": {
+        "totalTasks": 8757,
+        "successTasks": 8714,
+        "successRate": 0.99509,
+        "avgQueueDelayS": 0.000111,
+        "avgCompletionDelayS": 0.01066187347265046,
+        "density": 50,
+        "processedTasks": 8757,
+        "e2eReliability": 0.9533916849015317,
+        "uplinkReliability": 0.9580962800875273,
+        "downlinkReliability": 0.9994290282060067,
+        "deadlineReliability": 0.995089642571657
+      },
+      "mapFilePath": "/mnt/ns3/results_web/run_20260311044018_f874a5/map-animation.json"
+    },
+    "accessMode": "NR"
+  },
+  {
+    "id": "run_20260311043919_df52c6",
+    "name": "S1_CFN_ONLY df52c6",
+    "scenario": "S1_CFN_ONLY",
+    "status": "completed",
+    "createdAt": "2026-03-11T04:39:19Z",
+    "startedAt": "2026-03-11T04:39:19Z",
+    "finishedAt": "2026-03-11T04:39:19Z",
+    "params": {
+      "numVehicles": 50,
+      "numGnbs": 10,
+      "numVFCs": 0,
+      "numCFNs": 20,
+      "simTime": 100
+    },
+    "error": null,
+    "command": null,
+    "outputDirLocal": "/mnt/ns3/results_web/run_20260311043919_df52c6",
+    "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260311043919_df52c6",
+    "logPath": "/mnt/ns3/results_web/run_20260311043919_df52c6/runner.log",
+    "mapFilePath": "/mnt/ns3/results_web/run_20260311043919_df52c6/map-animation.json",
+    "metrics": {
+      "totalTasks": 9519,
+      "successTasks": 9472,
+      "successRate": 0.995063,
+      "avgQueueDelayS": 0.000118,
+      "avgCompletionDelayS": 0.010866406345204317,
+      "density": 50,
+      "processedTasks": 9519,
+      "e2eReliability": 0.9508130897410159,
+      "uplinkReliability": 0.955531017867898,
+      "downlinkReliability": 0.9993696816892531,
+      "deadlineReliability": 0.9950625065658157
+    },
+    "analysis": {
+      "failureByBin": [
+        {
+          "velocityBin": "0-10",
+          "cfnFailureRate": 0.049655416151263454,
+          "vfnFailureRate": null,
+          "cfnSent": 5659,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "10-20",
+          "cfnFailureRate": 0.043824701195219085,
+          "vfnFailureRate": null,
+          "cfnSent": 502,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "20-30",
+          "cfnFailureRate": 0.03811659192825112,
+          "vfnFailureRate": null,
+          "cfnSent": 2230,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "30-40",
+          "cfnFailureRate": 0.04260263361735084,
+          "vfnFailureRate": null,
+          "cfnSent": 1291,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "40-50",
+          "cfnFailureRate": 0.018796992481203034,
+          "vfnFailureRate": null,
+          "cfnSent": 266,
+          "vfnSent": 0
+        },
+        {
+          "velocityBin": "50-60",
+          "cfnFailureRate": 0.0714285714285714,
+          "vfnFailureRate": null,
+          "cfnSent": 14,
+          "vfnSent": 0
+        }
+      ],
+      "delayComponents": {
+        "processedTasks": 9519,
+        "completion": 0.010866406345204317,
+        "queueing": 0.00011803645340897132,
+        "service": 0.005000000000000619,
+        "migration": 0.004617902510767938,
+        "transport": 0.005748369891795339,
+        "shares": {
+          "transport": 0.5290037671315273,
+          "queueing": 0.010862510535606634,
+          "service": 0.4601337223328661
+        }
+      },
+      "reliability": {
+        "tasksSent": 9962,
+        "tasksReachingFog": 9519,
+        "responsesSentByFog": 9519,
+        "responsesReceivedByCar": 9513,
+        "tasksDeadlineOk": 9472,
+        "methodDroppedCount": 449,
+        "preFogLossCount": 443,
+        "returnPathLossCount": 6,
+        "deadlineMissAfterFogCount": 47,
+        "uplinkReliability": 0.955531017867898,
+        "downlinkReliability": 0.9993696816892531,
+        "deadlineReliability": 0.9950625065658157,
+        "e2eReliability": 0.9508130897410159,
+        "e2ePlr": 0.04918691025898414,
+        "cfn": {
+          "tx": 9962,
+          "rx": 9513,
+          "failureRate": 0.045071270829150745
+        },
+        "vfn": {
+          "tx": 0,
+          "rx": 0,
+          "failureRate": null
+        },
+        "handoverEvents": 0,
+        "fogReassociationEvents": 0,
+        "ulRlc": {
+          "tx": 0,
+          "rx": 0,
+          "txDrop": 0,
+          "reliability": null
+        },
+        "dlRlc": {
+          "tx": 9511,
+          "rx": 9510,
+          "txDrop": 0,
+          "reliability": 0.9998948585847965
+        }
+      },
+      "map": {
+        "center": {
+          "lat": 53.4808,
+          "lon": -2.2426
+        },
+        "bounds": {
+          "minLat": 53.475434601679844,
+          "maxLat": 53.48616539832016,
+          "minLon": -2.258800458553462,
+          "maxLon": -2.226399541446538
+        },
+        "frameStep": 1,
+        "frameCount": 101,
+        "nodeTypeCounts": {
+          "gNB": 10,
+          "car": 50,
+          "CFN": 20,
+          "VFC": 0
+        }
+      },
+      "metrics": {
+        "totalTasks": 9519,
+        "successTasks": 9472,
+        "successRate": 0.995063,
+        "avgQueueDelayS": 0.000118,
+        "avgCompletionDelayS": 0.010866406345204317,
+        "density": 50,
+        "processedTasks": 9519,
+        "e2eReliability": 0.9508130897410159,
+        "uplinkReliability": 0.955531017867898,
+        "downlinkReliability": 0.9993696816892531,
+        "deadlineReliability": 0.9950625065658157
+      },
+      "mapFilePath": "/mnt/ns3/results_web/run_20260311043919_df52c6/map-animation.json"
+    },
+    "accessMode": "NR"
+  },
+  {
+    "id": "run_20260310225549_e36248",
+    "name": "test",
+    "scenario": "S1_CFN_ONLY",
+    "status": "completed",
+    "createdAt": "2026-03-10T22:55:49.120Z",
+    "startedAt": "2026-03-10T22:55:49.121Z",
+    "finishedAt": "2026-03-10T23:03:14.206Z",
+    "params": {
+      "numVehicles": 50,
+      "numGnbs": 8,
+      "numVFCs": 0,
+      "numCFNs": 20,
+      "simTime": 100
+    },
+    "error": null,
+    "command": "docker start 'ns3-dev' >/dev/null 2>&1 || true; docker exec 'ns3-dev' bash -lc 'cd /workspace/ns-3.46 && mkdir -p /workspace/ns-3.46/results_web/run_20260310225549_e36248 && '\"'\"'/workspace/ns-3.46/build-linux-out/scratch/ns3.46-v2x-5g-sumo-default'\"'\"' --traceFile='\"'\"'/workspace/ns-3.46/scratch/manchester_city_ns3.tcl'\"'\"' --numVehicles=50 --numGnbs=8 --numBuses=0 --numRsus=20 --testMode=1 --simTime=100 --outputDir='\"'\"'/workspace/ns-3.46/results_web/run_20260310225549_e36248'\"'\"' --animFile='\"'\"'/workspace/ns-3.46/results_web/run_20260310225549_e36248/anim.xml'\"'\"''",
+    "outputDirLocal": "/mnt/ns3/results_web/run_20260310225549_e36248",
+    "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260310225549_e36248",
+    "logPath": "/mnt/ns3/results_web/run_20260310225549_e36248/runner.log",
+    "mapFilePath": "/mnt/ns3/results_web/run_20260310225549_e36248/map-animation.json",
+    "metrics": {
+      "totalTasks": 4050,
+      "successTasks": 3504,
+      "successRate": 0.865185,
+      "avgQueueDelayS": 0.000864,
+      "avgCompletionDelayS": 0.029986408641975285,
+      "density": 50,
+      "processedTasks": 4050,
+      "e2eReliability": 0.07120214581809314,
+      "uplinkReliability": 0.0822970007315289,
+      "downlinkReliability": null,
+      "deadlineReliability": 0.8651851851851852
+    },
+    "analysis": {
+      "failureByBin": [],
+      "delayComponents": {
+        "processedTasks": 4050,
+        "completion": 0.029986408641975285,
+        "queueing": 0.0008638807407407327,
+        "service": 0.005000000000000063,
+        "migration": 0.0008037054320987653,
+        "transport": 0.024122527901234595,
+        "shares": {
+          "transport": 0.8044487150577794,
+          "queueing": 0.02880907650712998,
+          "service": 0.1667422084350906
+        }
+      },
+      "reliability": {
+        "tasksSent": 49212,
+        "tasksReachingFog": 4050,
+        "responsesSentByFog": 0,
+        "responsesReceivedByCar": 1447,
+        "tasksDeadlineOk": 3504,
+        "methodDroppedCount": 47765,
+        "preFogLossCount": 45162,
+        "returnPathLossCount": 0,
+        "deadlineMissAfterFogCount": 546,
+        "uplinkReliability": 0.0822970007315289,
+        "downlinkReliability": null,
+        "deadlineReliability": 0.8651851851851852,
+        "e2eReliability": 0.07120214581809314,
+        "e2ePlr": 0.9287978541819069,
+        "gnb": {
+          "tx": 0,
+          "rx": 0,
+          "failureRate": null
+        },
+        "vfn": {
+          "tx": 0,
+          "rx": 0,
+          "failureRate": null
+        },
+        "handoverEvents": 0,
+        "fogReassociationEvents": 0,
+        "ulRlc": {
+          "tx": 0,
+          "rx": 0,
+          "txDrop": 0,
+          "reliability": null
+        },
+        "dlRlc": {
+          "tx": 0,
+          "rx": 0,
+          "txDrop": 0,
+          "reliability": null
+        }
+      },
+      "map": {
+        "center": {
+          "lat": 53.4808,
+          "lon": -2.2426
+        },
+        "bounds": {
+          "minLat": 53.475434601679844,
+          "maxLat": 53.48616539832016,
+          "minLon": -2.257427629935526,
+          "maxLon": -2.227772370064474
+        },
+        "frameStep": 1,
+        "frameCount": 101,
+        "nodeTypeCounts": {
           "gNB": 8,
           "car": 50,
           "CFN": 20,
@@ -272,20 +2956,21 @@
         }
       },
       "metrics": {
-        "totalTasks": 1935,
-        "successTasks": 1661,
-        "successRate": 0.858398,
-        "avgQueueDelayS": 0.000173,
-        "avgCompletionDelayS": 0.04624035297157629,
+        "totalTasks": 4050,
+        "successTasks": 3504,
+        "successRate": 0.865185,
+        "avgQueueDelayS": 0.000864,
+        "avgCompletionDelayS": 0.029986408641975285,
         "density": 50,
-        "processedTasks": 1935,
-        "e2eReliability": 0.16833890746934224,
-        "uplinkReliability": 0.19610823958650045,
-        "downlinkReliability": 0.9757105943152454,
-        "deadlineReliability": 0.8583979328165374
+        "processedTasks": 4050,
+        "e2eReliability": 0.07120214581809314,
+        "uplinkReliability": 0.0822970007315289,
+        "downlinkReliability": null,
+        "deadlineReliability": 0.8651851851851852
       },
-      "mapFilePath": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260309051002_65204f/map-animation.json"
-    }
+      "mapFilePath": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260310225549_e36248/map-animation.json"
+    },
+    "accessMode": "NR"
   },
   {
     "id": "run_20260308210112_371b98",
@@ -304,10 +2989,10 @@
     },
     "error": null,
     "command": "docker start 'ns3-dev' >/dev/null 2>&1 || true; docker exec 'ns3-dev' bash -lc 'cd /workspace/ns-3.46 && mkdir -p /workspace/ns-3.46/results_web/run_20260308210112_371b98 && '\"'\"'/workspace/ns-3.46/build-linux-out/scratch/ns3.46-v2x-5g-sumo-default'\"'\"' --traceFile='\"'\"'/workspace/ns-3.46/scratch/manchester_city_ns3.tcl'\"'\"' --numVehicles=150 --numGnbs=8 --numBuses=20 --numRsus=0 --testMode=1 --simTime=100 --outputDir='\"'\"'/workspace/ns-3.46/results_web/run_20260308210112_371b98'\"'\"' --animFile='\"'\"'/workspace/ns-3.46/results_web/run_20260308210112_371b98/anim.xml'\"'\"''",
-    "outputDirLocal": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308210112_371b98",
+    "outputDirLocal": "/mnt/ns3/results_web/run_20260308210112_371b98",
     "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260308210112_371b98",
-    "logPath": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308210112_371b98/runner.log",
-    "mapFilePath": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308210112_371b98/map-animation.json",
+    "logPath": "/mnt/ns3/results_web/run_20260308210112_371b98/runner.log",
+    "mapFilePath": "/mnt/ns3/results_web/run_20260308210112_371b98/map-animation.json",
     "metrics": {
       "totalTasks": 10574,
       "successTasks": 10484,
@@ -474,7 +3159,8 @@
         "deadlineReliability": 0.991488556837526
       },
       "mapFilePath": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308210112_371b98/map-animation.json"
-    }
+    },
+    "accessMode": "NR"
   },
   {
     "id": "run_20260308205023_dadaac",
@@ -493,10 +3179,10 @@
     },
     "error": null,
     "command": "docker start 'ns3-dev' >/dev/null 2>&1 || true; docker exec 'ns3-dev' bash -lc 'cd /workspace/ns-3.46 && mkdir -p /workspace/ns-3.46/results_web/run_20260308205023_dadaac && '\"'\"'/workspace/ns-3.46/build-linux-out/scratch/ns3.46-v2x-5g-sumo-default'\"'\"' --traceFile='\"'\"'/workspace/ns-3.46/scratch/manchester_city_ns3.tcl'\"'\"' --numVehicles=100 --numGnbs=8 --numBuses=20 --numRsus=0 --testMode=1 --simTime=100 --outputDir='\"'\"'/workspace/ns-3.46/results_web/run_20260308205023_dadaac'\"'\"' --animFile='\"'\"'/workspace/ns-3.46/results_web/run_20260308205023_dadaac/anim.xml'\"'\"''",
-    "outputDirLocal": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308205023_dadaac",
+    "outputDirLocal": "/mnt/ns3/results_web/run_20260308205023_dadaac",
     "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260308205023_dadaac",
-    "logPath": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308205023_dadaac/runner.log",
-    "mapFilePath": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308205023_dadaac/map-animation.json",
+    "logPath": "/mnt/ns3/results_web/run_20260308205023_dadaac/runner.log",
+    "mapFilePath": "/mnt/ns3/results_web/run_20260308205023_dadaac/map-animation.json",
     "metrics": {
       "totalTasks": 14342,
       "successTasks": 14219,
@@ -663,7 +3349,8 @@
         "deadlineReliability": 0.9914237902663505
       },
       "mapFilePath": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308205023_dadaac/map-animation.json"
-    }
+    },
+    "accessMode": "NR"
   },
   {
     "id": "run_20260308204903_62a228",
@@ -682,10 +3369,10 @@
     },
     "error": null,
     "command": "docker start 'ns3-dev' >/dev/null 2>&1 || true; docker exec 'ns3-dev' bash -lc 'cd /workspace/ns-3.46 && mkdir -p /workspace/ns-3.46/results_web/run_20260308204903_62a228 && '\"'\"'/workspace/ns-3.46/build-linux-out/scratch/ns3.46-v2x-5g-sumo-default'\"'\"' --traceFile='\"'\"'/workspace/ns-3.46/scratch/manchester_city_ns3.tcl'\"'\"' --numVehicles=50 --numGnbs=8 --numBuses=20 --numRsus=0 --testMode=1 --simTime=100 --outputDir='\"'\"'/workspace/ns-3.46/results_web/run_20260308204903_62a228'\"'\"' --animFile='\"'\"'/workspace/ns-3.46/results_web/run_20260308204903_62a228/anim.xml'\"'\"''",
-    "outputDirLocal": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308204903_62a228",
+    "outputDirLocal": "/mnt/ns3/results_web/run_20260308204903_62a228",
     "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260308204903_62a228",
-    "logPath": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308204903_62a228/runner.log",
-    "mapFilePath": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308204903_62a228/map-animation.json",
+    "logPath": "/mnt/ns3/results_web/run_20260308204903_62a228/runner.log",
+    "mapFilePath": "/mnt/ns3/results_web/run_20260308204903_62a228/map-animation.json",
     "metrics": {
       "totalTasks": 8594,
       "successTasks": 8516,
@@ -845,7 +3532,8 @@
         "deadlineReliability": 0.9909239003956248
       },
       "mapFilePath": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308204903_62a228/map-animation.json"
-    }
+    },
+    "accessMode": "NR"
   },
   {
     "id": "run_20260308183745_a7ac79",
@@ -864,10 +3552,10 @@
     },
     "error": null,
     "command": "docker start 'ns3-dev' >/dev/null 2>&1 || true; docker exec 'ns3-dev' bash -lc 'cd /workspace/ns-3.46 && mkdir -p /workspace/ns-3.46/results_web/run_20260308183745_a7ac79 && '\"'\"'/workspace/ns-3.46/build-linux-out/scratch/ns3.46-v2x-5g-sumo-default'\"'\"' --traceFile='\"'\"'/workspace/ns-3.46/scratch/manchester_city_ns3.tcl'\"'\"' --numVehicles=150 --numGnbs=8 --numBuses=0 --numRsus=20 --testMode=1 --simTime=100 --outputDir='\"'\"'/workspace/ns-3.46/results_web/run_20260308183745_a7ac79'\"'\"' --animFile='\"'\"'/workspace/ns-3.46/results_web/run_20260308183745_a7ac79/anim.xml'\"'\"''",
-    "outputDirLocal": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308183745_a7ac79",
+    "outputDirLocal": "/mnt/ns3/results_web/run_20260308183745_a7ac79",
     "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260308183745_a7ac79",
-    "logPath": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308183745_a7ac79/runner.log",
-    "mapFilePath": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308183745_a7ac79/map-animation.json",
+    "logPath": "/mnt/ns3/results_web/run_20260308183745_a7ac79/runner.log",
+    "mapFilePath": "/mnt/ns3/results_web/run_20260308183745_a7ac79/map-animation.json",
     "metrics": {
       "totalTasks": 15174,
       "successTasks": 15045,
@@ -1013,7 +3701,8 @@
         "deadlineReliability": 0.9914986160537762
       },
       "mapFilePath": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308183745_a7ac79/map-animation.json"
-    }
+    },
+    "accessMode": "NR"
   },
   {
     "id": "run_20260308171923_d2ccbc",
@@ -1032,10 +3721,10 @@
     },
     "error": null,
     "command": "docker start 'ns3-dev' >/dev/null 2>&1 || true; docker exec 'ns3-dev' bash -lc 'cd /workspace/ns-3.46 && mkdir -p /workspace/ns-3.46/results_web/run_20260308171923_d2ccbc && '\"'\"'/workspace/ns-3.46/build-linux-out/scratch/ns3.46-v2x-5g-sumo-default'\"'\"' --traceFile='\"'\"'/workspace/ns-3.46/scratch/manchester_city_ns3.tcl'\"'\"' --numVehicles=100 --numGnbs=8 --numBuses=0 --numRsus=20 --testMode=1 --simTime=100 --outputDir='\"'\"'/workspace/ns-3.46/results_web/run_20260308171923_d2ccbc'\"'\"' --animFile='\"'\"'/workspace/ns-3.46/results_web/run_20260308171923_d2ccbc/anim.xml'\"'\"''",
-    "outputDirLocal": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308171923_d2ccbc",
+    "outputDirLocal": "/mnt/ns3/results_web/run_20260308171923_d2ccbc",
     "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260308171923_d2ccbc",
-    "logPath": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308171923_d2ccbc/runner.log",
-    "mapFilePath": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308171923_d2ccbc/map-animation.json",
+    "logPath": "/mnt/ns3/results_web/run_20260308171923_d2ccbc/runner.log",
+    "mapFilePath": "/mnt/ns3/results_web/run_20260308171923_d2ccbc/map-animation.json",
     "metrics": {
       "totalTasks": 16823,
       "successTasks": 16688,
@@ -1181,7 +3870,8 @@
         "deadlineReliability": 0.9919752719491173
       },
       "mapFilePath": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308171923_d2ccbc/map-animation.json"
-    }
+    },
+    "accessMode": "NR"
   },
   {
     "id": "run_20260308170202_bee69f",
@@ -1200,10 +3890,10 @@
     },
     "error": null,
     "command": "docker start 'ns3-dev' >/dev/null 2>&1 || true; docker exec 'ns3-dev' bash -lc 'cd /workspace/ns-3.46 && mkdir -p /workspace/ns-3.46/results_web/run_20260308170202_bee69f && '\"'\"'/workspace/ns-3.46/build-linux-out/scratch/ns3.46-v2x-5g-sumo-default'\"'\"' --traceFile='\"'\"'/workspace/ns-3.46/scratch/manchester_city_ns3.tcl'\"'\"' --numVehicles=50 --numGnbs=8 --numBuses=0 --numRsus=20 --testMode=1 --simTime=100 --outputDir='\"'\"'/workspace/ns-3.46/results_web/run_20260308170202_bee69f'\"'\"' --animFile='\"'\"'/workspace/ns-3.46/results_web/run_20260308170202_bee69f/anim.xml'\"'\"''",
-    "outputDirLocal": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308170202_bee69f",
+    "outputDirLocal": "/mnt/ns3/results_web/run_20260308170202_bee69f",
     "outputDirRunner": "/workspace/ns-3.46/results_web/run_20260308170202_bee69f",
-    "logPath": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308170202_bee69f/runner.log",
-    "mapFilePath": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308170202_bee69f/map-animation.json",
+    "logPath": "/mnt/ns3/results_web/run_20260308170202_bee69f/runner.log",
+    "mapFilePath": "/mnt/ns3/results_web/run_20260308170202_bee69f/map-animation.json",
     "metrics": {
       "totalTasks": 9355,
       "successTasks": 9298,
@@ -1349,6 +4039,7 @@
         "deadlineReliability": 0.9939070016034206
       },
       "mapFilePath": "/Users/wsj/Documents/ns3_project/ns-3.46/results_web/run_20260308170202_bee69f/map-animation.json"
-    }
+    },
+    "accessMode": "NR"
   }
 ]

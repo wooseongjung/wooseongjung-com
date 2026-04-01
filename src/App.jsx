@@ -1,33 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Routes, Route, Link, useLocation, Navigate, useNavigate, useParams } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import MusicPlayer from "./components/MusicPlayer";
+import PreRunResults from "./components/PreRunResults";
 import SimulationLab from "./components/SimulationLab";
+import FYPDetail from "./components/FYPDetail";
+import HackABot2025Detail from "./components/HackABot2025Detail";
+import HackABot2026Detail from "./components/HackABot2026Detail";
+import CircuitBackground from "./components/CircuitBackground";
+import DomainExpansion from "./components/DomainExpansion";
 import { AmbientLightChart, TCRT5000LSpreadChart, AllSensorsSpreadChart } from './components/buggy/SensorCharts';
 
 import {
-  User,
-  Briefcase,
-  Compass,
-  Mail,
-  Github,
-  Linkedin,
-  Coffee,
-  Shirt,
-  Disc,
-  Zap,
-  Power,
-  Cpu,
-  LogIn,
-  LogOut,
-  ArrowRight,
-  Loader2,
-  Plug
+  User, Briefcase, Compass, Mail, Github, Linkedin,
+  Coffee, Shirt, Disc, Zap, Power, Cpu, LogIn, LogOut,
+  ArrowRight, ArrowUpRight, Loader2, Plug, ChevronDown,
+  Terminal, CircuitBoard, Wrench, ExternalLink, Sun, Moon, Menu, X
 } from 'lucide-react';
 
+/* ═══════════════════════════════════════
+   Firebase
+   ═══════════════════════════════════════ */
 const firebaseConfig = {
   apiKey: "AIzaSyAFqfyOMjvVQrgITIUOA8ktYzghHbq3OvA",
   authDomain: "wooseongjung-5f089.firebaseapp.com",
@@ -44,110 +41,13 @@ export const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 try { getAnalytics(app); } catch (e) { }
 
-const injectedStyles = `
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
-
-  body {
-    background-color: #fafafa;
-    color: #18181b;
-    font-family: 'Inter', sans-serif;
-    overflow-x: hidden;
-    transition: background-color 0.4s ease, color 0.4s ease;
-  }
-
-  .bg-minimal-circuit {
-    background-image:
-      linear-gradient(rgba(228, 228, 231, 0.55) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(228, 228, 231, 0.55) 1px, transparent 1px);
-    background-size: 60px 60px;
-    background-position: center center;
-  }
-
-  /* ════════════════════════════════════
-     DARK MODE — single source of truth
-     ════════════════════════════════════ */
-
-  html.dark body {
-    background-color: #0d0d0d;
-    color: #e4e4e7;
-  }
-
-  /* Page background */
-  html.dark .min-h-screen { background-color: #0d0d0d !important; }
-
-  /* Header */
-  html.dark header { background-color: rgba(13,13,13,0.92) !important; border-bottom-color: #27272a !important; }
-
-  /* Grid background */
-  html.dark .bg-minimal-circuit {
-    background-image:
-      linear-gradient(rgba(52, 52, 52, 0.5) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(52, 52, 52, 0.5) 1px, transparent 1px);
-  }
-
-  /* ── Surfaces ── */
-  html.dark .bg-white    { background-color: #171717 !important; }
-  html.dark .bg-zinc-50  { background-color: #111111 !important; }
-  html.dark .bg-zinc-100 { background-color: #1c1c1c !important; }
-  html.dark .bg-zinc-200 { background-color: #222222 !important; }
-
-  /* ── Text ── */
-  html.dark .text-zinc-900 { color: #f4f4f5 !important; }
-  html.dark .text-zinc-800 { color: #e4e4e7 !important; }
-  html.dark .text-zinc-700 { color: #d4d4d8 !important; }
-  html.dark .text-zinc-600 { color: #a1a1aa !important; }
-  html.dark .text-zinc-500 { color: #71717a !important; }
-  html.dark .text-zinc-400 { color: #52525b !important; }
-
-  /* ── Borders ── */
-  html.dark .border-zinc-200 { border-color: #3f3f46 !important; }
-  html.dark .border-zinc-100 { border-color: #27272a !important; }
-  html.dark .border-zinc-900 { border-color: #e4e4e7 !important; }
-
-  /* ── Hover overrides ── */
-  html.dark .hover\\:bg-zinc-200:hover  { background-color: #27272a !important; }
-  html.dark .hover\\:bg-zinc-100:hover  { background-color: #1c1c1c !important; }
-  html.dark .hover\\:bg-zinc-800:hover  { background-color: #27272a !important; }
-  html.dark .hover\\:border-zinc-900:hover { border-color: #a1a1aa !important; }
-  html.dark .hover\\:text-zinc-900:hover   { color: #f4f4f5 !important; }
-  html.dark .group:hover .group-hover\\:text-zinc-900  { color: #f4f4f5 !important; }
-  html.dark .group:hover .group-hover\\:border-zinc-900 { border-color: #a1a1aa !important; }
-  html.dark .group:hover .group-hover\\:text-black     { color: #ffffff !important; }
-
-  /* ── Button fill (Sign In / Generate) ── */
-  html.dark .bg-zinc-900 { background-color: #f4f4f5 !important; color: #0d0d0d !important; }
-  html.dark .hover\\:bg-zinc-800:hover { background-color: #e4e4e7 !important; }
-
-  /* ── Shadows ── */
-  html.dark .shadow-sm   { box-shadow: 0 1px 3px rgba(0,0,0,0.6) !important; }
-  html.dark .hover\\:shadow-md:hover  { box-shadow: 0 4px 20px rgba(0,0,0,0.7) !important; }
-  html.dark .hover\\:shadow-lg:hover  { box-shadow: 0 8px 30px rgba(0,0,0,0.8) !important; }
-  html.dark .hover\\:shadow-xl:hover  { box-shadow: 0 12px 40px rgba(0,0,0,0.9) !important; }
-
-  /* ── Scrollbar ── */
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: #fafafa; }
-  ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 10px; }
-  ::-webkit-scrollbar-thumb:hover { background: #a1a1aa; }
-  html.dark ::-webkit-scrollbar-track { background: #0d0d0d; }
-  html.dark ::-webkit-scrollbar-thumb { background: #3f3f46; }
-  html.dark ::-webkit-scrollbar-thumb:hover { background: #52525b; }
-
-  .hide-scrollbar::-webkit-scrollbar { display: none; }
-  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-  @keyframes fade-up {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .animate-fade-up { animation: fade-up 0.6s ease-out forwards; }
-`;
-
+/* ═══════════════════════════════════════
+   Gemini API
+   ═══════════════════════════════════════ */
 const generateGeminiContent = async (prompt) => {
   const apiKey = "";
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
   const delays = [1000, 2000, 4000, 8000, 16000];
-
   for (let i = 0; i <= delays.length; i++) {
     try {
       const response = await fetch(url, {
@@ -159,800 +59,831 @@ const generateGeminiContent = async (prompt) => {
       const data = await response.json();
       return data.candidates?.[0]?.content?.parts?.[0]?.text;
     } catch (error) {
-      if (i === delays.length) throw new Error("Connection interrupted. The mainframe is currently unreachable.");
+      if (i === delays.length) throw new Error("Connection interrupted.");
       await new Promise(res => setTimeout(res, delays[i]));
     }
   }
 };
 
-const Node = ({ className = "" }) => (
-  <div className={`w-2 h-2 rounded-full border-[1.5px] border-zinc-900 bg-white z-10 ${className}`}></div>
+/* ═══════════════════════════════════════
+   Animation Variants
+   ═══════════════════════════════════════ */
+const smoothEase = [0.22, 1, 0.36, 1];
+
+const pageVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.5, ease: smoothEase } },
+  exit: { opacity: 0, y: -10, transition: { duration: 0.25, ease: smoothEase } },
+};
+
+const staggerContainer = {
+  animate: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
+};
+
+const fadeUp = {
+  initial: { opacity: 0, y: 30 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.6, ease: smoothEase } },
+};
+
+const fadeLeft = {
+  initial: { opacity: 0, x: -30 },
+  animate: { opacity: 1, x: 0, transition: { duration: 0.6, ease: smoothEase } },
+};
+
+const fadeRight = {
+  initial: { opacity: 0, x: 30 },
+  animate: { opacity: 1, x: 0, transition: { duration: 0.6, ease: smoothEase } },
+};
+
+const scaleIn = {
+  initial: { opacity: 0, scale: 0.95 },
+  animate: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: smoothEase } },
+};
+
+/* ═══════════════════════════════════════
+   Hooks
+   ═══════════════════════════════════════ */
+function useInView(ref, { once = true, margin = '0px' } = {}) {
+  const [isInView, setIsInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    // Immediately visible check
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight + 100) {
+      setIsInView(true);
+      if (once) return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          if (once) observer.disconnect();
+        } else if (!once) {
+          setIsInView(false);
+        }
+      },
+      { rootMargin: margin }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [ref, once, margin]);
+  return isInView;
+}
+
+function useCardGlow(ref) {
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const handleMove = (e) => {
+      const rect = el.getBoundingClientRect();
+      el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+      el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+    };
+    el.addEventListener('mousemove', handleMove);
+    return () => el.removeEventListener('mousemove', handleMove);
+  }, [ref]);
+}
+
+/* ═══════════════════════════════════════
+   Animated Components
+   ═══════════════════════════════════════ */
+const MotionReveal = ({ children, className = '', variants = fadeUp, delay = 0, once = true }) => {
+  const ref = useRef(null);
+  const isVisible = useInView(ref, { once, margin: '-50px 0px' });
+
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      initial="initial"
+      animate={isVisible ? 'animate' : 'initial'}
+      variants={{
+        ...variants,
+        animate: {
+          ...variants.animate,
+          transition: { ...variants.animate.transition, delay },
+        },
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+const StaggerReveal = ({ children, className = '' }) => {
+  const ref = useRef(null);
+  const isVisible = useInView(ref, { once: true, margin: '-30px 0px' });
+
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      initial="initial"
+      animate={isVisible ? 'animate' : 'initial'}
+      variants={staggerContainer}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+// Wrapper that replaces framer-motion's whileInView with our custom useInView
+const InViewMotion = ({ children, as = 'div', initial, inView, transition, style, className, ...rest }) => {
+  const ref = useRef(null);
+  const isVisible = useInView(ref, { once: true, margin: '-30px 0px' });
+  const Component = motion[as] || motion.div;
+  return (
+    <Component ref={ref} className={className} style={style} initial={initial} animate={isVisible ? inView : initial} transition={transition} {...rest}>
+      {children}
+    </Component>
+  );
+};
+
+const GoldDot = ({ className = '' }) => (
+  <div className={`w-1.5 h-1.5 rounded-full ${className}`} style={{ backgroundColor: '#c9a84c' }} />
 );
 
-const Trace = ({ vertical = false, className = "" }) => (
-  <div className={`${vertical ? 'w-[1px] h-full' : 'h-[1px] w-full'} bg-zinc-200 ${className}`}></div>
-);
-
-const GroundSymbol = ({ className = "" }) => (
-  <div className={`flex flex-col items-center gap-[3px] ${className}`}>
-    <div className="w-4 h-[1.5px] bg-zinc-400 dark:bg-zinc-600 transition-colors"></div>
-    <div className="w-2.5 h-[1.5px] bg-zinc-400 dark:bg-zinc-600 transition-colors"></div>
-    <div className="w-1 h-[1.5px] bg-zinc-400 dark:bg-zinc-600 transition-colors"></div>
+const SectionLabel = ({ children, className = '' }) => (
+  <div className={`flex items-center gap-3 mb-8 ${className}`}>
+    <GoldDot />
+    <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-midnight-400 dark:text-midnight-500">
+      {children}
+    </span>
+    <InViewMotion
+      className="flex-1 h-px bg-midnight-200 dark:bg-midnight-800"
+      initial={{ scaleX: 0 }}
+      inView={{ scaleX: 1 }}
+      transition={{ duration: 0.8, ease: smoothEase, delay: 0.2 }}
+      style={{ transformOrigin: 'left' }}
+    />
   </div>
 );
 
-const LightSwitch = ({ isOpen, onToggle, className = "" }) => (
-  <button
-    onClick={onToggle}
-    className={`relative w-[24px] h-[36px] border-[1.5px] border-zinc-900 dark:border-zinc-500 rounded-sm bg-[#fafafa] dark:bg-[#121212] flex flex-col items-center justify-between py-[2px] focus:outline-none transition-colors ${className}`}
-    aria-label="Toggle Dark Mode"
-  >
-    <span className="text-[5px] font-bold text-zinc-900 dark:text-zinc-500 tracking-wider">ON</span>
+/* ═══════════════════════════════════════
+   Scroll Progress Bar
+   ═══════════════════════════════════════ */
+const ScrollProgress = () => {
+  const [progress, setProgress] = useState(0);
 
-    <div className="w-[12px] h-[16px] bg-zinc-200 dark:bg-zinc-800 border border-zinc-900 dark:border-zinc-600 relative overflow-hidden my-0.5">
-      <div className={`absolute left-0 w-full h-[10px] bg-white dark:bg-zinc-400 border border-zinc-300 dark:border-zinc-500 shadow-sm transition-all duration-300 ${isOpen ? 'top-0' : 'top-1.5'}`}></div>
-    </div>
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(docHeight > 0 ? scrollTop / docHeight : 0);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-    <span className="text-[5px] font-bold text-zinc-900 dark:text-zinc-500 tracking-wider">OFF</span>
-  </button>
-);
+  return (
+    <div
+      className="fixed top-0 left-0 h-[2px] z-[60]"
+      style={{ width: `${progress * 100}%`, backgroundColor: '#c9a84c', transition: 'width 0.1s linear' }}
+    />
+  );
+};
 
-const AboutView = () => (
-  <div className="animate-fade-up">
+/* ═══════════════════════════════════════
+   3D Tilt Card
+   ═══════════════════════════════════════ */
+const TiltCard = ({ children, className = '', ...props }) => {
+  const ref = useRef(null);
+  const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
 
-    {/* ═══ Bio Section with spine ═══ */}
-    <div className="relative max-w-3xl mb-16">
-      {/* Left spine trace */}
-      <div className="absolute left-0 top-1 bottom-0 flex flex-col items-center" style={{ width: '20px' }}>
-        <div className="w-2 h-2 rounded-full border-[1.5px] border-zinc-400 dark:border-zinc-600 bg-white dark:bg-zinc-950 shrink-0" />
-        <div className="w-[1.5px] bg-zinc-200 dark:bg-zinc-700 flex-1" />
-        <div className="w-2 h-2 rounded-full border-[1.5px] border-zinc-400 dark:border-zinc-600 bg-white dark:bg-zinc-950 shrink-0 my-0.5" />
-        <div className="w-[1.5px] bg-zinc-200 dark:bg-zinc-700 flex-1" />
-        {/* Ground symbol */}
-        <div className="flex flex-col items-center gap-[2px] shrink-0 mt-1">
-          <div className="w-[10px] h-[1.5px] bg-zinc-300 dark:bg-zinc-600" />
-          <div className="w-[6px] h-[1.5px] bg-zinc-300 dark:bg-zinc-600" />
-          <div className="w-[3px] h-[1.5px] bg-zinc-300 dark:bg-zinc-600" />
+  const handleMouse = useCallback((e) => {
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return;
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setTilt({ rotateX: y * -8, rotateY: x * 8 });
+  }, []);
+
+  const resetMouse = useCallback(() => {
+    setTilt({ rotateX: 0, rotateY: 0 });
+  }, []);
+
+  useCardGlow(ref);
+
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      style={{
+        perspective: 1000,
+        transformStyle: 'preserve-3d',
+      }}
+      animate={{ rotateX: tilt.rotateX, rotateY: tilt.rotateY }}
+      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+      onMouseMove={handleMouse}
+      onMouseLeave={resetMouse}
+      {...props}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+/* ═══════════════════════════════════════
+   About View
+   ═══════════════════════════════════════ */
+const AboutView = () => {
+  return (
+    <motion.div className="space-y-24" variants={pageVariants} initial="initial" animate="animate" exit="exit">
+
+      {/* ── Hero ── */}
+      <section className="relative pt-8 md:pt-16 pb-8">
+        {/* Faded Korean name background element */}
+        <motion.div
+          className="absolute top-0 right-0 select-none pointer-events-none text-[140px] md:text-[200px] font-display font-extrabold leading-none tracking-tighter text-midnight-900 dark:text-white"
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 0.03, x: 0 }}
+          transition={{ duration: 1.2, ease: smoothEase }}
+        >
+          정우성
+        </motion.div>
+
+        <StaggerReveal>
+          <motion.p variants={fadeUp} className="font-mono text-[12px] tracking-[0.25em] uppercase mb-6" style={{ color: '#c9a84c' }}>
+            Electronic Engineer  · Manchester, UK
+          </motion.p>
+
+          <motion.h1 variants={fadeUp} className="font-display text-[clamp(2.5rem,6vw,4.5rem)] font-bold leading-[1.05] tracking-tight text-midnight-900 dark:text-white mb-8">
+            Bridging{' '}
+            <motion.span
+              style={{ color: '#c9a84c' }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+            >hardware</motion.span>
+            <br className="hidden sm:block" />
+            {' '}architecture &{' '}
+            <motion.span
+              style={{ color: '#7c6df0' }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.6 }}
+            >software</motion.span> logic.
+          </motion.h1>
+
+          <motion.div variants={fadeUp} className="max-w-2xl space-y-5 text-[16px] leading-relaxed text-midnight-500 dark:text-midnight-400">
+            <p>
+              I am a final-year Electronic Engineering student at the University of Manchester, expecting a First-Class (80%) degree.
+            </p>
+            <p>
+              My engineering philosophy is rooted in full-stack physical systems. Whether it is minimizing nanosecond propagation delays in CMOS logic, or orchestrating 12-servo robotic kinematics via ROS 2, I build systems that are robust from the silicon to the high-level control software.
+            </p>
+          </motion.div>
+
+          <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-4 mt-10">
+            <Link to="/project">
+              <motion.span
+                className="group inline-flex items-center gap-2 px-6 py-3 bg-[#c9a84c] text-[#08080c] font-body font-semibold text-sm transition-all duration-300"
+                whileHover={{ scale: 1.03, backgroundColor: '#e4c76a' }}
+                whileTap={{ scale: 0.97 }}
+              >
+                View Projects
+                <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
+              </motion.span>
+            </Link>
+            <Link to="/contact">
+              <motion.span
+                className="group inline-flex items-center gap-2 px-6 py-3 border border-midnight-200 dark:border-midnight-700 text-midnight-600 dark:text-midnight-400 font-body text-sm hover:border-[#c9a84c] hover:text-[#c9a84c] dark:hover:border-[#c9a84c] dark:hover:text-[#c9a84c] transition-all duration-300"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                Get in Touch
+                <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </motion.span>
+            </Link>
+          </motion.div>
+        </StaggerReveal>
+      </section>
+
+      {/* ── Gold divider ── */}
+      <InViewMotion
+        className="gold-line w-full"
+        initial={{ scaleX: 0 }}
+        inView={{ scaleX: 1 }}
+        transition={{ duration: 1, ease: smoothEase }}
+        style={{ transformOrigin: 'center' }}
+      />
+
+      {/* ── Skills ── */}
+      <section>
+        <MotionReveal>
+          <SectionLabel>Technical Stack</SectionLabel>
+        </MotionReveal>
+
+        <StaggerReveal className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            {
+              icon: CircuitBoard,
+              label: 'hardware & eda',
+              items: ['Altium', 'Solidworks', 'Tanner EDA', 'LT Spice', 'Xilinx', 'NI Multisim', 'STM32 Nucleo', 'Raspberry Pi']
+            },
+            {
+              icon: Terminal,
+              label: 'software & control',
+              items: ['C / C++', 'Python', 'Assembly', 'VHDL', 'ROS 2', 'Matlab / Simulink', 'JavaScript / React']
+            },
+            {
+              icon: Wrench,
+              label: 'frameworks & tools',
+              items: ['Gazebo', 'Docker', 'Git', 'Firebase', 'ns-3', 'SUMO', 'Linux / Ubuntu']
+            },
+          ].map((group, gi) => (
+            <motion.div key={gi} variants={fadeUp}>
+              <TiltCard className="p-6 border border-midnight-200 dark:border-midnight-800 bg-white/50 dark:bg-midnight-900/50 hover:border-gold/40 dark:hover:border-gold/30 transition-colors duration-500 card-hover">
+                <div className="flex items-center gap-2.5 mb-5">
+                  <group.icon size={14} style={{ color: '#c9a84c' }} />
+                  <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-midnight-400 dark:text-midnight-500">
+                    {group.label}
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {group.items.map((s, si) => (
+                    <motion.span
+                      key={s}
+                      className="px-2.5 py-1 text-[12px] font-mono text-midnight-600 dark:text-midnight-400 border border-midnight-100 dark:border-midnight-800 bg-midnight-50 dark:bg-midnight-800/50 hover:border-gold/50 hover:text-gold dark:hover:border-gold/40 dark:hover:text-gold transition-all duration-300 cursor-default"
+                      variants={{
+                        initial: { opacity: 0, scale: 0.8 },
+                        animate: { opacity: 1, scale: 1, transition: { delay: gi * 0.15 + si * 0.04, duration: 0.3 } },
+                      }}
+                      whileHover={{ scale: 1.08, y: -2 }}
+                    >
+                      {s}
+                    </motion.span>
+                  ))}
+                </div>
+              </TiltCard>
+            </motion.div>
+          ))}
+        </StaggerReveal>
+      </section>
+
+      {/* ── Operational History ── */}
+      <section>
+        <MotionReveal>
+          <SectionLabel>Operational History</SectionLabel>
+        </MotionReveal>
+
+        <div className="relative ml-4 md:ml-8">
+          {/* Vertical timeline line */}
+          <InViewMotion
+            className="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-gold via-violet to-gold/20"
+            initial={{ scaleY: 0 }}
+            inView={{ scaleY: 1 }}
+            transition={{ duration: 1.2, ease: smoothEase }}
+            style={{ transformOrigin: 'top' }}
+          />
+
+          {[
+            {
+              color: 'gold',
+              title: 'Republic of Korea Airforce',
+              sub: 'Avionics Maintenance Team · Sep 2022 – Jun 2024',
+              items: [
+                <>Supported avionics maintenance in a 35-person unit; coordinated tasks and standardized fault checklists and ESD handling at benches.</>,
+                <>Led procedural optimizations that <span className="text-gold font-medium">reduced average troubleshooting time by 15%</span>.</>,
+                <>Mentored 16 recruits over 6 months with weekly on-the-job training sessions.</>
+              ]
+            },
+            {
+              color: 'violet',
+              title: 'The University of Manchester',
+              sub: 'BEng Electronic Engineering · 2021 – Present',
+              items: [
+                <>First-Class (80%) expected. Key modules: <span className="text-violet dark:text-violet-bright font-medium">Microcontroller Engineering</span>, <span className="text-violet dark:text-violet-bright font-medium">VLSI Design</span>, Control Systems.</>,
+                <>Specializing in the intersection of Robotics and VLSI Design with hands-on lab experience in FPGA synthesis, analog IC layout, and embedded firmware.</>
+              ]
+            },
+            {
+              color: 'gold',
+              title: 'Hack-A-Bot 2025',
+              badge: '3RD PLACE',
+              sub: 'Robosoc, University of Manchester · Mar 2025',
+              items: [
+                <>Developed a <span className="text-gold font-medium">real-time hand-raise detection system</span> using a Raspberry Pi 5 with a Sony AI camera.</>,
+                <>Designed a custom CAD mount and integrated computer vision pipeline to gauge student classroom engagement.</>
+              ]
+            }
+          ].map((entry, i) => (
+            <MotionReveal key={i} variants={i % 2 === 0 ? fadeLeft : fadeRight} delay={i * 0.15}>
+              <div className="relative pl-10 pb-12 group">
+                {/* Dot on timeline */}
+                <motion.div
+                  className={`absolute left-[-5px] top-1.5 w-[10px] h-[10px] rounded-full border-2 transition-all duration-300 ${
+                    entry.color === 'gold'
+                      ? 'border-gold bg-white dark:bg-midnight-950 group-hover:bg-gold'
+                      : 'border-violet bg-white dark:bg-midnight-950 group-hover:bg-violet'
+                  }`}
+                  variants={{
+                    initial: { scale: 0 },
+                    animate: { scale: 1, transition: { delay: 0.3 + i * 0.15, type: 'spring', stiffness: 300 } },
+                  }}
+                />
+
+                <h4 className="text-[16px] font-display font-semibold text-midnight-900 dark:text-white mb-1 group-hover:text-gold dark:group-hover:text-gold transition-colors duration-300">
+                  {entry.title}
+                  {entry.badge && (
+                    <span className="ml-2.5 text-[10px] font-mono font-medium px-2 py-0.5 bg-gold/10 text-gold border border-gold/30">
+                      {entry.badge}
+                    </span>
+                  )}
+                </h4>
+                <p className="font-mono text-[11px] text-midnight-400 dark:text-midnight-500 mb-4">{entry.sub}</p>
+
+                <ul className="space-y-2.5">
+                  {entry.items.map((item, j) => (
+                    <li key={j} className="flex gap-3 text-[14px] leading-relaxed text-midnight-500 dark:text-midnight-400">
+                      <span className="shrink-0 mt-2 w-1 h-1 rounded-full bg-midnight-300 dark:bg-midnight-600" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </MotionReveal>
+          ))}
         </div>
-      </div>
+      </section>
+    </motion.div>
+  );
+};
 
-      {/* Bio content */}
-      <div className="pl-10">
-        <h2 className="text-[32px] md:text-[38px] font-light tracking-tight text-zinc-900 dark:text-zinc-100 leading-[1.15] mb-6">
-          Bridging the gap between{' '}
-          <span className="font-bold">hardware architecture</span> and{' '}
-          <span className="font-bold">software logic</span>.
-        </h2>
+/* ═══════════════════════════════════════
+   Projects View
+   ═══════════════════════════════════════ */
+const ProjectsView = ({ onDomainExpansion }) => {
+  const navigate = useNavigate();
+  const { projectSlug } = useParams();
+  const projectIdBySlug = {
+    vfc_simulation: 'vfc-ns3',
+    buggy: 'buggy',
+    hackabot_2025: 'hackabot-2025',
+    hackabot_2026: 'hackabot-2026',
+  };
+  const slugByProjectId = {
+    'vfc-ns3': 'VFC_Simulation',
+    buggy: 'Buggy',
+    'hackabot-2025': 'Hackabot_2025',
+    'hackabot-2026': 'Hackabot_2026',
+  };
+  const routeProjectId = projectSlug ? projectIdBySlug[projectSlug.toLowerCase()] ?? null : null;
+  const [activeProjectId, setActiveProjectId] = useState(routeProjectId);
 
-        <div className="space-y-4 text-zinc-500 dark:text-zinc-400 leading-relaxed text-[15px] max-w-2xl">
-          <p>
-            I am a final-year Electronic Engineering student at the University of Manchester, expecting a First-Class (80%) degree.
-          </p>
-          <p>
-            My engineering philosophy is rooted in full-stack physical systems. Whether it is minimizing nanosecond propagation delays in CMOS logic, or orchestrating 12-servo robotic kinematics via ROS 2, I build systems that are robust from the silicon to the high-level control software.
-          </p>
-        </div>
-      </div>
-    </div>
+  useEffect(() => {
+    setActiveProjectId(routeProjectId);
+  }, [routeProjectId]);
 
-    {/* ═══ Two-Column: Skills | Operational History ═══ */}
-    <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-12 md:gap-16">
+  const openProject = (projectId) => {
+    const slug = slugByProjectId[projectId];
+    if (slug) {
+      // Trigger Domain Expansion for projects with detail pages
+      if (onDomainExpansion) {
+        onDomainExpansion(projectId, () => {
+          navigate(`/project/${slug}`);
+        });
+      } else {
+        navigate(`/project/${slug}`);
+      }
+      return;
+    }
+    setActiveProjectId(projectId);
+  };
 
-      {/* ── Left Column: Skills / Tech Stack ── */}
-      <div className="space-y-8">
-
-        {/* Hardware & EDA */}
-        <div>
-          <div className="flex items-center gap-2 mb-4">
-            <Cpu size={13} className="text-zinc-400 dark:text-zinc-500" />
-            <span className="font-mono text-[11px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500">{'// '}hardware_&_eda</span>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {['Altium', 'Solidworks', 'Tanner EDA', 'LT Spice', 'Xilinx', 'NI Multisim', 'STM32 Nucleo', 'Raspberry Pi'].map(s => (
-              <span key={s} className="px-3 py-1 text-[12px] font-mono text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:border-zinc-400 dark:hover:border-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors cursor-default">{s}</span>
-            ))}
-          </div>
-        </div>
-
-        {/* Software & Control */}
-        <div>
-          <div className="flex items-center gap-2 mb-4">
-            <span className="font-mono text-zinc-400 dark:text-zinc-500 text-[13px]">{'>'}_</span>
-            <span className="font-mono text-[11px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500">{'// '}software_&_control</span>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {['C / C++', 'Python', 'Assembly', 'VHDL', 'ROS 2', 'Matlab / Simulink', 'JavaScript / React'].map(s => (
-              <span key={s} className="px-3 py-1 text-[12px] font-mono text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:border-zinc-400 dark:hover:border-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors cursor-default">{s}</span>
-            ))}
-          </div>
-        </div>
-
-        {/* Frameworks & Tools */}
-        <div>
-          <div className="flex items-center gap-2 mb-4">
-            <Plug size={13} className="text-zinc-400 dark:text-zinc-500" />
-            <span className="font-mono text-[11px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500">{'// '}frameworks_&_tools</span>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {['Gazebo', 'Docker', 'Git', 'Firebase', 'ns-3', 'SUMO', 'Linux / Ubuntu'].map(s => (
-              <span key={s} className="px-3 py-1 text-[12px] font-mono text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900/50 hover:border-zinc-400 dark:hover:border-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors cursor-default">{s}</span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ── Right Column: Operational History ── */}
-      <div>
-        <div className="flex items-center gap-2 mb-8">
-          <Briefcase size={13} className="text-zinc-400 dark:text-zinc-500" />
-          <span className="font-mono text-[11px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500">{'// '}operational_history</span>
-          <div className="flex-1 h-px bg-zinc-100 dark:bg-zinc-800 ml-2" />
-        </div>
-
-        {/* Timeline */}
-        <div className="relative ml-3">
-          {/* Vertical line */}
-          <div className="absolute left-0 top-2 bottom-0 w-[1.5px] bg-gradient-to-b from-orange-300 via-blue-300 to-green-300 dark:from-orange-600 dark:via-blue-600 dark:to-green-500" />
-
-          {/* ── Republic of Korea Air Force ── */}
-          <div className="relative pl-8 pb-10 group">
-            <div className="absolute left-[-4.5px] top-2 w-[10px] h-[10px] rounded-full border-[1.5px] border-orange-500 bg-white dark:bg-zinc-950 group-hover:bg-orange-500 transition-all" />
-
-            <h4 className="text-[15px] font-semibold text-zinc-800 dark:text-zinc-200 mb-0.5 group-hover:text-zinc-950 dark:group-hover:text-white transition-colors">Republic of Korea Airforce</h4>
-            <p className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500 mb-3">Avionics Maintenance Team | Sep 2022 - Jun 2024</p>
-
-            <ul className="space-y-2 text-[13px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
-              <li className="flex gap-2">
-                <span className="text-zinc-300 dark:text-zinc-600 shrink-0 mt-0.5">•</span>
-                <span>Supported avionics maintenance in a 35-person unit; coordinated tasks and standardized fault checklists and ESD handling at benches.</span>
-              </li>
-              <li className="flex gap-2">
-                <span className="text-zinc-300 dark:text-zinc-600 shrink-0 mt-0.5">•</span>
-                <span>Led procedural optimizations that <span className="text-orange-700 dark:text-orange-300 font-medium">reduced average troubleshooting time by 15%</span>.</span>
-              </li>
-              <li className="flex gap-2">
-                <span className="text-zinc-300 dark:text-zinc-600 shrink-0 mt-0.5">•</span>
-                <span>Mentored 16 recruits over 6 months with weekly on-the-job training sessions.</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* ── University of Manchester ── */}
-          <div className="relative pl-8 pb-10 group">
-            <div className="absolute left-[-4.5px] top-2 w-[10px] h-[10px] rounded-full border-[1.5px] border-blue-500 bg-white dark:bg-zinc-950 group-hover:bg-blue-500 transition-all" />
-
-            <h4 className="text-[15px] font-semibold text-zinc-800 dark:text-zinc-200 mb-0.5 group-hover:text-zinc-950 dark:group-hover:text-white transition-colors">The University of Manchester</h4>
-            <p className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500 mb-3">BEng Electronic Engineering | 2021 - Present</p>
-
-            <ul className="space-y-2 text-[13px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
-              <li className="flex gap-2">
-                <span className="text-zinc-300 dark:text-zinc-600 shrink-0 mt-0.5">•</span>
-                <span>First-Class (80%) expected. Key modules: <span className="text-blue-700 dark:text-blue-300 font-medium">Microcontroller Engineering</span>, <span className="text-blue-700 dark:text-blue-300 font-medium">VLSI Design</span>, Control Systems.</span>
-              </li>
-              <li className="flex gap-2">
-                <span className="text-zinc-300 dark:text-zinc-600 shrink-0 mt-0.5">•</span>
-                <span>Specializing in the intersection of Robotics and VLSI Design with hands-on lab experience in FPGA synthesis, analog IC layout, and embedded firmware.</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* ── Hack-A-Bot 2025 ── */}
-          <div className="relative pl-8 pb-2 group">
-            <div className="absolute left-[-4.5px] top-2 w-[10px] h-[10px] rounded-full border-[1.5px] border-green-500 bg-white dark:bg-zinc-950 group-hover:bg-green-500 transition-all" />
-
-            <h4 className="text-[15px] font-semibold text-zinc-800 dark:text-zinc-200 mb-0.5 group-hover:text-zinc-950 dark:group-hover:text-white transition-colors">
-              Hack-A-Bot 2025
-              <span className="ml-2 text-[10px] font-mono font-normal px-1.5 py-0.5 bg-green-50 dark:bg-green-500/10 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800">3RD PLACE</span>
-            </h4>
-            <p className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500 mb-3">Robosoc, University of Manchester | Mar 2025</p>
-
-            <ul className="space-y-2 text-[13px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
-              <li className="flex gap-2">
-                <span className="text-zinc-300 dark:text-zinc-600 shrink-0 mt-0.5">•</span>
-                <span>Developed a <span className="text-green-700 dark:text-green-300 font-medium">real-time hand-raise detection system</span> using a Raspberry Pi 5 with a Sony AI camera.</span>
-              </li>
-              <li className="flex gap-2">
-                <span className="text-zinc-300 dark:text-zinc-600 shrink-0 mt-0.5">•</span>
-                <span>Designed a custom CAD mount and integrated computer vision pipeline to gauge student classroom engagement.</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
-
-
-const ProjectsView = () => {
-  const [activeProjectId, setActiveProjectId] = useState(null);
+  const backToList = () => navigate('/project');
 
   const projects = [
     {
       id: 'vfc-ns3',
-      title: '5G VFC Architecture Simulation (FYP)',
+      title: '5G VFC Architecture Simulation',
+      tag: 'FYP',
       category: 'Research / Networks',
-      desc: 'Evaluating 5G Cellular-Routed Vehicular Fog Computing with NS-3. Introducing a Velocity-Aware Hybrid Algorithm to dynamically balance compute loads and prevent macro-cell congestion.',
+      accent: 'violet',
+      desc: 'Comparing VFN (bus-mounted) vs CFN (roadside) fog computing over 5G NR at 28 GHz using ns-3.46 + 5G-LENA. Full PHY/MAC simulation across 50–150 vehicle densities in Manchester city traffic.',
       year: 'FYP'
+    },
+    {
+      id: 'hackabot-2026',
+      title: 'GridBox — Smart Factory Controller',
+      category: 'Hackathon / IoT',
+      accent: 'gold',
+      desc: 'A £15 smart factory controller with dual Raspberry Pi Pico 2, wireless SCADA, and autonomous fault detection — built in 24 hours at Hack-A-Bot 2026.',
+      year: '2026'
     },
     {
       id: 'baby-spyder',
       title: 'Baby Spyder Robot',
       category: 'Robotics',
+      accent: 'violet',
       desc: 'Developing a ROS 2 control stack for a 12-servo quadruped robot, utilizing torque calculations for joint stability and Gazebo simulation for physical validation.',
+      year: '2025'
+    },
+    {
+      id: 'hackabot-2025',
+      title: 'AI Classroom Camera',
+      tag: '3rd Place',
+      category: 'Hackathon / CV',
+      accent: 'gold',
+      desc: 'Real-time attendance tracking and engagement monitoring via on-device PoseNet inference on a Raspberry Pi AI Camera — 3rd place at Hack-A-Bot 2025.',
       year: '2025'
     },
     {
       id: 'vlsi-cell',
       title: 'VLSI Logic Cell Optimization',
       category: 'VLSI Design',
+      accent: 'violet',
       desc: 'Designed a fast-switching CMOS logic cell securing a worst-case delay of 0.553 ns via transistor optimization and Tanner EDA LT spice simulations.',
       year: '2025'
     },
     {
       id: 'buggy',
       title: 'Autonomous Line-Following Buggy',
+      tag: 'Best Looking',
       category: 'Embedded Systems',
+      accent: 'gold',
       desc: 'Engineered an STM32-based feedback control system via C++, increasing line detection accuracy to 76% and optimizing motor response for high-speed track navigation.',
       year: '2024'
     },
   ];
 
-  if (activeProjectId === 'vfc-ns3') {
-    return (
-      <div className="space-y-10 animate-fade-up max-w-4xl pb-12">
-        <button onClick={() => setActiveProjectId(null)} className="flex items-center gap-2 text-zinc-500 hover:text-zinc-900 transition-colors mb-4 group font-medium text-sm">
-          <ArrowRight size={16} className="rotate-180 transition-transform group-hover:-translate-x-1" />
-          Back to List
-        </button>
+  /* Detail page renders */
+  if (activeProjectId === 'vfc-ns3') return <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit"><FYPDetail backToList={backToList} /></motion.div>;
+  if (activeProjectId === 'hackabot-2026') return <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit"><HackABot2026Detail backToList={backToList} /></motion.div>;
+  if (activeProjectId === 'hackabot-2025') return <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit"><HackABot2025Detail backToList={backToList} /></motion.div>;
+  if (activeProjectId === 'buggy') return <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit"><BuggyDetail backToList={backToList} /></motion.div>;
 
-        <div className="border-b border-zinc-200 pb-8">
-          <h2 className="text-3xl md:text-5xl font-semibold tracking-tight text-zinc-900 mb-4">Cellular-Routed Vehicular Fog Computing</h2>
-          <p className="text-lg text-zinc-500 font-light">Final Year Project • NS-3 & 5G-LENA Simulation</p>
-        </div>
-
-        <div className="prose prose-zinc max-w-none text-zinc-700 font-light space-y-8 leading-relaxed">
-          <section>
-            <h3 className="text-xl font-medium text-zinc-900 mb-4 flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-zinc-900"></div> 1. Purpose & The Core Problem</h3>
-            <p>Vehicular Fog Computing (VFC) aims to reduce latency by offloading computing tasks from vehicles to nearby edge nodes (like buses) instead of the distant Cloud. However, existing literature relies on idealized assumptions—specifically that vehicles can communicate directly using frictionless, out-of-band Sidelink connections.</p>
-            <p>In reality, near-term deployments rely on existing 5G infrastructure, meaning all V2V traffic must route through the macro-cell base station (gNB). This project evaluated the real-world physical limits of this <strong className="font-semibold text-zinc-900">Cellular-Routed VFC architecture</strong> in a dense urban environment to ultimately introduce a <strong className="font-semibold text-zinc-900">Velocity-Aware Hybrid Algorithm</strong>.</p>
-          </section>
-
-          <section>
-            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white"></div> 2. Methodology</h3>
-            <ul className="list-none space-y-4 pl-0">
-              <li className="pl-4 border-l-2 border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300"><strong className="font-semibold text-zinc-900 dark:text-zinc-100 block">Simulation Environment</strong> Platform: NS-3 (v3.46) with 5G-LENA module representing realistic 3GPP mmWave physics. Mobility relies on SUMO over a 1km slice of Manchester City Center.</li>
-              <li className="pl-4 border-l-2 border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300"><strong className="font-semibold text-zinc-900 dark:text-zinc-100 block">Double-Hop Architecture</strong> Both client cars and fog-node buses are configured as standard User Equipment (UE). The data path operates strictly as: Car → gNB → Core Network → gNB → Bus.</li>
-              <li className="pl-4 border-l-2 border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300"><strong className="font-semibold text-zinc-900 dark:text-zinc-100 block">Experimental Scenarios</strong> Tested against a 40-vehicle high-speed (Off-Peak) run and a 200-vehicle congested (Peak) run, utilizing a 15 dB Cell Range Extension (CRE) bias.</li>
-            </ul>
-          </section>
-
-
-
-          <section>
-            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white"></div> 2.5 Interactive Lab</h3>
-            <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-              Run the NS-3 VFC scenario directly from this page by tuning the number of Cars, gNBs, VFCs, and CFNs.
-              The backend executes runs in Docker, queues public requests, and streams results back as charts and map animation.
-            </p>
-            <SimulationLab />
-          </section>
-
-
-          <section>
-            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white"></div> 3. Key Findings</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-              <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-6 shadow-sm">
-                <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-2">Macro-Cell Congestion Collapse</h4>
-                <p className="text-sm text-zinc-700 dark:text-zinc-400">In the 200-vehicle scenario, routing all traffic double-hop via the cell tower caused extreme mmWave co-channel interference, blinding receivers and causing a catastrophic <strong className="text-red-500 font-medium">97.5% uplink packet loss</strong>.</p>
-              </div>
-              <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-6 shadow-sm">
-                <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-2">The Compute Bottleneck</h4>
-                <p className="text-sm text-zinc-700 dark:text-zinc-400">Applying CRE bias effectively offloaded traffic from the gNB, but blindly forcing 99% of tasks onto a few buses overwhelmed their CPUs (capped at 200 tasks/s), resulting in <strong className="text-red-500 font-medium">multi-minute queuing delays</strong>.</p>
-              </div>
-            </div>
-          </section>
-
-          <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-6 mt-8 rounded-sm">
-            <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-2">Conclusion</h4>
-            <p className="text-sm text-zinc-700 dark:text-zinc-400">Neither pure gNB offloading nor pure VFN offloading functions alone in a dense 5G network. The data validates the absolute necessity of the proposed Velocity-Aware Hybrid Algorithm to monitor vehicle speeds and CPU queues to intelligently route load.</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (activeProjectId === 'buggy') {
-    return (
-      <div className="space-y-10 animate-fade-up max-w-4xl pb-12">
-        <button onClick={() => setActiveProjectId(null)} className="flex items-center gap-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors mb-4 group font-medium text-sm">
-          <ArrowRight size={16} className="rotate-180 transition-transform group-hover:-translate-x-1" />
-          Back to List
-        </button>
-
-        <div className="border-b border-zinc-200 dark:border-zinc-700 pb-8">
-          <h2 className="text-3xl md:text-5xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 mb-4">Autonomous Line-Following Buggy</h2>
-          <p className="text-lg text-zinc-500 dark:text-zinc-400 font-light">Embedded Systems Project • University of Manchester • Group 23</p>
-          <div className="flex flex-wrap gap-3 mt-4">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-700 text-amber-800 dark:text-amber-300 text-xs font-medium">
-              <span className="text-amber-500">★</span> Best Looking Buggy Award
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-700 text-blue-800 dark:text-blue-300 text-xs font-medium">
-              84% — First Class Honours
-            </span>
-          </div>
-        </div>
-
-        {/* Hero image */}
-        <div className="overflow-hidden border border-zinc-200 dark:border-zinc-700">
-          <img src="/images/buggy/hero.jpg" alt="Autonomous line-following buggy at the final race" className="w-full h-auto object-cover" />
-          <p className="text-xs text-zinc-400 dark:text-zinc-500 px-4 py-2 bg-zinc-50 dark:bg-zinc-900">The completed buggy at the final race — acetyl chassis with front sensor array, rear drive wheels, and STM32 controller on top.</p>
-        </div>
-
-        <div className="prose prose-zinc max-w-none text-zinc-700 dark:text-zinc-300 font-light space-y-8 leading-relaxed">
-
-          {/* ── 1. Overview ── */}
-          <section>
-            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white" /> 1. Overview
-            </h3>
-            <p>An autonomous, high-speed line-following robot designed for warehouse logistics — engineered to prioritise <strong className="font-semibold text-zinc-900 dark:text-zinc-100">speed and stability</strong> over raw torque. The buggy uses a custom multi-layer acetyl chassis, BLE-tunable PID control, and a front-mounted infrared sensor array to navigate a complex racetrack with straights, curves, and an 18° incline.</p>
-            <p>The project spanned two semesters of full-cycle development: motor characterisation, gearbox selection, sensor PCB design, chassis CAD, control algorithm implementation, and final race competition. The buggy was awarded <strong className="font-semibold text-zinc-900 dark:text-zinc-100">"Best Looking Buggy"</strong> by Dr Mike O'Toole & Dr Liam Marsh, recognising its exceptionally clean acetyl chassis, internal wiring routing, and professional manufacturing quality.</p>
-
-            {/* Labeled diagram + CAD render side by side */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-              <div className="border border-zinc-200 dark:border-zinc-700 overflow-hidden">
-                <img src="/images/buggy/labeled-diagram.jpg" alt="Labeled component diagram of the buggy" className="w-full h-auto object-cover" />
-                <p className="text-[11px] text-zinc-400 dark:text-zinc-500 px-3 py-1.5 bg-zinc-50 dark:bg-zinc-900">Component layout — microcontroller, motor drive board, batteries, sensor array PCB, and gearbox module.</p>
-              </div>
-              <div className="border border-zinc-200 dark:border-zinc-700 overflow-hidden">
-                <img src="/images/buggy/cad-render.png" alt="Solidworks CAD render of the buggy" className="w-full h-auto object-cover" />
-                <p className="text-[11px] text-zinc-400 dark:text-zinc-500 px-3 py-1.5 bg-zinc-50 dark:bg-zinc-900">Solidworks CAD render — 3-layer acetyl chassis with visible gearbox, sensor mount, and internal wiring channels.</p>
-              </div>
-            </div>
-          </section>
-
-          {/* ── 2. System Architecture ── */}
-          <section>
-            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white" /> 2. System Architecture
-            </h3>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-              {/* Mechanical */}
-              <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-6">
-                <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-3 flex items-center gap-2">
-                  <span className="font-mono text-[10px] px-1.5 py-0.5 bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800">MECH</span>
-                  Chassis & Drive
-                </h4>
-                <ul className="text-sm text-zinc-600 dark:text-zinc-400 space-y-1.5">
-                  <li>• <strong className="font-medium text-zinc-800 dark:text-zinc-200">3-layer acetyl chassis</strong> — compact, low CG, internally routed wiring</li>
-                  <li>• 2-stage gearbox (ratio <span className="font-mono text-zinc-800 dark:text-zinc-200">1:11.50</span>, 72.25% efficiency)</li>
-                  <li>• Max flat speed: <span className="font-mono text-zinc-800 dark:text-zinc-200">3.34 m/s</span> | Incline: <span className="font-mono text-zinc-800 dark:text-zinc-200">2.66 m/s</span></li>
-                  <li>• Front ball castor + 2× rear drive wheels (80.4 mm Ø)</li>
-                </ul>
-              </div>
-
-              {/* Electrical */}
-              <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-6">
-                <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-3 flex items-center gap-2">
-                  <span className="font-mono text-[10px] px-1.5 py-0.5 bg-orange-50 dark:bg-orange-500/10 text-orange-700 dark:text-orange-400 border border-orange-200 dark:border-orange-800">ELEC</span>
-                  Sensors & PCB
-                </h4>
-                <ul className="text-sm text-zinc-600 dark:text-zinc-400 space-y-1.5">
-                  <li>• 5× <strong className="font-medium text-zinc-800 dark:text-zinc-200">TCRT5000L</strong> IR reflective sensors — inline array on custom PCB</li>
-                  <li>• Sensor height: 5 mm | Resistor: 5 kΩ | ΔV white/black: 3.74 V</li>
-                  <li>• <strong className="font-medium text-zinc-800 dark:text-zinc-200">AEAT-601B-F06</strong> quadrature encoder for speed feedback</li>
-                  <li>• Dallas DS2781 IC for battery monitoring</li>
-                </ul>
-              </div>
-
-              {/* Control */}
-              <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-6">
-                <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-3 flex items-center gap-2">
-                  <span className="font-mono text-[10px] px-1.5 py-0.5 bg-green-50 dark:bg-green-500/10 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800">CTRL</span>
-                  Control System
-                </h4>
-                <ul className="text-sm text-zinc-600 dark:text-zinc-400 space-y-1.5">
-                  <li>• <strong className="font-medium text-zinc-800 dark:text-zinc-200">PID controller</strong> with limited integral history for turn stability</li>
-                  <li>• Bang-Bang fallback for robust line-break recovery</li>
-                  <li>• <strong className="font-medium text-zinc-800 dark:text-zinc-200">BLE interface</strong> for real-time PID gain tuning mid-run</li>
-                  <li>• Spin-towards-last-line recovery strategy</li>
-                </ul>
-              </div>
-
-              {/* Software */}
-              <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-6">
-                <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-3 flex items-center gap-2">
-                  <span className="font-mono text-[10px] px-1.5 py-0.5 bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-800">SW</span>
-                  Software Stack
-                </h4>
-                <ul className="text-sm text-zinc-600 dark:text-zinc-400 space-y-1.5">
-                  <li>• <strong className="font-medium text-zinc-800 dark:text-zinc-200">STM32 microcontroller</strong> programmed in C++</li>
-                  <li>• Modular firmware: motor PWM, sensor ADC, PID loop, BLE comms</li>
-                  <li>• GitHub version control for iterative algorithm testing</li>
-                  <li>• Chassis CAD in Solidworks, PCB layout in KiCad</li>
-                </ul>
-              </div>
-            </div>
-
-            {/* PCB Layout + Wiring Diagram */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-              <div className="border border-zinc-200 dark:border-zinc-700 overflow-hidden">
-                <img src="/images/buggy/pcb-layout.png" alt="KiCad PCB layout for sensor board" className="w-full h-auto object-cover" />
-                <p className="text-[11px] text-zinc-400 dark:text-zinc-500 px-3 py-1.5 bg-zinc-50 dark:bg-zinc-900">KiCad sensor PCB layout — Group 23 custom design with TCRT5000L sensor array routing.</p>
-              </div>
-              <div className="border border-zinc-200 dark:border-zinc-700 overflow-hidden">
-                <img src="/images/buggy/wiring-diagram.jpg" alt="System wiring diagram" className="w-full h-auto object-cover" />
-                <p className="text-[11px] text-zinc-400 dark:text-zinc-500 px-3 py-1.5 bg-zinc-50 dark:bg-zinc-900">Wiring diagram — Nucleo F401RE to motor drive board, sensor array, and motor connections.</p>
-              </div>
-            </div>
-          </section>
-
-          {/* ── Deep Dive: Motor & Gearbox Selection ── */}
-          <section>
-            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white" /> Motor & Gearbox Selection
-            </h3>
-            <p>Before any mechanical design, the motor parameters were experimentally determined to mathematically select the optimal gear combination. The key motor constants were measured as:</p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-zinc-200 dark:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 mt-4 mb-4">
-              <div className="bg-white dark:bg-zinc-900 p-3 text-center">
-                <span className="block text-lg font-mono font-light text-zinc-900 dark:text-zinc-100">7.3<span className="text-xs text-zinc-400"> mNm/A</span></span>
-                <span className="text-[10px] uppercase tracking-widest text-zinc-400">K<sub>T</sub> (Torque)</span>
-              </div>
-              <div className="bg-white dark:bg-zinc-900 p-3 text-center">
-                <span className="block text-lg font-mono font-light text-zinc-900 dark:text-zinc-100">7.4<span className="text-xs text-zinc-400"> mV/rad·s⁻¹</span></span>
-                <span className="text-[10px] uppercase tracking-widest text-zinc-400">K<sub>E</sub> (EMF)</span>
-              </div>
-              <div className="bg-white dark:bg-zinc-900 p-3 text-center">
-                <span className="block text-lg font-mono font-light text-zinc-900 dark:text-zinc-100">2.182<span className="text-xs text-zinc-400"> Ω</span></span>
-                <span className="text-[10px] uppercase tracking-widest text-zinc-400">R<sub>a</sub> (Armature)</span>
-              </div>
-              <div className="bg-white dark:bg-zinc-900 p-3 text-center">
-                <span className="block text-lg font-mono font-light text-zinc-900 dark:text-zinc-100">0.120<span className="text-xs text-zinc-400"> V</span></span>
-                <span className="text-[10px] uppercase tracking-widest text-zinc-400">V<sub>brush</sub></span>
-              </div>
-            </div>
-            <p>Using a test chassis weighing <span className="font-mono text-zinc-800 dark:text-zinc-200">1.09 kg</span> with friction coefficient <span className="font-mono text-zinc-800 dark:text-zinc-200">µ = 0.073</span>, the maximum opposing force on an 18° slope was calculated as <span className="font-mono text-zinc-800 dark:text-zinc-200">4.051 N</span>, requiring <span className="font-mono text-zinc-800 dark:text-zinc-200">81.43 mNm</span> of torque at each wheel shaft.</p>
-            <p className="mt-3">Three gear combinations were then evaluated against torque, speed, and current requirements:</p>
-            <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-5 mt-3">
-              <div className="space-y-3 text-sm">
-                <div className="flex gap-3 items-start">
-                  <span className="font-mono text-xs text-zinc-400 w-10 shrink-0 pt-0.5">GC1</span>
-                  <p className="text-zinc-500 dark:text-zinc-400">Rejected — required torque near motor maximum (<span className="font-mono text-zinc-800 dark:text-zinc-200">9.8 mNm</span>), unfeasible for slope conditions.</p>
-                </div>
-                <div className="flex gap-3 items-start">
-                  <span className="font-mono text-xs text-blue-600 dark:text-blue-400 w-10 shrink-0 pt-0.5">GC2 ✓</span>
-                  <p className="text-zinc-600 dark:text-zinc-300"><strong className="font-medium text-zinc-800 dark:text-zinc-200">Selected</strong> — achieved <span className="font-mono text-zinc-800 dark:text-zinc-200">85.58 rad/s</span> flat and <span className="font-mono text-zinc-800 dark:text-zinc-200">68.77 rad/s</span> on incline, meeting all torque demands efficiently.</p>
-                </div>
-                <div className="flex gap-3 items-start">
-                  <span className="font-mono text-xs text-zinc-400 w-10 shrink-0 pt-0.5">GC3</span>
-                  <p className="text-zinc-500 dark:text-zinc-400">Satisfied torque requirements but inferior speed performance compared to GC2.</p>
-                </div>
-              </div>
-            </div>
-            <p className="mt-3">The ideal gear ratio was calculated as <span className="font-mono font-medium text-zinc-800 dark:text-zinc-200">1:11.50</span> (two stages, 85% efficiency each → 72.25% combined). With wheel diameter <span className="font-mono text-zinc-800 dark:text-zinc-200">80.4 mm</span>, this yields a theoretical max flat speed of <span className="font-mono text-zinc-800 dark:text-zinc-200">3.34 m/s</span> and incline speed of <span className="font-mono text-zinc-800 dark:text-zinc-200">2.66 m/s</span>. The intermediate shaft was positioned at <span className="font-mono text-zinc-800 dark:text-zinc-200">(16.55, 1.245)</span> relative to the input shaft origin using pitch circle diameter calculations.</p>
-          </section>
-
-          {/* ── Deep Dive: Sensor Characterisation & PCB ── */}
-          <section>
-            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white" /> Sensor Characterisation & PCB Design
-            </h3>
-            <p>The line sensor selection involved a rigorous experimental process comparing <strong className="font-semibold text-zinc-900 dark:text-zinc-100">7 sensor–LED combinations</strong> across multiple performance criteria to find the optimal configuration.</p>
-
-            <h4 className="font-medium text-zinc-800 dark:text-zinc-200 mt-5 mb-2 text-sm">Sensor–LED Evaluation Process</h4>
-            <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-5">
-              <div className="space-y-2 text-sm text-zinc-600 dark:text-zinc-400">
-                <p><strong className="font-medium text-zinc-800 dark:text-zinc-200">Sensors tested:</strong> SFH203P photodiode, 5 MΩ LDR, BPW17N phototransistor, TEKT5400S phototransistor, TCRT5000L (integrated)</p>
-                <p><strong className="font-medium text-zinc-800 dark:text-zinc-200">LEDs tested:</strong> TSHG6400 IR, TSHA4401 IR, OVL5521 white LED</p>
-                <p className="mt-2">Each combination was evaluated through four phases:</p>
-                <ol className="list-decimal list-inside space-y-1 ml-2">
-                  <li><strong className="font-medium text-zinc-700 dark:text-zinc-300">Working distance optimisation</strong> — best tracking at <span className="font-mono">5 mm</span> gap confirmed via test stand</li>
-                  <li><strong className="font-medium text-zinc-700 dark:text-zinc-300">Black/white track ΔV</strong> — voltage difference measured across R<sub>sensor</sub> on each surface</li>
-                  <li><strong className="font-medium text-zinc-700 dark:text-zinc-300">Dark current measurement</strong> — error baseline with LED off and sensor covered</li>
-                  <li><strong className="font-medium text-zinc-700 dark:text-zinc-300">Ambient light immunity</strong> — flashlight simulation testing to measure reading drift</li>
-                </ol>
-              </div>
-            </div>
-
-            <h4 className="font-medium text-zinc-800 dark:text-zinc-200 mt-5 mb-2 text-sm">TCRT5000L Selection Rationale</h4>
-            <p>The <strong className="font-semibold text-zinc-900 dark:text-zinc-100">TCRT5000L</strong> was selected for its integrated emitter-detector design, which produces the largest voltage differential — <span className="font-mono text-zinc-800 dark:text-zinc-200">ΔV = 3.74 V</span> between white line and black track with <span className="font-mono text-zinc-800 dark:text-zinc-200">R<sub>sensor</sub> = 5 kΩ</span> and <span className="font-mono text-zinc-800 dark:text-zinc-200">R<sub>LED</sub> = 62 Ω</span>. Its line spread function showed the sharpest transition at the white-black boundary, and it demonstrated the best ambient light immunity among the top three candidates. A <span className="font-mono text-zinc-800 dark:text-zinc-200">2 ms</span> sampling interval was chosen to filter out noise while ensuring no line-break (≤ 6 mm gap) goes undetected.</p>
-
-            {/* ── Sensor Behaviour Graphs (from DR2 report) ── */}
-            <h4 className="font-medium text-zinc-800 dark:text-zinc-200 mt-6 mb-2 text-sm">Ambient Light Immunity Test</h4>
-            <div className="text-sm text-zinc-500 dark:text-zinc-400 mb-4 space-y-2">
-              <p>To ensure the buggy wouldn't be derailed by direct sunlight or shadows during a race, we subjected the sensors to a simulated high-glare environment using a direct flashlight. The graph below plots the voltage outputs on the white line (top cluster) vs the black track (bottom cluster) with ambient light toggled on and off.</p>
-              <p>The <strong className="font-semibold text-zinc-700 dark:text-zinc-300">BPW17N</strong> (red dashed line) failed this test — its voltage readings on the black track spiked significantly under ambient light, which would cause false-positive line detections. The <strong className="font-semibold text-zinc-700 dark:text-zinc-300">TCRT5000L</strong>, however, maintained a massive, reliable voltage gap between the white and black surfaces regardless of external illumination, proving its extreme stability.</p>
-            </div>
-            <div className="border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 rounded-xl p-5 mb-8 shadow-sm">
-              <AmbientLightChart />
-            </div>
-
-            <h4 className="font-medium text-zinc-800 dark:text-zinc-200 mt-8 mb-2 text-sm">Line Spread Function (LSF) Analysis</h4>
-            <div className="text-sm text-zinc-500 dark:text-zinc-400 mb-4 space-y-2">
-              <p>To evaluate edge-detection sensitivity, we swept each sensor across the white-black boundary (located at <span className="font-mono text-xs">-1 cm</span> and <span className="font-mono text-xs">+1 cm</span> from the centre) at 5, 10, and 15 mm working heights. The resulting Line Spread Function reveals how sharply the sensor reacts to visual blurs at the track edge.</p>
-              <p>Looking at the 5 mm comparison array (right graph), the <strong className="font-semibold text-zinc-700 dark:text-zinc-300">TCRT5000L</strong> (blue line) exhibits the tallest peak and the steepest drop-off slope. This high sensitivity is crucial — it means the sensor detects the exact edge of the white line instantly, allowing the PID controller to execute micro-corrections faster to keep the buggy perfectly parallel to the track, even through fragmented line breaks.</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 rounded-xl p-4 shadow-sm">
-                <h5 className="text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-3 text-center">TCRT5000L LSF at Various Heights</h5>
-                <TCRT5000LSpreadChart />
-              </div>
-              <div className="border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 rounded-xl p-4 shadow-sm">
-                <h5 className="text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-3 text-center">All Sensors LSF Comparison at 5mm</h5>
-                <AllSensorsSpreadChart />
-              </div>
-            </div>
-
-            <h4 className="font-medium text-zinc-800 dark:text-zinc-200 mt-5 mb-2 text-sm">5-Sensor Array Layout</h4>
-            <p>The sensor PCB uses a strategic 5-sensor inline configuration designed around the minimum white line width of <span className="font-mono text-zinc-800 dark:text-zinc-200">14 mm</span>:</p>
-            <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-5 mt-3">
-              <div className="space-y-1.5 text-sm text-zinc-600 dark:text-zinc-400">
-                <p>• <strong className="font-medium text-zinc-800 dark:text-zinc-200">1 centre sensor</strong> — always on the white line during straight-line tracking</p>
-                <p>• <strong className="font-medium text-zinc-800 dark:text-zinc-200">2 side sensors</strong> — gap to centre ≤ 14 mm ensures continuous line coverage; triggers differential motor control when activated</p>
-                <p>• <strong className="font-medium text-zinc-800 dark:text-zinc-200">2 outer sensors</strong> — safety failsafe that triggers aggressive one-wheel-forward-one-wheel-reverse turning if the line drifts to the edge</p>
-              </div>
-            </div>
-            <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-2">The PCB went through 6 manufacturing iterations during build phase due to tolerance issues and short-circuit defects, adding £36.54 in additional component costs.</p>
-          </section>
-
-          {/* ── Deep Dive: Control & Software Architecture ── */}
-          <section>
-            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white" /> Control & Software Architecture
-            </h3>
-
-            <h4 className="font-medium text-zinc-800 dark:text-zinc-200 mb-2 text-sm">Dual Controller Strategy</h4>
-            <p>Two control systems were developed in parallel to balance robustness against performance:</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
-              <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-5">
-                <h5 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-2 text-sm">Bang-Bang Controller</h5>
-                <ul className="text-sm text-zinc-600 dark:text-zinc-400 space-y-1.5">
-                  <li>• Logical-statement-based — full-speed correction on sensor trigger</li>
-                  <li>• <span className="font-mono text-zinc-800 dark:text-zinc-200">270+</span> iterations tested via visual evaluation</li>
-                  <li>• Fast response; constant direction changes on straights</li>
-                  <li>• <strong className="font-medium text-zinc-800 dark:text-zinc-200">Used in final race</strong> — proven reliable at competition speed</li>
-                </ul>
-              </div>
-              <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-5">
-                <h5 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-2 text-sm">PID Controller</h5>
-                <ul className="text-sm text-zinc-600 dark:text-zinc-400 space-y-1.5">
-                  <li>• Proportional + Integral (limited history) + Derivative gains</li>
-                  <li>• <span className="font-mono text-zinc-800 dark:text-zinc-200">2,000+</span> iterations — mostly &lt;5s test runs</li>
-                  <li>• BLE real-time gain tuning (K<sub>p</sub>, K<sub>i</sub>, K<sub>d</sub>) without re-flash</li>
-                  <li>• Smoother straights but hampered by narrow sensor spacing</li>
-                </ul>
-              </div>
-            </div>
-
-            <h4 className="font-medium text-zinc-800 dark:text-zinc-200 mt-5 mb-2 text-sm">Software Development Flow</h4>
-            <p>The firmware was built incrementally using the following staged approach, with each stage merged and tested before advancing:</p>
-            <div className="flex flex-wrap items-center gap-2 mt-3 text-xs">
-              {['Speed Control', 'Line-Following', 'Speed + Line', 'Line-Break / Stop', 'BLE Turnaround', 'All Integrated', 'Improved Line-Break', 'Final Tuned'].map((stage, i) => (
-                <React.Fragment key={i}>
-                  <span className={`px-2.5 py-1 border ${i === 7 ? 'bg-blue-50 dark:bg-blue-500/10 border-blue-200 dark:border-blue-700 text-blue-800 dark:text-blue-300 font-medium' : 'bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400'}`}>{stage}</span>
-                  {i < 7 && <span className="text-zinc-300 dark:text-zinc-600">→</span>}
-                </React.Fragment>
-              ))}
-            </div>
-
-            <h4 className="font-medium text-zinc-800 dark:text-zinc-200 mt-5 mb-2 text-sm">Firmware Modules</h4>
-            <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-5">
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
-                <div>
-                  <p className="font-mono text-xs text-blue-600 dark:text-blue-400 mb-0.5">motor_pwm</p>
-                  <p className="text-zinc-500 dark:text-zinc-400 text-xs">H-bridge PWM control with current sensing via shunt resistor</p>
-                </div>
-                <div>
-                  <p className="font-mono text-xs text-blue-600 dark:text-blue-400 mb-0.5">sensor_adc</p>
-                  <p className="text-zinc-500 dark:text-zinc-400 text-xs">5-channel ADC readings at 2 ms ticker interval with noise filtering</p>
-                </div>
-                <div>
-                  <p className="font-mono text-xs text-blue-600 dark:text-blue-400 mb-0.5">control_isr</p>
-                  <p className="text-zinc-500 dark:text-zinc-400 text-xs">Ticker-driven ISR for both bang-bang and PID motor adjustments</p>
-                </div>
-                <div>
-                  <p className="font-mono text-xs text-blue-600 dark:text-blue-400 mb-0.5">ble_comms</p>
-                  <p className="text-zinc-500 dark:text-zinc-400 text-xs">BLE UART for live PID gain tuning and telemetry output</p>
-                </div>
-                <div>
-                  <p className="font-mono text-xs text-blue-600 dark:text-blue-400 mb-0.5">encoder</p>
-                  <p className="text-zinc-500 dark:text-zinc-400 text-xs">Quadrature decoder for speed feedback and distance tracking</p>
-                </div>
-                <div>
-                  <p className="font-mono text-xs text-blue-600 dark:text-blue-400 mb-0.5">battery_mon</p>
-                  <p className="text-zinc-500 dark:text-zinc-400 text-xs">DS2781 I²C battery voltage and capacity monitoring</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* ── 3. Race Performance ── */}
-          <section>
-            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white" /> 3. Race Performance
-            </h3>
-            <p>The buggy completed the final racetrack using the Bang-Bang controller while the PID controller was still being refined. Despite running conservatively, it provided critical performance data.</p>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-zinc-200 dark:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 mt-4">
-              <div className="bg-white dark:bg-zinc-900 p-4 text-center">
-                <span className="block text-2xl font-mono font-light text-zinc-900 dark:text-zinc-100">21.8<span className="text-sm text-zinc-400">s</span></span>
-                <span className="text-[10px] uppercase tracking-widest text-zinc-400 dark:text-zinc-500">TD4 Time</span>
-              </div>
-              <div className="bg-white dark:bg-zinc-900 p-4 text-center">
-                <span className="block text-2xl font-mono font-light text-zinc-900 dark:text-zinc-100">2:27<span className="text-sm text-zinc-400">*</span></span>
-                <span className="text-[10px] uppercase tracking-widest text-zinc-400 dark:text-zinc-500">Race Lap</span>
-              </div>
-              <div className="bg-white dark:bg-zinc-900 p-4 text-center">
-                <span className="block text-2xl font-mono font-light text-zinc-900 dark:text-zinc-100">5</span>
-                <span className="text-[10px] uppercase tracking-widest text-zinc-400 dark:text-zinc-500">IR Sensors</span>
-              </div>
-              <div className="bg-white dark:bg-zinc-900 p-4 text-center">
-                <span className="block text-2xl font-mono font-light text-zinc-900 dark:text-zinc-100">3.34<span className="text-sm text-zinc-400">m/s</span></span>
-                <span className="text-[10px] uppercase tracking-widest text-zinc-400 dark:text-zinc-500">Max Flat Speed</span>
-              </div>
-            </div>
-
-            <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-2">* Penalty applied for assist during race heat. TD4 = Technical Demonstration 4 (straight-line time trial).</p>
-          </section>
-
-          {/* ── 4. Development Timeline ── */}
-          <section>
-            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white" /> 4. Development Timeline
-            </h3>
-            <div className="space-y-3">
-              <div className="flex gap-4 items-start">
-                <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500 w-20 shrink-0 pt-0.5">SEM 1</span>
-                <div className="flex-1 border-l-2 border-blue-200 dark:border-blue-800 pl-4">
-                  <p className="text-sm text-zinc-600 dark:text-zinc-400"><strong className="font-medium text-zinc-800 dark:text-zinc-200">DR1:</strong> Motor characterisation (K<sub>T</sub>, K<sub>E</sub>), load measurements (friction µ = 0.073), gearbox selection (1:11.50), intermediate shaft positioning.</p>
-                </div>
-              </div>
-              <div className="flex gap-4 items-start">
-                <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500 w-20 shrink-0 pt-0.5">SEM 1</span>
-                <div className="flex-1 border-l-2 border-orange-200 dark:border-orange-800 pl-4">
-                  <p className="text-sm text-zinc-600 dark:text-zinc-400"><strong className="font-medium text-zinc-800 dark:text-zinc-200">DR2:</strong> Sensor PCB layout (5× TCRT5000L), chassis CAD in Solidworks (8-piece acetyl design), PID + bang-bang control architecture, material analysis.</p>
-                </div>
-              </div>
-              <div className="flex gap-4 items-start">
-                <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500 w-20 shrink-0 pt-0.5">SEM 2</span>
-                <div className="flex-1 border-l-2 border-green-200 dark:border-green-800 pl-4">
-                  <p className="text-sm text-zinc-600 dark:text-zinc-400"><strong className="font-medium text-zinc-800 dark:text-zinc-200">Build & Race:</strong> PCB manufacture (6 iterations), firmware development, BLE integration for live PID tuning, 4 technical demonstrations, final race completion in 21.8s.</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* ── Photo Gallery ── */}
-          <section>
-            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white" /> Build Gallery
-            </h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-              <div className="border border-zinc-200 dark:border-zinc-700 overflow-hidden group">
-                <img src="/images/buggy/front-view.jpg" alt="Front view of buggy" className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300" />
-                <p className="text-[10px] text-zinc-400 px-2 py-1 bg-zinc-50 dark:bg-zinc-900">Front — sensor PCB & castor</p>
-              </div>
-              <div className="border border-zinc-200 dark:border-zinc-700 overflow-hidden group">
-                <img src="/images/buggy/internals.jpg" alt="Internal wiring of buggy" className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300" />
-                <p className="text-[10px] text-zinc-400 px-2 py-1 bg-zinc-50 dark:bg-zinc-900">Internal wiring</p>
-              </div>
-              <div className="border border-zinc-200 dark:border-zinc-700 overflow-hidden group">
-                <img src="/images/buggy/pcb-iterations.jpg" alt="All PCB iterations" className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300" />
-                <p className="text-[10px] text-zinc-400 px-2 py-1 bg-zinc-50 dark:bg-zinc-900">6 PCB iterations</p>
-              </div>
-              <div className="border border-zinc-200 dark:border-zinc-700 overflow-hidden group">
-                <img src="/images/buggy/motor-drive.jpg" alt="Motor drive board closeup" className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300" />
-                <p className="text-[10px] text-zinc-400 px-2 py-1 bg-zinc-50 dark:bg-zinc-900">Motor drive board</p>
-              </div>
-            </div>
-          </section>
-
-          {/* ── 5. Lessons & Takeaways ── */}
-          <section>
-            <h3 className="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white" /> 5. Key Takeaways
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-green-50 dark:bg-green-500/5 border border-green-200 dark:border-green-800 p-5">
-                <h4 className="font-semibold text-green-800 dark:text-green-300 mb-2 text-sm">What Worked</h4>
-                <ul className="text-sm text-zinc-600 dark:text-zinc-400 space-y-1">
-                  <li>• Multi-layer chassis with internally routed wiring minimised connection faults</li>
-                  <li>• Spin-towards-last-line code made line-following robust at speed</li>
-                  <li>• BLE real-time tuning enabled rapid PID iteration without re-flashing</li>
-                  <li>• Parallel task execution recovered schedule after team member resignation</li>
-                </ul>
-              </div>
-              <div className="bg-orange-50 dark:bg-orange-500/5 border border-orange-200 dark:border-orange-800 p-5">
-                <h4 className="font-semibold text-orange-800 dark:text-orange-300 mb-2 text-sm">Areas for Improvement</h4>
-                <ul className="text-sm text-zinc-600 dark:text-zinc-400 space-y-1">
-                  <li>• Sensor spacing too tight — limited the control window at high speeds</li>
-                  <li>• 6 PCB reprints due to tolerance and short-circuit issues</li>
-                  <li>• PID tuning incomplete before race — bang-bang used as fallback</li>
-                  <li>• Redundant edge sensors were never utilised in final code</li>
-                </ul>
-              </div>
-            </div>
-          </section>
-
-          {/* ── Commercial Viability ── */}
-          <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-6 mt-8 rounded-sm">
-            <h4 className="font-semibold text-zinc-900 dark:text-zinc-100 mb-2">Commercial Analysis</h4>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">Unit production cost <strong className="font-mono text-zinc-800 dark:text-zinc-200">£226</strong> vs. proposed market price <strong className="font-mono text-zinc-800 dark:text-zinc-200">£600</strong> — a 165% project margin. The modular chassis and BLE-tunable firmware offer a strong foundation for warehouse logistics automation at a fraction of the cost of industrial alternatives like Amazon Kiva (£15k/unit). Nearly 32.7% of warehouse buggies on the market are below 10 kg, indicating growing demand for the low-torque, high-speed segment this buggy targets.</p>
-          </div>
-
-          {/* ── Achievement Banner ── */}
-          <div className="border border-amber-200 dark:border-amber-800 bg-amber-50/50 dark:bg-amber-500/5 p-6 mt-4 rounded-sm">
-            <div className="flex items-start gap-4">
-              <span className="text-3xl">🏆</span>
-              <div>
-                <h4 className="font-semibold text-amber-900 dark:text-amber-200 mb-1">Best Looking Buggy Award</h4>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400">Awarded by Dr Mike O'Toole & Dr Liam Marsh for the exceptionally clean chassis design, internal wiring routing, and professional build quality. The module was completed with a grade of <strong className="font-mono text-zinc-800 dark:text-zinc-200">84%</strong> (First Class Honours), reflecting excellence across hardware, software, mechanical design, and report writing.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
+  /* Project list */
   return (
-    <div className="space-y-10 animate-fade-up max-w-4xl">
-      <div className="mb-12">
-        <h2 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4">Engineering Projects</h2>
-        <p className="text-zinc-500 dark:text-zinc-400 font-light">A selection of research and hardware projects executed during my degree, spanning VLSI logic, embedded firmware, and network simulations.</p>
-      </div>
+    <motion.div className="space-y-12" variants={pageVariants} initial="initial" animate="animate" exit="exit">
+      <MotionReveal>
+        <div className="mb-4">
+          <h2 className="font-display text-3xl md:text-4xl font-bold tracking-tight text-midnight-900 dark:text-white mb-3">
+            Projects
+          </h2>
+          <p className="text-midnight-500 dark:text-midnight-400 text-[15px] max-w-2xl">
+            A selection of research and hardware projects executed during my degree, spanning VLSI logic, embedded firmware, and network simulations.
+          </p>
+        </div>
+      </MotionReveal>
 
-      <div className="space-y-4">
+      <StaggerReveal className="space-y-3">
         {projects.map((proj, idx) => (
-          <div
-            key={proj.id}
-            className="relative group cursor-pointer border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 bg-white dark:bg-zinc-900 transition-all duration-300 overflow-hidden"
-            onClick={() => setActiveProjectId(proj.id)}
-          >
-            {/* Accent left border */}
-            <div className={`absolute left-0 top-0 bottom-0 w-[3px] transition-all duration-300 ${proj.id === 'vfc-ns3' ? 'bg-indigo-500' :
-              proj.id === 'buggy' ? 'bg-blue-500' :
-                proj.id === 'baby-spyder' ? 'bg-emerald-500 opacity-0 group-hover:opacity-100' :
-                  proj.id === 'vlsi-cell' ? 'bg-amber-500 opacity-0 group-hover:opacity-100' :
-                    'bg-zinc-400 opacity-0 group-hover:opacity-100'
-              }`} />
-
-            <div className="flex items-stretch">
-              {/* Year column */}
-              <div className="flex flex-col items-center justify-center w-20 md:w-28 shrink-0 border-r border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/30 transition-colors">
-                <span className="text-2xl md:text-3xl font-extralight text-zinc-300 dark:text-zinc-700 font-mono tracking-tighter select-none group-hover:text-zinc-500 dark:group-hover:text-zinc-400 transition-colors">
-                  {proj.year}
-                </span>
-              </div>
-
-              {/* Content */}
-              <div className="flex-1 p-5 md:p-6">
-                <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-2 mb-2">
-                  <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors flex items-center gap-2">
-                    {proj.title}
-                    {proj.id === 'vfc-ns3' && <span className="px-2 py-0.5 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 text-[10px] uppercase tracking-wider font-semibold">Research</span>}
-                  </h3>
-                  <span className="text-[11px] uppercase tracking-widest text-zinc-400 dark:text-zinc-500 font-medium shrink-0">{proj.category}</span>
-                </div>
-                <p className="text-zinc-600 dark:text-zinc-400 font-light leading-relaxed text-sm max-w-2xl">{proj.desc}</p>
-
-                {(proj.id === 'vfc-ns3' || proj.id === 'buggy') && (
-                  <div className="mt-4 text-sm font-medium text-zinc-900 dark:text-zinc-300 flex items-center gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
-                    {proj.id === 'vfc-ns3' ? 'View full research abstract' : 'View full project'} <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+          <motion.div key={proj.id} variants={fadeUp}>
+            <ProjectCard project={proj} onClick={() => openProject(proj.id)} index={idx} />
+          </motion.div>
         ))}
-      </div>
-    </div>
+      </StaggerReveal>
+    </motion.div>
   );
 };
 
+const ProjectCard = ({ project: proj, onClick, index }) => {
+  const cardRef = useRef(null);
+  const hasDetail = ['vfc-ns3', 'buggy', 'hackabot-2026', 'hackabot-2025'].includes(proj.id);
+  const accentBorder = proj.accent === 'gold' ? 'group-hover:border-l-gold' : 'group-hover:border-l-violet';
+
+  return (
+    <TiltCard
+      className={`group cursor-pointer border border-midnight-200 dark:border-midnight-800 bg-white dark:bg-midnight-900/60 hover:border-midnight-300 dark:hover:border-midnight-700 transition-all duration-400 card-hover border-l-2 border-l-transparent ${accentBorder}`}
+      onClick={onClick}
+      whileHover={{ y: -3, transition: { duration: 0.2 } }}
+    >
+      <div className="flex items-stretch">
+        {/* Year */}
+        <div className="flex flex-col items-center justify-center w-20 md:w-24 shrink-0 border-r border-midnight-100 dark:border-midnight-800">
+          <span className="text-2xl md:text-3xl font-display font-light text-midnight-300 dark:text-midnight-700 tracking-tighter select-none group-hover:text-gold dark:group-hover:text-gold transition-colors duration-300">
+            {proj.year}
+          </span>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 p-5 md:p-6">
+          <div className="flex flex-col md:flex-row md:items-baseline justify-between gap-2 mb-2">
+            <h3 className="text-[16px] font-display font-semibold text-midnight-900 dark:text-white group-hover:text-gold dark:group-hover:text-gold transition-colors duration-300 flex items-center gap-2.5">
+              {proj.title}
+              {proj.tag && (
+                <span className={`text-[10px] font-mono font-medium px-2 py-0.5 ${
+                  proj.accent === 'gold'
+                    ? 'bg-gold/10 text-gold border border-gold/25'
+                    : 'bg-violet/10 text-violet border border-violet/25'
+                }`}>
+                  {proj.tag}
+                </span>
+              )}
+            </h3>
+            <span className="text-[11px] uppercase tracking-[0.15em] text-midnight-400 dark:text-midnight-500 font-mono shrink-0">
+              {proj.category}
+            </span>
+          </div>
+          <p className="text-midnight-500 dark:text-midnight-400 leading-relaxed text-[14px] max-w-2xl">
+            {proj.desc}
+          </p>
+
+          {hasDetail && (
+            <motion.div
+              className="mt-4 text-[13px] font-medium text-midnight-900 dark:text-midnight-300 flex items-center gap-2"
+              variants={{
+                initial: { opacity: 0, x: -10 },
+                animate: { opacity: 1, x: 0, transition: { delay: 0.2 } },
+              }}
+            >
+              <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-2">
+                View details
+                <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
+              </span>
+            </motion.div>
+          )}
+        </div>
+      </div>
+    </TiltCard>
+  );
+};
+
+/* ═══════════════════════════════════════
+   Buggy Detail (inline — preserved from ver1 with new styling)
+   ═══════════════════════════════════════ */
+const BuggyDetail = ({ backToList }) => (
+  <div className="space-y-10 max-w-4xl pb-12">
+    <MotionReveal>
+      <button onClick={backToList} className="flex items-center gap-2 text-midnight-400 hover:text-gold transition-colors mb-4 group font-medium text-sm">
+        <ArrowRight size={16} className="rotate-180 transition-transform group-hover:-translate-x-1" />
+        Back to List
+      </button>
+    </MotionReveal>
+
+    <MotionReveal delay={0.1}>
+      <div className="border-b border-midnight-200 dark:border-midnight-800 pb-8">
+        <h2 className="font-display text-2xl md:text-4xl font-bold tracking-tight text-midnight-900 dark:text-white mb-4">
+          Autonomous Line-Following Buggy
+        </h2>
+        <p className="text-[15px] text-midnight-500 dark:text-midnight-400">
+          Embedded Systems Project · University of Manchester · Group 23
+        </p>
+        <div className="flex flex-wrap gap-3 mt-4">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gold/10 border border-gold/25 text-gold text-xs font-medium">
+            <span>★</span> Best Looking Buggy Award
+          </span>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-violet/10 border border-violet/25 text-violet text-xs font-medium">
+            84% — First Class Honours
+          </span>
+        </div>
+      </div>
+    </MotionReveal>
+
+    <MotionReveal delay={0.2}>
+      <div className="overflow-hidden border border-midnight-200 dark:border-midnight-800">
+        <img src="/images/buggy/hero.jpg" alt="Autonomous line-following buggy" className="w-full h-auto object-cover" />
+        <p className="text-[12px] text-midnight-400 dark:text-midnight-500 px-4 py-2.5 bg-midnight-50 dark:bg-midnight-900">
+          The completed buggy at the final race — acetyl chassis with front sensor array, rear drive wheels, and STM32 controller on top.
+        </p>
+      </div>
+    </MotionReveal>
+
+    <div className="text-[15px] text-midnight-600 dark:text-midnight-400 space-y-10 leading-relaxed">
+
+      {/* 1. Overview */}
+      <MotionReveal>
+        <section>
+          <h3 className="text-lg font-display font-semibold text-midnight-900 dark:text-white mb-4 flex items-center gap-2.5">
+            <GoldDot /> 1. Overview
+          </h3>
+          <p>An autonomous, high-speed line-following robot designed for warehouse logistics — engineered to prioritise <strong className="font-semibold text-midnight-900 dark:text-white">speed and stability</strong> over raw torque. The buggy uses a custom multi-layer acetyl chassis, BLE-tunable PID control, and a front-mounted infrared sensor array to navigate a complex racetrack with straights, curves, and an 18° incline.</p>
+
+          <StaggerReveal className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6">
+            {[
+              ['2,555', 'Lines of C++'],
+              ['5', 'IR Sensors'],
+              ['48 MHz', 'STM32 Clock'],
+              ['84%', 'First Class'],
+            ].map(([val, label], i) => (
+              <motion.div key={label} variants={scaleIn} className="p-3 border border-midnight-200 dark:border-midnight-800 bg-midnight-50 dark:bg-midnight-900/50 text-center">
+                <div className="font-display font-bold text-lg text-midnight-900 dark:text-white">{val}</div>
+                <div className="font-mono text-[11px] uppercase tracking-widest text-midnight-400 dark:text-midnight-500 mt-1">{label}</div>
+              </motion.div>
+            ))}
+          </StaggerReveal>
+        </section>
+      </MotionReveal>
+
+      {/* 2. Chassis Design */}
+      <MotionReveal>
+        <section>
+          <h3 className="text-lg font-display font-semibold text-midnight-900 dark:text-white mb-4 flex items-center gap-2.5">
+            <GoldDot /> 2. Chassis Design
+          </h3>
+          <p>A <strong className="font-semibold text-midnight-900 dark:text-white">multi-layer sandwich architecture</strong> was laser-cut from 3 mm acetyl sheets. The narrow-wheelbase layout minimises moment of inertia during tight turns while keeping the centre of mass directly above the rear driven axle.</p>
+          <ul className="mt-4 space-y-2">
+            {[
+              'Three stacked layers: base (motors + battery), mid (STM32 + H-bridge), top (sensor breakout + BLE module).',
+              'Front-mounted sensor bar extends 45 mm beyond chassis to improve curve look-ahead.',
+              'Awarded "Best Looking Buggy" for the layered clear-acetyl aesthetic.',
+            ].map((txt, i) => (
+              <li key={i} className="flex gap-3 text-[14px]">
+                <span className="shrink-0 mt-2 w-1 h-1 rounded-full bg-midnight-300 dark:bg-midnight-600" />
+                <span>{txt}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </MotionReveal>
+
+      {/* 3. Sensor Array */}
+      <MotionReveal>
+        <section>
+          <h3 className="text-lg font-display font-semibold text-midnight-900 dark:text-white mb-4 flex items-center gap-2.5">
+            <GoldDot /> 3. Sensor Array & Data Collection
+          </h3>
+          <p>Five <strong className="font-semibold text-midnight-900 dark:text-white">TCRT5000L IR sensors</strong> spaced at 10 mm intervals form the detection bar. Each sensor outputs a 0–3.3 V analogue signal proportional to reflectivity — high on white track, low on black tape.</p>
+          <div className="mt-6 space-y-6">
+            <div className="border border-midnight-200 dark:border-midnight-800 bg-midnight-50 dark:bg-midnight-900/50 p-4">
+              <h4 className="font-mono text-[12px] uppercase tracking-widest text-midnight-400 dark:text-midnight-500 mb-4">Ambient Light Sensitivity</h4>
+              <AmbientLightChart />
+            </div>
+            <div className="border border-midnight-200 dark:border-midnight-800 bg-midnight-50 dark:bg-midnight-900/50 p-4">
+              <h4 className="font-mono text-[12px] uppercase tracking-widest text-midnight-400 dark:text-midnight-500 mb-4">Sensor Spread (TCRT5000L)</h4>
+              <TCRT5000LSpreadChart />
+            </div>
+            <div className="border border-midnight-200 dark:border-midnight-800 bg-midnight-50 dark:bg-midnight-900/50 p-4">
+              <h4 className="font-mono text-[12px] uppercase tracking-widest text-midnight-400 dark:text-midnight-500 mb-4">All Sensors — Comparative Spread</h4>
+              <AllSensorsSpreadChart />
+            </div>
+          </div>
+        </section>
+      </MotionReveal>
+
+      {/* 4. PID Control */}
+      <MotionReveal>
+        <section>
+          <h3 className="text-lg font-display font-semibold text-midnight-900 dark:text-white mb-4 flex items-center gap-2.5">
+            <GoldDot /> 4. PID Control System
+          </h3>
+          <p>A <strong className="font-semibold text-midnight-900 dark:text-white">weighted-average algorithm</strong> converts the five sensor readings into a single error value (–2 to +2). A PID loop then maps this error to differential motor duty cycles via two PWM channels on the STM32 Timer 1 peripheral.</p>
+          <div className="mt-4 p-4 border border-gold/20 bg-gold/5 dark:bg-gold/5">
+            <p className="font-mono text-[13px] text-midnight-600 dark:text-midnight-400">
+              <span className="text-gold font-medium">PID output</span> = Kp·e(t) + Ki·∫e(τ)dτ + Kd·de/dt
+            </p>
+            <p className="mt-2 text-[13px]">Tuned via Bluetooth Low Energy — coefficients adjustable in real time without reflashing.</p>
+          </div>
+        </section>
+      </MotionReveal>
+
+      {/* 5. Results */}
+      <MotionReveal>
+        <section>
+          <h3 className="text-lg font-display font-semibold text-midnight-900 dark:text-white mb-4 flex items-center gap-2.5">
+            <GoldDot /> 5. Results & Performance
+          </h3>
+          <p>The buggy achieved a <strong className="font-semibold text-midnight-900 dark:text-white">76% line-detection accuracy</strong> across varying ambient light conditions. Race-day performance was strong on flat sections; the 18° incline caused minor oscillation due to reduced rear traction.</p>
+          <ul className="mt-4 space-y-2">
+            {[
+              'Flat-surface lap time: consistent within ±0.3 s over 10 trials.',
+              'BLE tuning reduced PID convergence time by ~40% vs manual reflash.',
+              'Overall grade: 84% (First Class), "Best Looking Buggy" award.',
+            ].map((txt, i) => (
+              <li key={i} className="flex gap-3 text-[14px]">
+                <span className="shrink-0 mt-2 w-1 h-1 rounded-full bg-midnight-300 dark:bg-midnight-600" />
+                <span>{txt}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </MotionReveal>
+
+      {/* 6. Reflections */}
+      <MotionReveal>
+        <section>
+          <h3 className="text-lg font-display font-semibold text-midnight-900 dark:text-white mb-4 flex items-center gap-2.5">
+            <GoldDot /> 6. Reflections & Future Work
+          </h3>
+          <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <motion.div variants={fadeUp} className="p-4 border border-gold/20 bg-gold/5">
+              <h4 className="font-mono text-[11px] uppercase tracking-widest text-gold mb-2">What went well</h4>
+              <ul className="space-y-1.5 text-[13px]">
+                <li>• BLE real-time tuning workflow saved hours of iteration</li>
+                <li>• Multi-layer chassis gave clean cable routing and modularity</li>
+                <li>• Weighted-average sensor fusion was robust to partial occlusion</li>
+              </ul>
+            </motion.div>
+            <motion.div variants={fadeUp} className="p-4 border border-violet/20 bg-violet/5">
+              <h4 className="font-mono text-[11px] uppercase tracking-widest text-violet mb-2">Improvements</h4>
+              <ul className="space-y-1.5 text-[13px]">
+                <li>• Add gyroscope/accelerometer for incline detection</li>
+                <li>• Implement predictive steering using sensor history buffer</li>
+                <li>• Switch to encoder-based speed control for tighter loops</li>
+              </ul>
+            </motion.div>
+          </StaggerReveal>
+        </section>
+      </MotionReveal>
+    </div>
+  </div>
+);
+
+/* ═══════════════════════════════════════
+   Life View
+   ═══════════════════════════════════════ */
 const LifeView = ({ user }) => {
   const [curation, setCuration] = useState('');
   const [isCurating, setIsCurating] = useState(false);
@@ -964,99 +895,117 @@ const LifeView = ({ user }) => {
   ];
 
   const handleCurate = async () => {
-    setIsCurating(true);
-    setError('');
+    setIsCurating(true); setError('');
     try {
       const prompt = "Act as an elegant, minimalist curator. Based on a blend of modern fashion, ambient/indie music, and specialty coffee, generate a 3-sentence 'vibe' for today. Structure it loosely as 'Listen to X. Wear Y. Drink Z.' Keep it sophisticated, clean, and inspiring. Do not use asterisks or markdown formatting.";
       const result = await generateGeminiContent(prompt);
       setCuration(result);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsCurating(false);
-    }
+    } catch (err) { setError(err.message); }
+    finally { setIsCurating(false); }
   };
 
   return (
-    <div className="space-y-10 animate-fade-up w-full">
-
-      <div className="max-w-5xl mx-auto w-full">
-        <h2 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">Life Beyond the Screen</h2>
-        <p className="text-zinc-600 dark:text-zinc-400 font-light max-w-2xl mb-8">
+    <motion.div className="space-y-16" variants={pageVariants} initial="initial" animate="animate" exit="exit">
+      <MotionReveal>
+        <h2 className="font-display text-3xl md:text-4xl font-bold tracking-tight text-midnight-900 dark:text-white mb-3">
+          Life Beyond the Screen
+        </h2>
+        <p className="text-midnight-500 dark:text-midnight-400 text-[15px] max-w-2xl">
           The inputs that fuel my outputs. A collection of offline pursuits that influence my digital work.
         </p>
+      </MotionReveal>
 
-        <div className="bg-white dark:bg-zinc-900 p-8 border border-zinc-200 dark:border-zinc-800 relative group overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-zinc-300 to-transparent"></div>
+      {/* Daily Curation */}
+      <MotionReveal>
+        <TiltCard className="p-8 border border-midnight-200 dark:border-midnight-800 bg-white dark:bg-midnight-900/60 card-hover relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-px gold-line" />
           <div className="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
             <div className="max-w-xl">
-              <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2 flex items-center gap-2">
-                <Zap size={18} className="text-zinc-400" /> Daily Curation
+              <h3 className="text-lg font-display font-semibold text-midnight-900 dark:text-white mb-2 flex items-center gap-2">
+                <Zap size={16} className="text-gold" /> Daily Curation
               </h3>
               {isCurating ? (
-                <div className="flex items-center gap-3 text-sm text-zinc-500 dark:text-zinc-400">
-                  <Loader2 size={16} className="animate-spin" /> Fetching today's aesthetic...
-                </div>
+                <div className="flex items-center gap-3 text-sm text-midnight-400"><Loader2 size={16} className="animate-spin" /> Fetching today's aesthetic...</div>
               ) : curation ? (
-                <p className="text-sm text-zinc-600 dark:text-zinc-300 font-light leading-relaxed">{curation}</p>
+                <p className="text-[14px] text-midnight-600 dark:text-midnight-300 leading-relaxed">{curation}</p>
               ) : error ? (
-                <p className="text-sm text-red-500 font-light">{error}</p>
+                <p className="text-[14px] text-red-500">{error}</p>
               ) : (
-                <p className="text-sm text-zinc-500 dark:text-zinc-400 font-light">Generate a unique blend of music, fashion, and coffee recommendations for today's focus session.</p>
+                <p className="text-[14px] text-midnight-400">Generate a unique blend of music, fashion, and coffee recommendations for today's focus session.</p>
               )}
             </div>
-            <button
-              onClick={handleCurate}
-              disabled={isCurating}
-              className="shrink-0 px-5 py-2.5 bg-zinc-900 text-white text-sm font-medium hover:bg-zinc-800 transition-colors disabled:opacity-50 flex items-center gap-2"
+            <motion.button
+              onClick={handleCurate} disabled={isCurating}
+              className="shrink-0 px-5 py-2.5 bg-[#0f0f15] dark:bg-[#e8e6e3] text-white dark:text-[#08080c] text-sm font-medium hover:bg-gold dark:hover:bg-gold dark:hover:text-midnight-950 transition-all duration-300 disabled:opacity-50"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              {curation ? "Recurate ✨" : "Generate ✨"}
-            </button>
+              {curation ? "Recurate" : "Generate"}
+            </motion.button>
           </div>
-        </div>
+        </TiltCard>
+      </MotionReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8 mb-16">
-          {interests.map((item, idx) => (
-            <div key={idx} className="bg-white dark:bg-zinc-900 p-8 border border-zinc-100 dark:border-zinc-800 shadow-sm relative group hover:shadow-xl hover:-translate-y-1 hover:border-zinc-200 dark:hover:border-zinc-600 transition-all duration-300 cursor-default">
-              <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-zinc-200 dark:border-zinc-700 transition-colors duration-500 group-hover:border-zinc-900 dark:group-hover:border-zinc-400 group-hover:w-full group-hover:h-full group-hover:opacity-10"></div>
-              <div className="w-10 h-10 rounded-full bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <item.icon size={18} className="text-zinc-900 dark:text-zinc-200" />
-              </div>
-              <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-3 group-hover:text-black dark:group-hover:text-white transition-colors">{item.title}</h3>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 font-light leading-relaxed">{item.desc}</p>
-            </div>
-          ))}
-        </div>
+      {/* Interest cards */}
+      <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {interests.map((item, idx) => (
+          <motion.div key={idx} variants={fadeUp}>
+            <TiltCard className="p-8 border border-midnight-200 dark:border-midnight-800 bg-white dark:bg-midnight-900/60 group hover:border-gold/40 dark:hover:border-gold/30 transition-all duration-500 card-hover">
+              <motion.div
+                className="w-10 h-10 rounded-full bg-midnight-50 dark:bg-midnight-800 flex items-center justify-center mb-6 group-hover:bg-gold/10 transition-colors duration-300"
+                whileHover={{ rotate: 10, scale: 1.1 }}
+              >
+                <item.icon size={18} className="text-midnight-600 dark:text-midnight-300 group-hover:text-gold transition-colors duration-300" />
+              </motion.div>
+              <h3 className="font-display text-lg font-semibold text-midnight-900 dark:text-white mb-3 group-hover:text-gold transition-colors duration-300">{item.title}</h3>
+              <p className="text-[14px] text-midnight-500 dark:text-midnight-400 leading-relaxed">{item.desc}</p>
+            </TiltCard>
+          </motion.div>
+        ))}
+      </StaggerReveal>
 
-        {/* Portal to WSJ Record */}
-        <div className="mt-16 w-full group relative overflow-hidden bg-black text-white p-8 sm:p-12 mb-16 cursor-pointer" onClick={() => window.location.href = '/record'}>
-          <div className="absolute inset-0 bg-gradient-to-r from-zinc-900 to-black z-0 pointer-events-none"></div>
-          <div className="absolute -right-12 -bottom-12 z-0 opacity-10 group-hover:scale-110 group-hover:opacity-20 transition-all duration-700 pointer-events-none">
+      {/* WSJ Record Portal */}
+      <MotionReveal>
+        <motion.div
+          className="group relative overflow-hidden bg-midnight-950 text-white p-8 sm:p-12 cursor-pointer border border-midnight-800 hover:border-gold/30 transition-all duration-500"
+          onClick={() => window.location.href = '/record'}
+          whileHover={{ scale: 1.01 }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-midnight-900 via-midnight-950 to-black z-0" />
+          <motion.div
+            className="absolute -right-12 -bottom-12 z-0 opacity-5"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+          >
             <Disc size={250} />
-          </div>
+          </motion.div>
           <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
-            <div className="flex flex-col max-w-lg">
-              <span className="text-zinc-500 text-xs font-medium uppercase tracking-[0.2em] mb-3">Interactive Experience</span>
-              <h3 className="text-3xl sm:text-4xl font-bold tracking-tighter mb-4 flex items-center gap-3">
-                WSJ Record <Disc className="text-green-500 animate-spin-slow" size={28} style={{ animationDuration: '4s' }} />
+            <div className="max-w-lg">
+              <span className="font-mono text-gold text-[11px] uppercase tracking-[0.2em] mb-3 block">Interactive Experience</span>
+              <h3 className="font-display text-3xl sm:text-4xl font-bold tracking-tight mb-4 flex items-center gap-3">
+                WSJ Record <Disc className="text-gold animate-spin-slow" size={28} />
               </h3>
-              <p className="text-zinc-400 font-light leading-relaxed">
-                Dive into my highly curated sonic landscape. A deeply personalized, edge-to-edge playback experience designed for deep work and aesthetic flow.
+              <p className="text-midnight-400 leading-relaxed text-[15px]">
+                Dive into my highly curated sonic landscape. A deeply personalized playback experience designed for deep work and aesthetic flow.
               </p>
             </div>
-            <div className="shrink-0">
-              <button className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full font-medium hover:bg-zinc-200 hover:scale-105 transition-all text-sm">
-                Open Player <ArrowRight size={16} />
-              </button>
-            </div>
+            <motion.button
+              className="shrink-0 flex items-center gap-2 bg-gold text-midnight-950 px-6 py-3 font-display font-semibold hover:bg-gold-bright transition-all text-sm"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Open Player <ArrowRight size={16} />
+            </motion.button>
           </div>
-        </div>
-
-      </div>
-    </div>
+        </motion.div>
+      </MotionReveal>
+    </motion.div>
   );
 };
 
+/* ═══════════════════════════════════════
+   Contact View
+   ═══════════════════════════════════════ */
 const ContactView = () => {
   const [intent, setIntent] = useState('collaboration');
   const [draft, setDraft] = useState('');
@@ -1068,147 +1017,207 @@ const ContactView = () => {
       const prompt = `Write a short, professional, and slightly witty email draft to 'First Last' from a visitor of their minimalist portfolio website. The visitor's intent is: ${intent}. Keep it concise (under 4 sentences), modern, and clean. Do not include a subject line. Do not include placeholders for my name, just write the body. Do not use asterisks or markdown formatting.`;
       const result = await generateGeminiContent(prompt);
       setDraft(result);
-    } catch (err) {
-      setDraft("System error: Unable to connect to the drafting module.");
-    } finally {
-      setIsDrafting(false);
-    }
+    } catch (err) { setDraft("System error: Unable to connect to the drafting module."); }
+    finally { setIsDrafting(false); }
   };
 
   return (
-    <div className="space-y-12 animate-fade-up max-w-3xl">
-      <div className="mb-8">
-        <h2 className="text-3xl font-light tracking-tight text-zinc-900 dark:text-zinc-100 flex items-center gap-3 mb-4">
-          <Plug className="text-zinc-400" size={28} />
-          Establishing Connection
+    <motion.div className="space-y-16 max-w-3xl" variants={pageVariants} initial="initial" animate="animate" exit="exit">
+      <MotionReveal>
+        <h2 className="font-display text-3xl md:text-4xl font-bold tracking-tight text-midnight-900 dark:text-white mb-4">
+          Let's Connect
         </h2>
-        <p className="text-zinc-600 dark:text-zinc-400 font-light text-lg">
-          Whether you want to discuss a new software architecture, share a Spotify playlist, or debate the best local coffee roaster, my inbox is open.
+        <p className="text-midnight-500 dark:text-midnight-400 text-[16px] max-w-2xl leading-relaxed">
+          Whether you want to discuss a new software architecture, share a Spotify playlist, or debate the best local coffee roaster — my inbox is open.
         </p>
-      </div>
+      </MotionReveal>
 
-      <div className="bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6 relative shadow-sm hover:shadow-md transition-shadow">
-        <div className="absolute -left-[5px] top-1/2 -translate-y-1/2 flex items-center">
-          <Node className="bg-zinc-100" />
-        </div>
-        <h3 className="font-medium text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
-          <Cpu size={18} className="text-zinc-400" /> AI Icebreaker Drafter
-        </h3>
-        <div className="flex flex-col sm:flex-row gap-4 mb-4">
-          <select
-            value={intent}
-            onChange={(e) => setIntent(e.target.value)}
-            className="flex-1 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-2 text-sm text-zinc-700 dark:text-zinc-200 outline-none focus:border-zinc-400 transition-colors"
-          >
-            <option value="collaboration">Discuss a project collaboration</option>
-            <option value="hiring">Discuss a hiring opportunity</option>
-            <option value="coffee/music">Share a music or coffee recommendation</option>
-          </select>
-          <button
-            onClick={handleDraft}
-            disabled={isDrafting}
-            className="px-5 py-2 bg-zinc-900 text-white text-sm font-medium hover:bg-zinc-800 transition-colors disabled:opacity-50 whitespace-nowrap"
-          >
-            {isDrafting ? <Loader2 size={16} className="animate-spin mx-auto" /> : "Draft Email ✨"}
-          </button>
-        </div>
-
-        {draft && (
-          <div className="mt-4 p-4 bg-white dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700 text-sm text-zinc-600 dark:text-zinc-300 font-light leading-relaxed relative group shadow-sm">
-            {draft}
-            <button
-              onClick={() => {
-                const el = document.createElement('textarea');
-                el.value = draft;
-                document.body.appendChild(el);
-                el.select();
-                document.execCommand('copy');
-                document.body.removeChild(el);
-              }}
-              className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-xs font-medium bg-zinc-100 dark:bg-zinc-700 px-3 py-1 text-zinc-600 dark:text-zinc-300 transition-opacity hover:bg-zinc-200 dark:hover:bg-zinc-600 rounded-sm"
+      {/* AI Drafter */}
+      <MotionReveal>
+        <TiltCard className="p-6 border border-midnight-200 dark:border-midnight-800 bg-white dark:bg-midnight-900/60 card-hover">
+          <h3 className="font-display font-semibold text-midnight-900 dark:text-white mb-4 flex items-center gap-2">
+            <Terminal size={16} className="text-gold" /> AI Icebreaker Drafter
+          </h3>
+          <div className="flex flex-col sm:flex-row gap-4 mb-4">
+            <select value={intent} onChange={(e) => setIntent(e.target.value)}
+              className="flex-1 bg-midnight-50 dark:bg-midnight-800 border border-midnight-200 dark:border-midnight-700 p-2.5 text-sm text-midnight-700 dark:text-midnight-200 font-body outline-none focus:border-gold transition-colors">
+              <option value="collaboration">Discuss a project collaboration</option>
+              <option value="hiring">Discuss a hiring opportunity</option>
+              <option value="coffee/music">Share a music or coffee recommendation</option>
+            </select>
+            <motion.button
+              onClick={handleDraft} disabled={isDrafting}
+              className="px-5 py-2.5 bg-[#0f0f15] dark:bg-[#e8e6e3] text-white dark:text-[#08080c] text-sm font-medium hover:bg-gold dark:hover:bg-gold dark:hover:text-midnight-950 transition-all duration-300 disabled:opacity-50 whitespace-nowrap"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              Copy
-            </button>
+              {isDrafting ? <Loader2 size={16} className="animate-spin mx-auto" /> : "Draft Email"}
+            </motion.button>
           </div>
-        )}
-      </div>
+          <AnimatePresence>
+            {draft && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3, ease: smoothEase }}
+                className="mt-4 p-4 bg-midnight-50 dark:bg-midnight-800 border border-midnight-100 dark:border-midnight-700 text-[14px] text-midnight-600 dark:text-midnight-300 leading-relaxed relative group overflow-hidden"
+              >
+                {draft}
+                <button onClick={() => navigator.clipboard.writeText(draft)}
+                  className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-[11px] font-mono bg-midnight-200 dark:bg-midnight-700 px-3 py-1 text-midnight-600 dark:text-midnight-300 transition-opacity hover:bg-gold/20 hover:text-gold">
+                  Copy
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </TiltCard>
+      </MotionReveal>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
-        <a href="mailto:wooseongjung12@gmail.com" className="flex flex-col gap-4 p-6 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-900 dark:hover:border-zinc-500 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
-          <Mail size={24} className="text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors" />
-          <div className="mt-2">
-            <h3 className="font-medium text-zinc-900 dark:text-zinc-100">Email</h3>
-            <span className="text-xs text-zinc-500 dark:text-zinc-400 font-light break-words">wooseongjung12@gmail.com</span>
-          </div>
-          <ArrowRight size={16} className="text-zinc-300 dark:text-zinc-600 group-hover:text-zinc-900 dark:group-hover:text-white transform group-hover:translate-x-1 transition-all mt-auto" />
-        </a>
+      {/* Contact cards */}
+      <StaggerReveal className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {[
+          { icon: Mail, title: 'Email', sub: 'wooseongjung12@gmail.com', href: 'mailto:wooseongjung12@gmail.com', external: false },
+          { icon: Linkedin, title: 'LinkedIn', sub: 'Network & resume', href: 'https://www.linkedin.com/in/wooseong-jung-21b143223/', external: true },
+          { icon: Github, title: 'GitHub', sub: 'Code repositories', href: 'https://github.com/wooseongjung', external: true },
+        ].map((card, i) => (
+          <motion.div key={i} variants={fadeUp}>
+            <motion.a
+              href={card.href}
+              target={card.external ? '_blank' : undefined}
+              rel={card.external ? 'noreferrer' : undefined}
+              className="flex flex-col gap-4 p-6 border border-midnight-200 dark:border-midnight-800 bg-white dark:bg-midnight-900/60 hover:border-gold/50 dark:hover:border-gold/40 transition-all duration-300 group card-hover"
+              whileHover={{ y: -6, transition: { duration: 0.2 } }}
+            >
+              <motion.div whileHover={{ rotate: [0, -10, 10, -5, 0], transition: { duration: 0.5 } }}>
+                <card.icon size={22} className="text-midnight-400 group-hover:text-gold transition-colors duration-300" />
+              </motion.div>
+              <div className="mt-2">
+                <h3 className="font-display font-semibold text-midnight-900 dark:text-white">{card.title}</h3>
+                <span className="text-[12px] text-midnight-400 break-words">{card.sub}</span>
+              </div>
+              <ArrowUpRight size={14} className="text-midnight-300 dark:text-midnight-600 group-hover:text-gold group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all mt-auto" />
+            </motion.a>
+          </motion.div>
+        ))}
+      </StaggerReveal>
+    </motion.div>
+  );
+};
 
-        <a href="https://linkedin.com/in/wooseong-jung-0bb5b121b" target="_blank" rel="noreferrer" className="flex flex-col gap-4 p-6 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-900 dark:hover:border-zinc-500 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
-          <Linkedin size={24} className="text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors" />
-          <div className="mt-2">
-            <h3 className="font-medium text-zinc-900 dark:text-zinc-100">LinkedIn</h3>
-            <span className="text-xs text-zinc-500 font-light">Network & resume</span>
-          </div>
-          <ArrowRight size={16} className="text-zinc-300 dark:text-zinc-600 group-hover:text-zinc-900 dark:group-hover:text-white transform group-hover:-rotate-45 transition-all mt-auto" />
-        </a>
+/* ═══════════════════════════════════════
+   Animated Page Wrapper
+   ═══════════════════════════════════════ */
+const AnimatedPage = ({ children }) => {
+  const location = useLocation();
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location.pathname}
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.4, ease: smoothEase }}
+      >
+        {children}
+      </motion.div>
+    </AnimatePresence>
+  );
+};
 
-        <a href="https://github.com/wooseongjung" target="_blank" rel="noreferrer" className="flex flex-col gap-4 p-6 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-900 dark:hover:border-zinc-500 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
-          <Github size={24} className="text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors" />
-          <div className="mt-2">
-            <h3 className="font-medium text-zinc-900 dark:text-zinc-100">GitHub</h3>
-            <span className="text-xs text-zinc-500 dark:text-zinc-400 font-light">Code repositories</span>
+/* ═══════════════════════════════════════
+   Layout Shell
+   ═══════════════════════════════════════ */
+const StandardLayout = ({ user, onDomainExpansion }) => {
+  const location = useLocation();
+
+  return (
+    <div className="max-w-5xl mx-auto px-6 md:px-12 py-12 md:py-16 relative z-10">
+      <main className="min-h-[50vh]">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={location.pathname}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.4, ease: smoothEase }}
+          >
+            <Routes location={location}>
+              <Route path="/" element={<Navigate to="/about" replace />} />
+              <Route path="/about" element={<AboutView />} />
+              <Route path="/project" element={<ProjectsView onDomainExpansion={onDomainExpansion} />} />
+              <Route path="/project/:projectSlug" element={<ProjectsView onDomainExpansion={onDomainExpansion} />} />
+              <Route path="/life" element={<LifeView user={user} />} />
+              <Route path="/contact" element={<ContactView />} />
+              <Route path="*" element={<Navigate to="/about" replace />} />
+            </Routes>
+          </motion.div>
+        </AnimatePresence>
+      </main>
+
+      {/* Footer */}
+      <MotionReveal>
+        <footer className="mt-24 pt-8 border-t border-midnight-200 dark:border-midnight-800">
+          <div className="flex flex-col md:flex-row items-center justify-between text-midnight-400 dark:text-midnight-500 gap-4 pb-12">
+            <div className="flex items-center gap-3">
+              <GoldDot className="animate-pulse-gold" />
+              <span className="font-mono text-[11px] tracking-widest uppercase">System.Online</span>
+            </div>
+
+            <Link to="/contact">
+              <motion.span
+                className="group inline-flex items-center gap-2 px-5 py-2 border border-midnight-200 dark:border-midnight-800 hover:border-gold dark:hover:border-gold text-midnight-600 dark:text-midnight-400 hover:text-gold dark:hover:text-gold transition-all duration-300 text-sm font-medium"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Get in touch
+                <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+              </motion.span>
+            </Link>
+
+            <span className="font-mono text-[11px]">&copy; {new Date().getFullYear()} Wooseong Jung</span>
           </div>
-          <ArrowRight size={16} className="text-zinc-300 dark:text-zinc-600 group-hover:text-zinc-900 dark:group-hover:text-white transform group-hover:-rotate-45 transition-all mt-auto" />
-        </a>
-      </div>
+        </footer>
+      </MotionReveal>
     </div>
   );
 };
 
-const StandardLayout = ({ user }) => (
-  <div className="max-w-5xl mx-auto px-6 md:px-12 py-12 md:py-16 relative z-10 flex flex-col gap-24">
-    <main className="min-h-[40vh]">
-      <Routes>
-        <Route path="/" element={<Navigate to="/about" replace />} />
-        <Route path="/about" element={<AboutView />} />
-        <Route path="/project" element={<ProjectsView />} />
-        <Route path="/life" element={<LifeView user={user} />} />
-        <Route path="/contact" element={<ContactView />} />
-        <Route path="*" element={<Navigate to="/about" replace />} />
-      </Routes>
-    </main>
-
-    <Trace className="w-1/3 opacity-50" />
-
-    <div className="pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-zinc-400 dark:text-zinc-500 font-light pb-12 gap-4 relative">
-      <div className="flex items-center gap-3">
-        <GroundSymbol />
-        <span>SYSTEM.ONLINE</span>
-      </div>
-
-      <Link to="/contact" className="absolute left-1/2 -translate-x-1/2 flex justify-center items-center group bg-white dark:bg-black border border-zinc-200 dark:border-zinc-800 rounded-full px-5 py-2 hover:border-zinc-900 dark:hover:border-zinc-400 hover:shadow-sm transition-all shadow-sm z-30">
-        <span className="text-zinc-900 dark:text-white font-medium">Get in touch</span>
-        <ArrowRight size={12} className="ml-2 text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-white group-hover:translate-x-1 transition-transform" />
-      </Link>
-
-      <span className="hidden md:inline">© {new Date().getFullYear()} Wooseong Jung</span>
-    </div>
-  </div>
-);
-
+/* ═══════════════════════════════════════
+   Main App
+   ═══════════════════════════════════════ */
 export default function App() {
   const location = useLocation();
   const activePath = location.pathname.split('/')[1] || 'about';
   const activeTab = activePath === 'project' ? 'project' : (activePath === 'contact' ? 'contact' : ((activePath === 'life' || activePath === 'record') ? 'life' : 'about'));
-  const [wireLength, setWireLength] = useState(0);
+
   const [user, setUser] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('theme') === 'dark' ||
         (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
     }
-    return false;
+    return true; // dark-first
   });
+
+  // Domain Expansion state
+  const [domainExpansion, setDomainExpansion] = useState({ active: false, projectId: null, callback: null });
+
+  const handleDomainExpansion = useCallback((projectId, callback) => {
+    setDomainExpansion({ active: true, projectId, callback });
+  }, []);
+
+  const handleDomainComplete = useCallback(() => {
+    const cb = domainExpansion.callback;
+    setDomainExpansion({ active: false, projectId: null, callback: null });
+    if (cb) cb();
+  }, [domainExpansion.callback]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -1221,140 +1230,225 @@ export default function App() {
   }, [isDarkMode]);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => setUser(currentUser));
     return () => unsubscribe();
   }, []);
 
   const handleLogin = async () => {
-    if (user) {
-      await signOut(auth);
-    } else {
-      await signInWithPopup(auth, provider);
-    }
+    if (user) { await signOut(auth); } else { await signInWithPopup(auth, provider); }
   };
 
   const navItems = [
-    { id: 'about', label: 'About', icon: User, path: '/about' },
-    { id: 'project', label: 'Projects', icon: Cpu, path: '/project' },
-    { id: 'life', label: 'Life', icon: Compass, path: '/life' },
-    { id: 'contact', label: 'Contact', icon: Mail, path: '/contact' },
+    { id: 'about', label: 'About', path: '/about' },
+    { id: 'project', label: 'Projects', path: '/project' },
+    { id: 'life', label: 'Life', path: '/life' },
+    { id: 'contact', label: 'Contact', path: '/contact' },
   ];
 
-  useEffect(() => {
-    const updatePos = () => {
-      const activeBtn = document.getElementById(`nav-${activeTab}`);
-      if (activeBtn) {
-        setWireLength(activeBtn.offsetLeft + (activeBtn.offsetWidth / 2));
-      }
-    };
-
-    setTimeout(updatePos, 50);
-    window.addEventListener('resize', updatePos);
-    return () => window.removeEventListener('resize', updatePos);
-  }, [activeTab]);
+  const isRecord = activePath === 'record';
 
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-[#0e0e0e] relative selection:bg-zinc-200 dark:selection:bg-zinc-700 selection:text-zinc-900 dark:selection:text-zinc-100">
-      <style>{injectedStyles}</style>
+    <div className="min-h-screen relative noise-overlay">
+      {/* Scroll Progress Bar */}
+      {!isRecord && <ScrollProgress />}
 
-      {activePath !== 'record' && (
-        <div className="bg-minimal-circuit absolute inset-0 pointer-events-none fixed"></div>
-      )}
+      {/* Circuit Background Animation */}
+      {!isRecord && <CircuitBackground />}
 
-      <header className={`sticky top-0 z-50 backdrop-blur-md overflow-hidden ${activePath === 'record' ? 'bg-black text-white border-b border-[#282828]' : 'bg-[#fafafa]/90 dark:bg-[#0e0e0e]/90 border-b border-transparent dark:border-zinc-800'}`}>
-        <div className={`absolute bottom-0 left-0 w-full h-[1.5px] z-0 pointer-events-none ${activePath === 'record' ? 'bg-[#282828]' : 'bg-zinc-200'}`}></div>
+      {/* Dot matrix background */}
+      {!isRecord && <div className="bg-dots fixed inset-0 pointer-events-none z-0" />}
 
-        <div className="max-w-[1400px] w-full mx-auto px-6 md:px-10 h-16 grid grid-cols-[auto_1fr_auto] items-center gap-6">
+      {/* Domain Expansion Overlay */}
+      <DomainExpansion
+        projectId={domainExpansion.projectId}
+        isActive={domainExpansion.active}
+        onComplete={handleDomainComplete}
+      />
 
-          {/* LEFT: Logo */}
-          <Link to="/about" className="flex flex-col cursor-pointer shrink-0">
-            <h1 className={`text-lg font-bold tracking-tight leading-none flex items-center gap-2 ${activePath === 'record' ? 'text-white' : 'text-zinc-900 dark:text-white'}`}>
-              <Zap size={16} fill="currentColor" />
-              Wooseong Jung
-            </h1>
-            <p className={`text-[10px] font-light mt-1 ml-6 ${activePath === 'record' ? 'text-zinc-500' : 'text-zinc-500 dark:text-zinc-400'}`}>Software Engineer &amp; Creative</p>
-          </Link>
+      {/* ── Header ── */}
+      {!isRecord && (
+        <motion.header
+          className="sticky top-0 z-50 backdrop-blur-xl bg-[#f5f4f0]/80 dark:bg-[#08080c]/80 border-b border-midnight-200 dark:border-midnight-800"
+          initial={{ y: -64 }}
+          animate={{ y: 0 }}
+          transition={{ duration: 0.5, ease: smoothEase }}
+        >
+          <div className="max-w-[1400px] w-full mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
 
-          {/* CENTER: Nav tabs */}
-          <nav id="nav-container" className="flex items-center justify-center h-full relative">
-            <div
-              className={`absolute bottom-0 left-[-2000px] h-[1.5px] transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] z-10 pointer-events-none ${activePath === 'record' ? 'bg-white' : 'bg-zinc-900 dark:bg-white'}`}
-              style={{ width: `calc(2000px + ${wireLength}px)` }}
-            ></div>
-
-            {navItems.map((item) => (
-              <Link
-                key={item.id}
-                id={`nav-${item.id}`}
-                to={item.path}
-                className={`flex items-center text-sm transition-colors relative h-full px-6 z-20 group ${activeTab === item.id
-                  ? (activePath === 'record' ? 'text-white font-medium' : 'text-zinc-900 dark:text-white font-medium')
-                  : (activePath === 'record' ? 'text-zinc-500 hover:text-white font-light' : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white font-light')
-                  }`}
+            {/* Logo */}
+            <Link to="/about" className="flex items-center gap-3 shrink-0 group">
+              <motion.div
+                className="w-7 h-7 flex items-center justify-center transition-colors duration-300"
+                style={{ border: '1px solid rgba(201,168,76,0.5)' }}
+                whileHover={{ rotate: 90, scale: 1.1 }}
+                transition={{ duration: 0.3 }}
               >
-                {item.label}
-                {/* Active indicator node on the wire */}
-                <div
-                  className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center z-20 pointer-events-none"
-                  style={{ bottom: '-4.25px' }}
+                <Zap size={13} style={{ color: '#c9a84c' }} />
+              </motion.div>
+              <div className="hidden sm:flex flex-col">
+                <h1 className="font-display text-[15px] font-bold tracking-tight text-midnight-900 dark:text-white leading-none">
+                  Wooseong Jung
+                </h1>
+                <p className="font-mono text-[9px] tracking-[0.15em] uppercase text-midnight-400 dark:text-midnight-500 mt-0.5">
+                  Electronic Engineer
+                </p>
+              </div>
+            </Link>
+
+            {/* Desktop Nav */}
+            <nav className="hidden md:flex items-center gap-1 relative">
+              {navItems.map((item) => (
+                <Link
+                  key={item.id}
+                  to={item.path}
+                  className={`relative px-4 py-2 text-[13px] font-body transition-all duration-300 ${
+                    activeTab === item.id
+                      ? 'text-midnight-900 dark:text-white font-medium'
+                      : 'text-midnight-400 dark:text-midnight-500 hover:text-midnight-700 dark:hover:text-midnight-300'
+                  }`}
                 >
-                  <div className={`w-2.5 h-2.5 rounded-full border-[1.5px] flex items-center justify-center transition-colors duration-300 ${activeTab === item.id
-                    ? (activePath === 'record' ? 'border-white bg-black' : 'border-zinc-900 dark:border-white bg-[#fafafa] dark:bg-zinc-950')
-                    : (activePath === 'record' ? 'border-[#282828] bg-black group-hover:border-zinc-600' : 'border-zinc-200 dark:border-zinc-700 bg-[#fafafa] dark:bg-zinc-950 group-hover:border-zinc-400 dark:group-hover:border-zinc-500')
-                    }`}>
-                    <div className={`w-[3px] h-[3px] rounded-full transition-colors duration-300 ${activeTab === item.id ? (activePath === 'record' ? 'bg-white' : 'bg-zinc-900 dark:bg-white') : 'bg-transparent'}`}></div>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </nav>
+                  {item.label}
+                  {activeTab === item.id && (
+                    <motion.div
+                      className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-px"
+                      style={{ backgroundColor: '#c9a84c' }}
+                      layoutId="nav-underline"
+                      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                    />
+                  )}
+                </Link>
+              ))}
+            </nav>
 
-          {/* RIGHT: Controls */}
-          <div className="flex items-center gap-3 shrink-0">
-            {user ? (
-              <button onClick={handleLogin} className={`hidden lg:flex items-center gap-1.5 text-[11px] font-medium px-2 py-1 rounded border transition-colors ${activePath === 'record' ? 'text-zinc-400 hover:text-red-400 bg-zinc-900 border-zinc-700' : 'text-zinc-600 dark:text-zinc-300 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500'}`} title="Sign Out">
-                <span className="max-w-[110px] truncate">{user.email}</span>
-                <LogOut size={11} />
-              </button>
-            ) : (
-              <button onClick={handleLogin} className={`hidden lg:flex items-center gap-1.5 text-[11px] font-medium px-3 py-1 rounded border transition-colors ${activePath === 'record' ? 'text-white bg-zinc-800 border-zinc-700 hover:bg-zinc-700' : 'text-zinc-700 dark:text-white bg-zinc-100 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700'}`} title="Sign In with Google">
-                <span>Sign In</span>
-                <LogIn size={11} />
-              </button>
-            )}
-
-            <div className="hidden lg:block h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700"></div>
-
-            <LightSwitch
-              isOpen={isDarkMode}
-              onToggle={() => setIsDarkMode(!isDarkMode)}
-              className={activePath === 'record' ? 'opacity-40 pointer-events-none' : ''}
-            />
-
-            <div className="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700"></div>
-
+            {/* Right controls */}
             <div className="flex items-center gap-3">
-              <a href="mailto:hello@yourdomain.com" className={`transition-colors ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 dark:text-zinc-500 hover:text-zinc-800 dark:hover:text-white'}`}>
-                <Mail size={15} />
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className={`transition-colors ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 dark:text-zinc-500 hover:text-zinc-800 dark:hover:text-white'}`}>
-                <Linkedin size={15} />
-              </a>
-              <a href="https://github.com" target="_blank" rel="noreferrer" className={`transition-colors ${activePath === 'record' ? 'text-zinc-500 hover:text-white' : 'text-zinc-400 dark:text-zinc-500 hover:text-zinc-800 dark:hover:text-white'}`}>
-                <Github size={15} />
-              </a>
+              {/* Social icons */}
+              <div className="hidden lg:flex items-center gap-3">
+                {[
+                  { href: 'mailto:wooseongjung12@gmail.com', Icon: Mail, external: false },
+                  { href: 'https://www.linkedin.com/in/wooseong-jung-21b143223/', Icon: Linkedin, external: true },
+                  { href: 'https://github.com/wooseongjung', Icon: Github, external: true },
+                ].map(({ href, Icon, external }, i) => (
+                  <motion.a
+                    key={i}
+                    href={href}
+                    target={external ? '_blank' : undefined}
+                    rel={external ? 'noreferrer' : undefined}
+                    className="text-midnight-400 dark:text-midnight-500 hover:text-gold dark:hover:text-gold transition-colors duration-300"
+                    whileHover={{ scale: 1.2, rotate: [0, -8, 8, 0] }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Icon size={15} />
+                  </motion.a>
+                ))}
+              </div>
+
+              <div className="hidden lg:block w-px h-4 bg-midnight-200 dark:bg-midnight-800" />
+
+              {/* Auth */}
+              {user ? (
+                <button onClick={handleLogin} className="hidden lg:flex items-center gap-1.5 text-[11px] font-mono px-2 py-1 border border-midnight-200 dark:border-midnight-700 text-midnight-400 hover:border-gold hover:text-gold transition-colors" title="Sign Out">
+                  <span className="max-w-[100px] truncate">{user.email}</span>
+                  <LogOut size={11} />
+                </button>
+              ) : (
+                <button onClick={handleLogin} className="hidden lg:flex items-center gap-1.5 text-[11px] font-mono px-3 py-1 border border-midnight-200 dark:border-midnight-700 text-midnight-500 hover:border-gold hover:text-gold transition-colors" title="Sign In">
+                  Sign In <LogIn size={11} />
+                </button>
+              )}
+
+              <div className="hidden lg:block w-px h-4 bg-midnight-200 dark:bg-midnight-800" />
+
+              {/* Dark mode toggle */}
+              <motion.button
+                onClick={() => setIsDarkMode(!isDarkMode)}
+                className="w-8 h-8 flex items-center justify-center text-midnight-400 dark:text-midnight-500 hover:text-gold dark:hover:text-gold transition-colors duration-300"
+                aria-label="Toggle dark mode"
+                whileTap={{ scale: 0.8, rotate: 180 }}
+                transition={{ duration: 0.3 }}
+              >
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={isDarkMode ? 'sun' : 'moon'}
+                    initial={{ scale: 0, rotate: -90 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    exit={{ scale: 0, rotate: 90 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
+                  </motion.div>
+                </AnimatePresence>
+              </motion.button>
+
+              {/* Mobile menu */}
+              <motion.button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="md:hidden w-8 h-8 flex items-center justify-center text-midnight-600 dark:text-midnight-400"
+                whileTap={{ scale: 0.9 }}
+              >
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={mobileMenuOpen ? 'close' : 'menu'}
+                    initial={{ scale: 0, rotate: -90 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    exit={{ scale: 0, rotate: 90 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+                  </motion.div>
+                </AnimatePresence>
+              </motion.button>
             </div>
           </div>
-        </div>
 
-      </header>
+          {/* Mobile nav dropdown */}
+          <AnimatePresence>
+            {mobileMenuOpen && (
+              <motion.div
+                className="md:hidden border-t border-midnight-200 dark:border-midnight-800 bg-[#f5f4f0] dark:bg-[#08080c] px-6 py-4 space-y-1 overflow-hidden"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3, ease: smoothEase }}
+              >
+                {navItems.map((item, idx) => (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.05 }}
+                  >
+                    <Link to={item.path}
+                      className={`block px-3 py-2.5 text-[14px] font-body transition-colors ${
+                        activeTab === item.id
+                          ? 'text-gold font-medium'
+                          : 'text-midnight-500 dark:text-midnight-400'
+                      }`}>
+                      {item.label}
+                    </Link>
+                  </motion.div>
+                ))}
+                <motion.div
+                  className="flex items-center gap-4 pt-3 border-t border-midnight-200 dark:border-midnight-800 mt-2"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <a href="mailto:wooseongjung12@gmail.com" className="text-midnight-400 hover:text-gold transition-colors"><Mail size={16} /></a>
+                  <a href="https://www.linkedin.com/in/wooseong-jung-21b143223/" target="_blank" rel="noreferrer" className="text-midnight-400 hover:text-gold transition-colors"><Linkedin size={16} /></a>
+                  <a href="https://github.com/wooseongjung" target="_blank" rel="noreferrer" className="text-midnight-400 hover:text-gold transition-colors"><Github size={16} /></a>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.header>
+      )}
 
+      {/* ── Routes ── */}
       <Routes>
         <Route path="/record" element={<MusicPlayer user={user} />} />
-        <Route path="*" element={<StandardLayout user={user} />} />
+        <Route path="*" element={<StandardLayout user={user} onDomainExpansion={handleDomainExpansion} />} />
       </Routes>
-    </div >
+    </div>
   );
 }

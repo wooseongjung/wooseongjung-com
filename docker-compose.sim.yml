@@ -21,3 +21,4 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${NS3_HOST_PATH:-/Users/wsj/Documents/ns3_project/ns-3.46}:/mnt/ns3
+      - ./sim-api/data:/app/data
