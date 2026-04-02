@@ -922,23 +922,12 @@ const ProjectsPage = () => {
 
   useEffect(() => {
     if (!projectsRef.current) return;
-    const tweens = [];
-    const triggers = [];
     const title = projectsRef.current.querySelector('.page-title');
-    if (title) tweens.push(gsap.fromTo(title, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', clearProps: 'all' }));
-    projectsRef.current.querySelectorAll('.project-card').forEach((card, i) => {
-      const tw = gsap.fromTo(card,
-        { y: 60, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, delay: 0.1 + i * 0.08, ease: 'power3.out', clearProps: 'all',
-          scrollTrigger: { trigger: card, start: 'top 95%' } }
-      );
-      tweens.push(tw);
-      if (tw.scrollTrigger) triggers.push(tw.scrollTrigger);
-    });
-    return () => {
-      triggers.forEach(st => st.kill());
-      tweens.forEach(tw => tw.kill());
-    };
+    const cards = projectsRef.current.querySelectorAll('.project-card');
+    const tl = gsap.timeline();
+    if (title) tl.fromTo(title, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'power2.out', clearProps: 'all' });
+    if (cards.length) tl.fromTo(cards, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, stagger: 0.08, ease: 'power2.out', clearProps: 'all' }, '-=0.2');
+    return () => tl.kill();
   }, []);
 
   return (
