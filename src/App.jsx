@@ -1017,14 +1017,13 @@ const ContactPage = () => {
 
   useEffect(() => {
     if (!contactRef.current) return;
-    const tweens = [];
-    contactRef.current.querySelectorAll('.contact-reveal').forEach((el, i) => {
-      tweens.push(gsap.fromTo(el,
-        { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.7, delay: i * 0.08, ease: 'power3.out', clearProps: 'all' }
-      ));
-    });
-    return () => tweens.forEach(t => t.kill());
+    const els = contactRef.current.querySelectorAll('.contact-reveal');
+    gsap.set(els, { y: 0, opacity: 1 }); // Show immediately, no animation delay
+    const tl = gsap.fromTo(els,
+      { y: 20, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.4, stagger: 0.05, ease: 'power2.out', clearProps: 'all' }
+    );
+    return () => tl.kill();
   }, []);
 
   return (
@@ -1575,12 +1574,16 @@ export default function App() {
     if (user) await signOut(auth); else await signInWithPopup(auth, provider);
   };
 
-  // Scroll to top + kill stale ScrollTriggers on route change
+  // Scroll to top + kill stale ScrollTriggers on route change (not initial mount)
+  const prevPathRef = useRef(location.pathname);
   useEffect(() => {
-    window.scrollTo(0, 0);
-    // Kill ALL ScrollTrigger instances from previous page to prevent stale DOM refs
-    ScrollTrigger.getAll().forEach(st => st.kill());
-    ScrollTrigger.clearMatchMedia();
+    if (prevPathRef.current !== location.pathname) {
+      // Kill ScrollTrigger instances from previous page to prevent stale DOM refs
+      ScrollTrigger.getAll().forEach(st => st.kill());
+      ScrollTrigger.clearMatchMedia();
+      window.scrollTo(0, 0);
+      prevPathRef.current = location.pathname;
+    }
   }, [location.pathname]);
 
   const isRecord = location.pathname === '/record';
