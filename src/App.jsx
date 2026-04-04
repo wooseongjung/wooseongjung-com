@@ -1007,10 +1007,9 @@ const ContactPage = () => {
   useEffect(() => {
     if (!contactRef.current) return;
     const els = contactRef.current.querySelectorAll('.contact-reveal');
-    gsap.set(els, { y: 0, opacity: 1 }); // Show immediately, no animation delay
     const tl = gsap.fromTo(els,
       { y: 20, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.4, stagger: 0.05, ease: 'power2.out', clearProps: 'all' }
+      { y: 0, opacity: 1, duration: 0.35, stagger: 0.04, ease: 'power2.out', clearProps: 'all' }
     );
     return () => tl.kill();
   }, []);
@@ -1289,7 +1288,7 @@ const DetailWrapper = ({ children, domain, accent }) => {
     <div className="relative max-w-6xl mx-auto px-6 md:px-12 py-12 md:py-16 min-h-screen">
       {/* Domain animation — positioned in the empty space beside the title */}
       <DomainTransition domain={domain} accent={accent} />
-      <div className="animate-fade-up">{children}</div>
+      {children}
     </div>
   );
 };
