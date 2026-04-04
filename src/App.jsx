@@ -109,9 +109,9 @@ const SKILLS = [
 
 const TIMELINE = [
   { year: '2021', title: 'University of Manchester', desc: 'Started BEng Electronic Engineering — FPGA synthesis, analog IC layout, control systems.', color: '#7c6df0' },
-  { year: '2022', title: 'Republic of Korea Air Force', desc: 'Avionics maintenance team. Led procedural optimizations, reduced troubleshooting time by 15%. Mentored 16 recruits.', color: '#d4a843' },
-  { year: '2024', title: 'Return to Studies', desc: 'Back at Manchester for final year — specializing in robotics, VLSI, and 5G network simulation.', color: '#7c6df0' },
-  { year: '2026', title: 'Graduation', desc: 'Expected First-Class Honours (80%). Six completed projects spanning hardware, software, and research.', color: '#d4a843' },
+  { year: '2022', title: 'Republic of Korea Air Force', desc: 'Flight maintenance — avionics troubleshooting (ATE, ADTS) on ADC, APC, YDC flight computers. Built automated inventory system. Room leader, mentored 16 recruits.', color: '#d4a843' },
+  { year: '2024', title: 'Return to Studies', desc: 'Back at Manchester for final year — embedded systems, VLSI, high-speed PCB, 5G network simulation, and DSP.', color: '#7c6df0' },
+  { year: '2026', title: 'Graduation', desc: 'Expected First-Class Honours (75%). Eight completed projects spanning hardware, software, and research.', color: '#d4a843' },
 ];
 
 const projectIdBySlug = { vfc_simulation: 'vfc-ns3', buggy: 'buggy', hackabot_2025: 'hackabot-2025', hackabot_2026: 'hackabot-2026' };
@@ -272,12 +272,12 @@ const MagneticButton = ({ children, className = '', onClick, style }) => {
    Signal Cards — rotating fact cards
    ═══════════════════════════════════════ */
 const CREDENTIALS = [
-  { label: 'Education', period: '2021–2026', title: 'BEng Electronic Engineering', org: 'University of Manchester', detail: 'FPGA synthesis, analog IC layout, VLSI design, control systems, 5G network simulation.', accent: '#d4a843' },
-  { label: 'Military', period: '2022–2024', title: 'Avionics Maintenance', org: 'Republic of Korea Air Force', detail: 'Led procedural optimizations, reduced troubleshooting time by 15%. Mentored 16 recruits.', accent: '#7c6df0' },
-  { label: 'Achievement', period: '2025', title: '3rd Place · AI Classroom Camera', org: 'Hack-A-Bot 2025', detail: 'Real-time hand-raise detection via on-device PoseNet on Raspberry Pi AI Camera. 24-hour build.', accent: '#5b9cf5' },
-  { label: 'Research', period: '2025–26', title: '5G Vehicular Fog Computing', org: 'Supervised by Dr. Khairi Hamdi', detail: 'ns-3.46 + 5G-LENA simulation comparing bus-mounted vs roadside fog nodes at 28 GHz.', accent: '#e8734a' },
-  { label: 'Competition', period: '2026', title: 'GridBox — Smart Factory Controller', org: 'Hack-A-Bot 2026', detail: 'Dual Raspberry Pi Pico 2, wireless SCADA, autonomous fault detection. Built in 24 hours.', accent: '#d4a843' },
-  { label: 'Project', period: '2024–25', title: 'Line-Following Buggy', org: 'Embedded Systems Project', detail: 'STM32 PID control, BLE-tunable parameters, multi-layer acetyl chassis. Won "Best Looking" award.', accent: '#7c6df0' },
+  { label: 'Education', period: '2021–2026', title: 'BEng Electronic Engineering', org: 'University of Manchester', detail: 'Embedded systems, VLSI/IC design, high-speed PCB, control systems, 5G simulation, DSP. Expected First-Class Honours (75%).', accent: '#d4a843' },
+  { label: 'Military', period: 'Sep 2022 – Jun 2024', title: 'Flight Maintenance · Avionics', org: 'Republic of Korea Air Force', detail: 'Avionics troubleshooting (ATE, ADTS) on flight computers (ADC, APC, YDC). Built automated Excel inventory system. Room leader, mentored 16 recruits.', accent: '#7c6df0' },
+  { label: 'Research', period: '2025–26', title: '5G Vehicular Fog Computing', org: 'Supervised by Dr. Khairi Hamdi', detail: '2,554-line C++ ns-3 simulation with 5G-LENA NR + SUMO. VFN matches CFN reliability at low-medium density with zero infrastructure cost.', accent: '#e8734a' },
+  { label: 'Achievement', period: '2025', title: '3rd Place · AI Classroom Camera', org: 'Hack-A-Bot 2025', detail: 'On-device PoseNet inference (IMX500) for real-time attendance + hand-raise detection. Flask JSON API. 24-hour build.', accent: '#5b9cf5' },
+  { label: 'Competition', period: '2026', title: 'GridBox — Smart Factory Controller', org: 'Hack-A-Bot 2026', detail: 'Dual Pico 2, nRF24L01+ wireless SCADA (50Hz, 0 errors), fault detection <100ms, 44K lines. Built in 24 hours.', accent: '#d4a843' },
+  { label: 'Project', period: '2024–25', title: 'Autonomous Line-Following Buggy', org: 'Embedded Systems Project · 72%', detail: 'STM32 PID + bang-bang control, BLE-tunable gains, TCRT5000 IR sensors, Altium PCB, laser-cut chassis. Won "Best Looking" award.', accent: '#7c6df0' },
 ];
 
 const CredentialCards = () => (
@@ -839,7 +839,7 @@ const MainPage = ({ introComplete }) => {
             <span className="hero-highlight" style={{ backgroundImage: 'linear-gradient(120deg, #7c6df040 0%, #7c6df040 100%)', backgroundRepeat: 'no-repeat', backgroundPosition: '0 88%', backgroundSize: '100% 40%' }}>software</span>.
           </p>
           <div className="hero-bio max-w-2xl text-lg md:text-xl leading-relaxed text-midnight-600 dark:text-midnight-300 mb-12 font-medium">
-            <p>Final-year BEng Electronic Engineering at the <span className="underline decoration-gold/50 decoration-2 underline-offset-4 font-semibold text-midnight-800 dark:text-white">University of Manchester</span>. Expecting <span className="underline decoration-violet/50 decoration-2 underline-offset-4 font-semibold text-midnight-800 dark:text-white">First-Class (80%)</span>. From nanosecond CMOS delays to 12-servo robotic kinematics.</p>
+            <p>Final-year BEng Electronic Engineering at the <span className="underline decoration-gold/50 decoration-2 underline-offset-4 font-semibold text-midnight-800 dark:text-white">University of Manchester</span>. Expecting <span className="underline decoration-violet/50 decoration-2 underline-offset-4 font-semibold text-midnight-800 dark:text-white">First-Class Honours (75%)</span>. From transistor-level IC layouts to full-stack web dashboards.</p>
           </div>
           <div className="flex flex-wrap items-center gap-5 pointer-events-auto">
             <Link to="/projects" className="hero-cta group inline-flex items-center gap-3 px-8 py-4 bg-gold text-midnight-950 font-display font-bold text-base hover:bg-gold-bright hover:scale-[1.03] active:scale-[0.97] transition-all duration-300">
@@ -857,9 +857,9 @@ const MainPage = ({ introComplete }) => {
         <div className="bio-reveal"><SectionLabel>About</SectionLabel></div>
         {/* Intro paragraph — full width */}
         <div className="bio-reveal max-w-3xl space-y-5 text-lg leading-[1.8] text-midnight-600 dark:text-midnight-300 font-medium mb-16">
-          <p>I'm <span className="font-semibold text-midnight-800 dark:text-white">Wooseong Jung</span>, an electronic engineer who loves building things that work in the real world — from transistor-level IC layouts to full-stack web applications.</p>
-          <p>My journey started in <span className="underline decoration-violet/40 decoration-2 underline-offset-4 font-semibold text-midnight-800 dark:text-white">Manchester in 2021</span> studying Electronic Engineering. After two years of <span className="underline decoration-gold/40 decoration-2 underline-offset-4 font-semibold text-midnight-800 dark:text-white">military service as an avionics technician</span> in the Republic of Korea Air Force, I returned to Manchester to finish my degree with a focus on <span className="font-semibold text-midnight-800 dark:text-white">embedded systems</span>, <span className="font-semibold text-midnight-800 dark:text-white">5G network simulation</span>, and <span className="font-semibold text-midnight-800 dark:text-white">robotics</span>.</p>
-          <p>I'm drawn to problems that sit at the intersection of hardware and software — where you need to understand both the physics and the code. Whether it's tuning PID gains over Bluetooth on a line-following buggy, simulating millimetre-wave fog computing in ns-3, or building a real-time AI camera in a 24-hour hackathon, I care most about making things that actually run.</p>
+          <p>I'm <span className="font-semibold text-midnight-800 dark:text-white">Wooseong Jung</span>, an electronic engineer who builds systems from transistor-level IC layouts to full-stack web dashboards. My core strengths span <span className="font-semibold text-midnight-800 dark:text-white">embedded systems</span> (STM32, Raspberry Pi, C/C++), <span className="font-semibold text-midnight-800 dark:text-white">circuit design</span> (CMOS VLSI, SPICE, analogue), <span className="font-semibold text-midnight-800 dark:text-white">high-speed PCB</span>, and <span className="font-semibold text-midnight-800 dark:text-white">5G network simulation</span>.</p>
+          <p>My journey started in <span className="underline decoration-violet/40 decoration-2 underline-offset-4 font-semibold text-midnight-800 dark:text-white">Manchester in 2021</span>. After two years of <span className="underline decoration-gold/40 decoration-2 underline-offset-4 font-semibold text-midnight-800 dark:text-white">military service in the Republic of Korea Air Force</span> — troubleshooting avionics on flight computers using ATE and ADTS, building an automated inventory system, and mentoring 16 recruits as room leader — I returned to Manchester to finish my degree.</p>
+          <p>I'm drawn to problems at the intersection of hardware and software. Whether it's writing a 2,554-line C++ simulation of 5G fog computing, designing wireless SCADA with zero packet errors in a 24-hour hackathon, or extracting signals 60dB below the noise floor with a lock-in amplifier — I care most about making things that actually work.</p>
         </div>
         {/* Credential cards — 3-column grid, full width */}
         <div className="bio-reveal">
