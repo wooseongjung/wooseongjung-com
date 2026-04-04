@@ -1002,23 +1002,11 @@ const LifePage = () => {
    Contact Page
    ═══════════════════════════════════════ */
 const ContactPage = () => {
-  const contactRef = useRef(null);
-
-  useEffect(() => {
-    if (!contactRef.current) return;
-    const els = contactRef.current.querySelectorAll('.contact-reveal');
-    const tl = gsap.fromTo(els,
-      { y: 20, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.35, stagger: 0.04, ease: 'power2.out', clearProps: 'all' }
-    );
-    return () => tl.kill();
-  }, []);
-
   return (
-    <div ref={contactRef}>
+    <div>
       <section className="max-w-6xl mx-auto px-6 md:px-12 py-24">
-        <div className="contact-reveal"><SectionLabel>Contact</SectionLabel></div>
-        <div className="contact-reveal mb-12">
+        <div className="animate-fade-up" style={{ animationDelay: '0s' }}><SectionLabel>Contact</SectionLabel></div>
+        <div className="animate-fade-up mb-12" style={{ animationDelay: '0.05s' }}>
           <h2 className="font-display text-3xl md:text-4xl font-black tracking-tight text-midnight-900 dark:text-white mb-4">Let's build something.</h2>
           <p className="text-lg text-midnight-600 dark:text-midnight-300 max-w-2xl leading-relaxed font-medium">
             Whether it's a <span className="underline decoration-gold/40 decoration-2 underline-offset-4 font-semibold text-midnight-800 dark:text-white">hardware collaboration</span>, a <span className="underline decoration-violet/40 decoration-2 underline-offset-4 font-semibold text-midnight-800 dark:text-white">job opportunity</span>, or just a good coffee recommendation.
@@ -1031,7 +1019,8 @@ const ContactPage = () => {
             { icon: Github, title: 'GitHub', sub: 'Code & repositories', href: 'https://github.com/wooseongjung', external: true, accent: '#7c6df0' },
           ].map((card, i) => (
             <a key={i} href={card.href} target={card.external ? '_blank' : undefined} rel={card.external ? 'noreferrer' : undefined}
-              className="contact-reveal flex flex-col gap-5 p-7 border border-midnight-200 dark:border-midnight-800 bg-white dark:bg-midnight-900/50 hover:border-gold/50 dark:hover:border-gold/40 transition-all duration-300 group hover:-translate-y-2 hover:shadow-lg"
+              className="animate-fade-up flex flex-col gap-5 p-7 border border-midnight-200 dark:border-midnight-800 bg-white dark:bg-midnight-900/50 hover:border-gold/50 dark:hover:border-gold/40 transition-all duration-300 group hover:-translate-y-2 hover:shadow-lg"
+              style={{ animationDelay: `${0.1 + i * 0.06}s` }}
             >
               <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: `${card.accent}12` }}>
                 <card.icon size={22} style={{ color: card.accent }} />
