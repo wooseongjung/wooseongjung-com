@@ -3,7 +3,7 @@ import { ArrowRight } from 'lucide-react';
 
 const HackABot2025Detail = ({ backToList }) => {
   return (
-    <div className="space-y-10 animate-fade-up max-w-4xl pb-12">
+    <div className="space-y-10 max-w-4xl pb-12">
       <button onClick={backToList} className="flex items-center gap-2 text-midnight-400 hover:text-gold transition-colors mb-4 group font-semibold text-sm">
         <ArrowRight size={16} className="rotate-180 transition-transform group-hover:-translate-x-1" />
         Back to Projects

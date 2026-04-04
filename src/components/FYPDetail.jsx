@@ -32,7 +32,7 @@ const FYPDetail = ({ backToList }) => {
       </div>
 
       {/* ── Main content ── */}
-      <div className={`fyp-content-wrapper space-y-10 animate-fade-up max-w-4xl mx-auto pb-12 ${simPanelOpen ? 'shifted' : ''}`}>
+      <div className={`fyp-content-wrapper space-y-10 max-w-4xl mx-auto pb-12 ${simPanelOpen ? 'shifted' : ''}`}>
         <button onClick={backToList} className="flex items-center gap-2 text-midnight-400 hover:text-gold transition-colors mb-4 group font-medium text-sm">
           <ArrowRight size={16} className="rotate-180 transition-transform group-hover:-translate-x-1" />
           Back to Projects

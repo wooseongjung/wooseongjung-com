@@ -1056,18 +1056,10 @@ const BuggyDetail = ({ backToList }) => {
   const containerRef = useRef(null);
   useEffect(() => {
     if (!containerRef.current) return;
-    const tweens = [];
-    const triggers = [];
-    containerRef.current.querySelectorAll('.reveal').forEach((s, i) => {
-      const tw = gsap.fromTo(s,
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, delay: i * 0.06, ease: 'power3.out', clearProps: 'all',
-          scrollTrigger: { trigger: s, start: 'top 85%' } }
-      );
-      tweens.push(tw);
-      if (tw.scrollTrigger) triggers.push(tw.scrollTrigger);
-    });
-    return () => { triggers.forEach(st => st.kill()); tweens.forEach(tw => tw.kill()); };
+    const els = containerRef.current.querySelectorAll('.reveal');
+    const tl = gsap.timeline();
+    tl.fromTo(els, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, stagger: 0.06, ease: 'power2.out', clearProps: 'all' });
+    return () => tl.kill();
   }, []);
 
   return (
