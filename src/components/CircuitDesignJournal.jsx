@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Cpu, Calendar, BookOpen } from 'lucide-react';
+import { ArrowLeft, Cpu, Calendar, BookOpen, ArrowDown } from 'lucide-react';
 
 /* ═══════════════════════════════════════
    Circuit Design Journal
@@ -73,10 +73,57 @@ export default function CircuitDesignJournal() {
         </div>
       </header>
 
+      {/* Index / Table of contents */}
+      <nav aria-label="Entry index" className="mb-16 border border-midnight-200 dark:border-midnight-800 bg-white dark:bg-midnight-900/40">
+        <div className="px-5 md:px-6 py-4 flex items-center justify-between border-b border-midnight-200 dark:border-midnight-800">
+          <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-midnight-500 dark:text-midnight-400 font-semibold inline-flex items-center gap-2">
+            <BookOpen size={12} /> Index
+          </span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-midnight-400 dark:text-midnight-500 inline-flex items-center gap-1.5">
+            <ArrowDown size={11} /> Click to jump
+          </span>
+        </div>
+        <ol className="divide-y divide-midnight-200 dark:divide-midnight-800">
+          {POSTS.map((post, i) => {
+            const num = String(POSTS.length - i).padStart(2, '0');
+            return (
+              <li key={post.id}>
+                <a
+                  href={`#post-${post.id}`}
+                  className="block px-5 md:px-6 py-4 group hover:bg-midnight-50/70 dark:hover:bg-midnight-900/60 transition-colors"
+                >
+                  <div className="grid grid-cols-[auto_auto_1fr_auto] items-center gap-x-5 gap-y-1">
+                    <span className="font-mono text-[11px] tracking-[0.15em] text-gold font-bold">{num}</span>
+                    <span className="font-mono text-[11px] tracking-[0.1em] text-midnight-500 dark:text-midnight-400 font-semibold">{post.date}</span>
+                    <span className="font-display text-base md:text-lg font-semibold text-midnight-900 dark:text-white group-hover:text-gold dark:group-hover:text-gold transition-colors truncate">
+                      {post.title}
+                    </span>
+                    <div className="hidden md:flex items-center gap-1.5">
+                      {post.tags.map((t) => (
+                        <span
+                          key={t}
+                          className="font-mono text-[10px] uppercase tracking-[0.12em] font-semibold px-2 py-0.5 border border-midnight-200 dark:border-midnight-700 text-midnight-500 dark:text-midnight-400 rounded-sm"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </a>
+              </li>
+            );
+          })}
+        </ol>
+      </nav>
+
       {/* Post list */}
       <div className="space-y-14">
         {POSTS.map((post) => (
-          <article key={post.id} className="group">
+          <article
+            key={post.id}
+            id={`post-${post.id}`}
+            className="group scroll-mt-24"
+          >
             <div className="flex items-center gap-3 mb-3 font-mono text-[11px] uppercase tracking-[0.15em] text-midnight-500 dark:text-midnight-400 font-semibold">
               <Calendar size={12} />
               {post.date}
