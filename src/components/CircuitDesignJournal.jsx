@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Cpu, Calendar, BookOpen, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Cpu, Calendar, BookOpen, ChevronLeft, ChevronRight, List, X } from 'lucide-react';
 
 /* ═══════════════════════════════════════
    Circuit Design Journal
@@ -162,6 +162,156 @@ function JournalIndex() {
 }
 
 /* ─────────────────────────────────────── */
+/* Entries Drawer — edge-tab + slide panel */
+/* ─────────────────────────────────────── */
+
+function EntriesDrawer({ currentId }) {
+  const [open, setOpen] = useState(false);
+  const closeTimer = useRef(null);
+
+  // Close on Escape
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
+  // Lock body scroll while open on mobile (prevents background jitter)
+  useEffect(() => {
+    if (open) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = '';
+    return () => { document.body.style.overflow = ''; };
+  }, [open]);
+
+  const cancelClose = () => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  };
+  const scheduleClose = () => {
+    cancelClose();
+    closeTimer.current = setTimeout(() => setOpen(false), 250);
+  };
+
+  return (
+    <>
+      {/* Edge tab — always visible, hover or click to open */}
+      <button
+        type="button"
+        aria-label="Open entry index"
+        aria-expanded={open}
+        onMouseEnter={() => { cancelClose(); setOpen(true); }}
+        onMouseLeave={scheduleClose}
+        onClick={() => setOpen(true)}
+        className="fixed left-0 top-1/2 -translate-y-1/2 z-40 flex items-center gap-2 pl-2 pr-3 py-4 bg-white dark:bg-midnight-900 border border-l-0 border-midnight-200 dark:border-midnight-800 rounded-r-md shadow-sm hover:border-gold/60 hover:pr-4 transition-all duration-300 group"
+        style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}
+      >
+        <List size={14} className="text-gold" style={{ writingMode: 'horizontal-tb' }} />
+        <span className="font-mono text-[10px] uppercase tracking-[0.2em] font-semibold text-midnight-700 dark:text-midnight-200 group-hover:text-gold dark:group-hover:text-gold transition-colors">
+          Entries
+        </span>
+      </button>
+
+      {/* Backdrop */}
+      <div
+        onClick={() => setOpen(false)}
+        className={`fixed inset-0 z-40 bg-black transition-opacity duration-300 ${open ? 'opacity-40 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+        aria-hidden="true"
+      />
+
+      {/* Side panel */}
+      <aside
+        onMouseEnter={cancelClose}
+        onMouseLeave={scheduleClose}
+        className={`fixed left-0 top-0 bottom-0 z-50 w-[min(88vw,340px)] bg-white dark:bg-midnight-950 border-r border-midnight-200 dark:border-midnight-800 shadow-xl transform transition-transform duration-300 ease-out ${open ? 'translate-x-0' : '-translate-x-full'} flex flex-col`}
+        role="dialog"
+        aria-label="Journal entries"
+      >
+        <div className="flex items-center justify-between px-5 md:px-6 py-4 border-b border-midnight-200 dark:border-midnight-800">
+          <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] font-semibold text-gold">
+            <BookOpen size={12} />
+            Entries
+            <span className="text-midnight-400 dark:text-midnight-500">({POSTS.length})</span>
+          </div>
+          <button
+            type="button"
+            aria-label="Close entry index"
+            onClick={() => setOpen(false)}
+            className="p-1.5 text-midnight-500 dark:text-midnight-400 hover:text-gold dark:hover:text-gold transition-colors"
+          >
+            <X size={16} />
+          </button>
+        </div>
+
+        <ol className="flex-1 overflow-y-auto">
+          {POSTS.map((post, i) => {
+            const num = String(POSTS.length - i).padStart(2, '0');
+            const isCurrent = post.id === currentId;
+            return (
+              <li key={post.id} className="border-b border-midnight-200 dark:border-midnight-800 last:border-b-0">
+                <Link
+                  to={`/learning/circuit-design/${post.id}`}
+                  onClick={() => setOpen(false)}
+                  className={`block px-5 md:px-6 py-4 transition-colors ${
+                    isCurrent
+                      ? 'bg-gold/10 dark:bg-gold/10 border-l-[3px] border-gold'
+                      : 'hover:bg-midnight-50 dark:hover:bg-midnight-900/60 border-l-[3px] border-transparent'
+                  }`}
+                  aria-current={isCurrent ? 'page' : undefined}
+                >
+                  <div className="flex items-center gap-3 mb-1 font-mono text-[10px] uppercase tracking-[0.15em] font-semibold">
+                    <span className={isCurrent ? 'text-gold' : 'text-midnight-500 dark:text-midnight-400'}>
+                      {num}
+                    </span>
+                    <span className="w-1 h-1 rounded-full bg-midnight-300 dark:bg-midnight-700" />
+                    <span className="text-midnight-500 dark:text-midnight-400">{post.date}</span>
+                  </div>
+                  <div className={`font-display text-sm font-semibold leading-snug ${
+                    isCurrent
+                      ? 'text-gold'
+                      : 'text-midnight-900 dark:text-white'
+                  }`}>
+                    {post.title}
+                  </div>
+                  {post.tags && post.tags.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-1">
+                      {post.tags.map((t) => (
+                        <span
+                          key={t}
+                          className="font-mono text-[9px] uppercase tracking-[0.12em] font-semibold px-1.5 py-0.5 border border-midnight-200 dark:border-midnight-700 text-midnight-500 dark:text-midnight-400 rounded-sm"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </Link>
+              </li>
+            );
+          })}
+        </ol>
+
+        <div className="px-5 md:px-6 py-4 border-t border-midnight-200 dark:border-midnight-800 flex items-center justify-between">
+          <Link
+            to="/learning/circuit-design"
+            onClick={() => setOpen(false)}
+            className="font-mono text-[10px] uppercase tracking-[0.18em] font-semibold text-midnight-600 dark:text-midnight-300 hover:text-gold dark:hover:text-gold transition-colors inline-flex items-center gap-2"
+          >
+            <ArrowLeft size={11} /> Index
+          </Link>
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-midnight-400 dark:text-midnight-500">
+            Esc to close
+          </span>
+        </div>
+      </aside>
+    </>
+  );
+}
+
+/* ─────────────────────────────────────── */
 /* Single-post view                        */
 /* ─────────────────────────────────────── */
 
@@ -175,6 +325,8 @@ function JournalPost({ postId }) {
   const num = String(POSTS.length - idx).padStart(2, '0');
 
   return (
+    <>
+    <EntriesDrawer currentId={post.id} />
     <PageShell>
       <Link
         to="/learning/circuit-design"
@@ -260,6 +412,7 @@ function JournalPost({ postId }) {
         </Link>
       </div>
     </PageShell>
+    </>
   );
 }
 
