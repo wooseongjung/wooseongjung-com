@@ -1784,6 +1784,7 @@ export default function App() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/project/:projectSlug" element={<ProjectDetail />} />
           <Route path="/learning/circuit-design" element={<CircuitDesignJournal />} />
+          <Route path="/learning/circuit-design/:postId" element={<CircuitDesignJournal />} />
           <Route path="/record" element={<MusicPlayer user={user} />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
