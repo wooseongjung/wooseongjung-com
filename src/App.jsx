@@ -12,12 +12,15 @@ import MusicPlayer from "./components/MusicPlayer";
 import FYPDetail from "./components/FYPDetail";
 import HackABot2025Detail from "./components/HackABot2025Detail";
 import HackABot2026Detail from "./components/HackABot2026Detail";
+import CircuitDesignJournal from "./components/CircuitDesignJournal";
 import { AmbientLightChart, TCRT5000LSpreadChart, AllSensorsSpreadChart } from './components/buggy/SensorCharts';
 
 import {
   Mail, Github, Linkedin, Disc, LogIn, LogOut,
   ArrowRight, ArrowUpRight, CircuitBoard, Wrench, Terminal,
-  Sun, Moon, Menu, X
+  Sun, Moon, Menu, X,
+  Plane, GraduationCap, BookOpen, Plane as PlaneIcon, Award, Globe2, Shield,
+  Cpu, Calendar, FileText
 } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -62,41 +65,35 @@ const PROJECTS = [
     title: '5G Vehicular Fog Computing', tag: 'Final Year Project',
     category: 'Research · Networks', year: '2025–26',
     desc: 'Comparing bus-mounted vs roadside fog nodes over 5G NR at 28 GHz — full PHY/MAC simulation with ns-3.46 + 5G-LENA across Manchester city traffic.',
-    accent: '#d4a843', hasDetail: true,
+    tech: ['C++', 'ns-3.46', '5G-LENA', 'SUMO', 'Python'],
+    metric: '2,554 lines C++',
+    accent: '#d4a843', hasDetail: true, featured: true,
   },
   {
     id: 'hackabot-2026', slug: 'Hackabot_2026', domain: 'grid',
     title: 'GridBox — Smart Factory', tag: 'Hack-A-Bot 2026',
     category: 'Hackathon · IoT', year: '2026',
     desc: 'A £15 smart factory controller — dual Raspberry Pi Pico 2, wireless SCADA, autonomous fault detection. Built in 24 hours.',
+    tech: ['C / C++', 'Pi Pico 2', 'MQTT', 'ESP-NOW', 'SolidWorks'],
+    metric: '0 packet errors',
     accent: '#e8734a', hasDetail: true,
-  },
-  {
-    id: 'baby-spyder', slug: null, domain: 'circuit',
-    title: 'Baby Spyder Robot',
-    category: 'Robotics', year: '2025',
-    desc: 'ROS 2 control stack for a 12-servo quadruped — torque-based joint stability with Gazebo simulation for physical validation.',
-    accent: '#7c6df0', hasDetail: false,
   },
   {
     id: 'hackabot-2025', slug: 'Hackabot_2025', domain: 'camera',
     title: 'AI Classroom Camera', tag: '3rd Place',
     category: 'Hackathon · CV', year: '2025',
     desc: 'Real-time hand-raise detection and engagement monitoring via on-device PoseNet on a Raspberry Pi AI Camera.',
+    tech: ['Python', 'PoseNet', 'TensorFlow Lite', 'Raspberry Pi'],
+    metric: 'On-device inference',
     accent: '#5b9cf5', hasDetail: true,
-  },
-  {
-    id: 'vlsi-cell', slug: null, domain: 'signal',
-    title: 'VLSI Logic Cell Optimization',
-    category: 'VLSI Design', year: '2025',
-    desc: 'Fast-switching CMOS logic cell — worst-case delay of 0.553 ns via transistor sizing optimization in Tanner EDA.',
-    accent: '#d4a843', hasDetail: false,
   },
   {
     id: 'buggy', slug: 'Buggy', domain: 'track',
     title: 'Line-Following Buggy', tag: 'Best Looking',
     category: 'Embedded Systems', year: '2024',
     desc: 'STM32 PID control, BLE-tunable parameters, quadrature encoder feedback. Multi-layer acetyl chassis won "Best Looking" award.',
+    tech: ['STM32', 'C', 'HM-10 BLE', 'TCRT5000L', 'Altium'],
+    metric: '2 ms reaction',
     accent: '#e8734a', hasDetail: true,
   },
 ];
@@ -108,11 +105,11 @@ const SKILLS = [
 ];
 
 const TIMELINE = [
-  { year: '2018', title: 'Kraków, Poland', desc: 'Moved from South Korea to attend the British International School of Cracow. Graduated with IB 41/45, 2nd out of 18 students.', color: '#e8734a' },
-  { year: '2021', title: 'University of Manchester', desc: 'Started BEng Electronic Engineering — FPGA synthesis, analog IC layout, control systems.', color: '#7c6df0' },
-  { year: '2022', title: 'Republic of Korea Air Force', desc: 'Flight maintenance — avionics troubleshooting (ATE, ADTS) on ADC, APC, YDC flight computers. Built automated inventory system. Room leader, mentored 16 recruits.', color: '#d4a843' },
-  { year: '2024', title: 'Return to Studies', desc: 'Back at Manchester for final year — embedded systems, VLSI, high-speed PCB, 5G network simulation, and DSP.', color: '#7c6df0' },
-  { year: '2026', title: 'Graduation', desc: 'Expected First-Class Honours (75%). Eight completed projects spanning hardware, software, and research.', color: '#d4a843' },
+  { year: '2018', title: 'Kraków, Poland', icon: Globe2, desc: 'Moved from South Korea to attend the British International School of Cracow. Graduated with IB 41/45, 2nd out of 18 students.', color: '#e8734a' },
+  { year: '2021', title: 'University of Manchester', icon: BookOpen, desc: 'Started BEng Electronic Engineering — FPGA synthesis, analog IC layout, control systems.', color: '#7c6df0' },
+  { year: '2022', title: 'Republic of Korea Air Force', icon: Shield, desc: 'Flight maintenance — avionics troubleshooting (ATE, ADTS) on ADC, APC, YDC flight computers. Built automated inventory system. Room leader, mentored 16 recruits.', color: '#d4a843' },
+  { year: '2024', title: 'Return to Studies', icon: CircuitBoard, desc: 'Back at Manchester for final year — embedded systems, VLSI, high-speed PCB, 5G network simulation, and DSP.', color: '#7c6df0' },
+  { year: '2026', title: 'Graduation', icon: GraduationCap, desc: 'Expected First-Class Honours (75%). Eight completed projects spanning hardware, software, and research.', color: '#d4a843' },
 ];
 
 const projectIdBySlug = { vfc_simulation: 'vfc-ns3', buggy: 'buggy', hackabot_2025: 'hackabot-2025', hackabot_2026: 'hackabot-2026' };
@@ -702,10 +699,22 @@ const ProjectShowcaseCard = ({ proj, index, onClick }) => {
   return (
     <div
       ref={cardRef}
-      className={`project-card group relative overflow-hidden border-b-2 border-midnight-100 dark:border-midnight-800 ${proj.hasDetail ? 'cursor-pointer' : ''}`}
+      className={`project-card group relative overflow-hidden border-b border-midnight-100 dark:border-midnight-800 ${proj.hasDetail ? 'cursor-pointer' : ''}`}
       onClick={() => proj.hasDetail && onClick(proj)}
     >
       <CardBackground projectId={proj.id} accent={proj.accent} />
+      {/* Featured side ribbon */}
+      {proj.featured && (
+        <div className="absolute top-0 left-0 z-10 flex items-center gap-2 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] font-bold text-midnight-950" style={{ backgroundColor: proj.accent }}>
+          <span className="relative flex w-1.5 h-1.5">
+            <span className="animate-ping absolute inline-flex w-full h-full rounded-full bg-midnight-950 opacity-60" />
+            <span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-midnight-950" />
+          </span>
+          Featured · In Progress
+        </div>
+      )}
+      {/* Left accent bar on hover */}
+      <div className="absolute left-0 top-0 bottom-0 w-[3px] scale-y-0 group-hover:scale-y-100 origin-top transition-transform duration-500" style={{ backgroundColor: proj.accent }} />
       <div className="relative py-10 md:py-14 px-2 md:px-4 flex items-start gap-6 md:gap-10">
         <div ref={numberRef} className="shrink-0 select-none pointer-events-none">
           <span
@@ -716,10 +725,16 @@ const ProjectShowcaseCard = ({ proj, index, onClick }) => {
           </span>
         </div>
         <div className="flex-1 pt-2 md:pt-6">
-          <div className="flex items-center gap-3 mb-3">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-3">
             <span className="font-mono text-xs tracking-[0.15em] uppercase font-medium" style={{ color: proj.accent }}>{proj.category}</span>
             <span className="w-6 h-px bg-midnight-300 dark:bg-midnight-600" />
             <span className="font-mono text-xs tracking-wider text-midnight-400 dark:text-midnight-500">{proj.year}</span>
+            {proj.metric && (
+              <>
+                <span className="w-6 h-px bg-midnight-300 dark:bg-midnight-600" />
+                <span className="font-mono text-xs tracking-wider text-midnight-500 dark:text-midnight-400 font-semibold">{proj.metric}</span>
+              </>
+            )}
           </div>
           <h3 className="font-display text-2xl md:text-4xl lg:text-5xl font-bold tracking-tight text-midnight-900 dark:text-white mb-4 group-hover:translate-x-2 transition-transform duration-500">
             {proj.title}
@@ -730,11 +745,27 @@ const ProjectShowcaseCard = ({ proj, index, onClick }) => {
             )}
           </h3>
           <p className="text-base md:text-lg leading-relaxed text-midnight-600 dark:text-midnight-300 max-w-2xl mb-5 font-medium">{proj.desc}</p>
+          {proj.tech && proj.tech.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-5 max-w-2xl">
+              {proj.tech.map((t) => (
+                <span
+                  key={t}
+                  className="px-2.5 py-1 font-mono text-[11px] font-medium tracking-wide text-midnight-600 dark:text-midnight-300 border border-midnight-200 dark:border-midnight-700 bg-midnight-50/60 dark:bg-midnight-900/60 rounded-sm"
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          )}
           <div className="flex items-center gap-4">
             <div className="h-[3px] w-12 group-hover:w-24 transition-all duration-500 rounded-full" style={{ backgroundColor: proj.accent }} />
-            {proj.hasDetail && (
+            {proj.hasDetail ? (
               <span className="text-sm font-semibold tracking-wide opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 flex items-center gap-2" style={{ color: proj.accent }}>
-                Enter Project <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-300" />
+                Read Case Study <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-300" />
+              </span>
+            ) : (
+              <span className="font-mono text-[11px] uppercase tracking-[0.15em] font-semibold text-midnight-400 dark:text-midnight-500">
+                Case study in preparation
               </span>
             )}
           </div>
@@ -828,9 +859,19 @@ const MainPage = ({ introComplete }) => {
       <section id="hero" ref={heroRef} className="relative min-h-[85vh] flex items-center py-20 md:py-28 overflow-hidden">
         <OscilloscopeWaveform />
         <div className="relative z-10 w-full max-w-6xl mx-auto px-6 md:px-12 pointer-events-none">
-          <p className="hero-label font-mono text-sm tracking-[0.25em] uppercase mb-6 text-gold font-semibold">
-            Electronic Engineer · Manchester, UK
-          </p>
+          <div className="hero-label flex flex-wrap items-center gap-3 mb-6">
+            <p className="font-mono text-sm tracking-[0.25em] uppercase text-gold font-semibold">
+              Electronic Engineer · Manchester, UK
+            </p>
+            <span className="hidden sm:inline-block w-8 h-px bg-midnight-300 dark:bg-midnight-700" />
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/40 bg-emerald-500/10 font-mono text-[11px] uppercase tracking-[0.18em] font-semibold text-emerald-700 dark:text-emerald-300">
+              <span className="relative flex w-2 h-2">
+                <span className="animate-ping absolute inline-flex w-full h-full rounded-full bg-emerald-500 opacity-60" />
+                <span className="relative inline-flex w-2 h-2 rounded-full bg-emerald-500" />
+              </span>
+              Open to Graduate Roles · Jul 2026
+            </span>
+          </div>
           <h1 className="hero-name-line font-display text-[clamp(3rem,8vw,6rem)] font-black leading-[1] tracking-tight text-midnight-900 dark:text-white mb-3">
             Wooseong Jung
           </h1>
@@ -896,14 +937,22 @@ const MainPage = ({ introComplete }) => {
         <SectionLabel>Journey</SectionLabel>
         <div className="relative ml-6 md:ml-12">
           <div className="timeline-line absolute left-0 top-0 bottom-0 w-[3px] rounded-full bg-gradient-to-b from-gold via-violet to-gold/20" />
-          {TIMELINE.map((entry, i) => (
-            <div key={i} className="timeline-item relative pl-12 pb-16 group">
-              <div className="timeline-dot absolute left-[-7px] top-2 w-[17px] h-[17px] rounded-full border-[3px] bg-white dark:bg-midnight-950 transition-all duration-300 group-hover:scale-125" style={{ borderColor: entry.color }} />
-              <span className="font-mono text-sm font-bold tracking-wider" style={{ color: entry.color }}>{entry.year}</span>
-              <h4 className="text-xl md:text-2xl font-display font-bold text-midnight-900 dark:text-white mt-2 mb-2 group-hover:translate-x-1 transition-transform duration-300">{entry.title}</h4>
-              <p className="text-base text-midnight-500 dark:text-midnight-400 leading-relaxed font-medium max-w-lg">{entry.desc}</p>
-            </div>
-          ))}
+          {TIMELINE.map((entry, i) => {
+            const Icon = entry.icon;
+            return (
+              <div key={i} className="timeline-item relative pl-14 pb-16 group">
+                <div
+                  className="timeline-dot absolute left-[-17px] top-0 w-[36px] h-[36px] rounded-full border-[2px] bg-white dark:bg-midnight-950 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_0_0_6px_rgba(212,168,67,0.08)]"
+                  style={{ borderColor: entry.color, boxShadow: `inset 0 0 0 3px ${entry.color}18` }}
+                >
+                  {Icon && <Icon size={15} style={{ color: entry.color }} strokeWidth={2.25} />}
+                </div>
+                <span className="font-mono text-sm font-bold tracking-wider" style={{ color: entry.color }}>{entry.year}</span>
+                <h4 className="text-xl md:text-2xl font-display font-bold text-midnight-900 dark:text-white mt-2 mb-2 group-hover:translate-x-1 transition-transform duration-300">{entry.title}</h4>
+                <p className="text-base text-midnight-500 dark:text-midnight-400 leading-relaxed font-medium max-w-lg">{entry.desc}</p>
+              </div>
+            );
+          })}
         </div>
       </section>
 
@@ -933,19 +982,88 @@ const ProjectsPage = () => {
     return () => tl.kill();
   }, []);
 
+  const caseStudyCount = PROJECTS.filter(p => p.hasDetail).length;
+  const awardCount = PROJECTS.filter(p => p.tag && /place|best|award/i.test(p.tag)).length;
+  const years = PROJECTS.map(p => p.year).join(' ').match(/\d{4}/g) || [];
+  const yearSpan = years.length ? `${Math.min(...years.map(Number))}–${Math.max(...years.map(Number))}` : '';
+
   return (
     <div>
       <section ref={projectsRef} className="max-w-6xl mx-auto px-6 md:px-12 py-24">
-        <div className="page-title mb-16">
-          <h2 className="font-display text-4xl md:text-5xl font-black tracking-tight text-midnight-900 dark:text-white mb-4">Projects</h2>
-          <p className="text-lg md:text-xl text-midnight-600 dark:text-midnight-300 max-w-3xl font-medium leading-relaxed">
-            From <span className="underline decoration-gold/40 decoration-2 underline-offset-4 font-semibold text-midnight-800 dark:text-white">5G network simulation</span> to <span className="underline decoration-violet/40 decoration-2 underline-offset-4 font-semibold text-midnight-800 dark:text-white">competitive robotics</span> — research, hackathons, and hands-on builds.
-          </p>
+        <div className="page-title mb-14">
+          <SectionLabel>Portfolio</SectionLabel>
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-8 md:gap-12 items-end">
+            <div>
+              <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-midnight-900 dark:text-white mb-5 leading-[1.05]">
+                Projects
+              </h2>
+              <p className="text-lg md:text-xl text-midnight-600 dark:text-midnight-300 max-w-2xl font-medium leading-relaxed">
+                A working record of the systems I have designed, simulated, and built — spanning
+                <span className="font-semibold text-midnight-800 dark:text-white"> research</span>,
+                <span className="font-semibold text-midnight-800 dark:text-white"> competitive hackathons</span>, and
+                <span className="font-semibold text-midnight-800 dark:text-white"> embedded hardware</span>.
+                Each entry below links to a written case study where one is available.
+              </p>
+            </div>
+            <div className="hidden md:block w-px h-24 bg-midnight-200 dark:bg-midnight-800 justify-self-center" />
+          </div>
         </div>
+
+        {/* Stats strip */}
+        <div className="page-title grid grid-cols-2 md:grid-cols-4 border-y border-midnight-200 dark:border-midnight-800 mb-16">
+          {[
+            { label: 'Projects', value: PROJECTS.length.toString().padStart(2, '0') },
+            { label: 'Written Case Studies', value: caseStudyCount.toString().padStart(2, '0') },
+            { label: 'Awards & Placements', value: awardCount.toString().padStart(2, '0') },
+            { label: 'Active Years', value: yearSpan },
+          ].map((s, i) => (
+            <div
+              key={s.label}
+              className={`px-5 py-5 md:py-6 ${i < 3 ? 'border-b md:border-b-0 md:border-r border-midnight-200 dark:border-midnight-800' : ''} ${i === 0 || i === 2 ? 'border-r md:border-r border-midnight-200 dark:border-midnight-800' : ''}`}
+            >
+              <div className="font-display text-2xl md:text-3xl font-black tracking-tight text-midnight-900 dark:text-white leading-none">
+                {s.value}
+              </div>
+              <div className="mt-2 font-mono text-[10px] md:text-[11px] uppercase tracking-[0.18em] text-midnight-500 dark:text-midnight-400 font-semibold">
+                {s.label}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Legend */}
+        <div className="page-title flex flex-wrap items-center gap-x-6 gap-y-3 mb-10 font-mono text-[11px] uppercase tracking-[0.15em] text-midnight-500 dark:text-midnight-400 font-semibold">
+          <span className="inline-flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#d4a843' }} />
+            Research
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#e8734a' }} />
+            Embedded / IoT
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: '#5b9cf5' }} />
+            Computer Vision
+          </span>
+        </div>
+
         <div>
           {PROJECTS.map((proj, idx) => (
             <ProjectShowcaseCard key={proj.id} proj={proj} index={idx} onClick={openProject} />
           ))}
+        </div>
+
+        {/* Closing note */}
+        <div className="page-title mt-16 pt-10 border-t border-midnight-200 dark:border-midnight-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+          <p className="text-sm text-midnight-500 dark:text-midnight-400 max-w-xl leading-relaxed">
+            Looking for documentation not shown here — thesis drafts, schematics, or project reports? Please get in touch and I'll share the relevant materials.
+          </p>
+          <Link
+            to="/contact"
+            className="inline-flex items-center gap-2 px-5 py-3 border border-midnight-300 dark:border-midnight-700 text-midnight-700 dark:text-midnight-200 font-mono text-xs uppercase tracking-[0.18em] font-semibold hover:border-gold hover:text-gold dark:hover:border-gold dark:hover:text-gold transition-all duration-300"
+          >
+            Request Materials <ArrowUpRight size={14} />
+          </Link>
         </div>
       </section>
     </div>
@@ -963,19 +1081,10 @@ const LifePage = () => {
       <section className="max-w-6xl mx-auto px-6 md:px-12 py-24">
         <div className="life-reveal"><SectionLabel>Beyond Engineering</SectionLabel></div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
-          {[
-            { emoji: '🎵', title: 'Music', desc: 'Beenzino, Jazzyfact — Korean hip-hop and jazz-infused beats for the soul.', accent: '#d4a843' },
-            { emoji: '🍜', title: 'Gastronomy', desc: 'From Korean street food to Manchester curry mile — cooking as engineering with tastebuds.', accent: '#e8734a' },
-            { emoji: '👔', title: 'Fashion', desc: 'Clean silhouettes, functional fabrics. The INTJ wardrobe — minimal, intentional, sharp.', accent: '#d4a843' },
-          ].map((card) => (
-            <div key={card.title} className="life-reveal group p-6 border border-midnight-200 dark:border-midnight-800 bg-white dark:bg-midnight-900/50 hover:border-gold/40 dark:hover:border-gold/30 transition-all duration-500 hover:-translate-y-1">
-              <div className="text-3xl mb-4">{card.emoji}</div>
-              <h4 className="font-display text-lg font-bold text-midnight-900 dark:text-white mb-2 group-hover:translate-x-0.5 transition-transform duration-300">{card.title}</h4>
-              <p className="text-sm text-midnight-500 dark:text-midnight-400 leading-relaxed font-medium">{card.desc}</p>
-              <div className="mt-4 h-[2px] w-8 group-hover:w-16 transition-all duration-500 rounded-full" style={{ backgroundColor: card.accent }} />
-            </div>
-          ))}
+        <div className="life-reveal mb-10 max-w-2xl">
+          <p className="text-base text-midnight-600 dark:text-midnight-300 leading-relaxed font-medium">
+            Outside the lab, I keep a separate project of my own: curating the music I work to. Everything else is a work in progress.
+          </p>
         </div>
 
         <Link to="/record" className="life-reveal group relative overflow-hidden bg-midnight-950 text-white p-10 sm:p-14 border border-midnight-800 hover:border-gold/40 transition-all duration-500 block hover:scale-[1.005]">
@@ -997,6 +1106,90 @@ const LifePage = () => {
           </div>
         </Link>
       </section>
+
+      {/* ════════ LEARNING ════════ */}
+      <section className="max-w-6xl mx-auto px-6 md:px-12 py-24">
+        <div className="life-reveal"><SectionLabel>Learning</SectionLabel></div>
+
+        <div className="life-reveal mb-10 max-w-2xl">
+          <h2 className="font-display text-3xl md:text-4xl font-black tracking-tight text-midnight-900 dark:text-white mb-4 leading-[1.1]">
+            A running log of what I'm studying.
+          </h2>
+          <p className="text-base md:text-lg text-midnight-600 dark:text-midnight-300 leading-relaxed font-medium">
+            Short write-ups on the topics I return to — derivations worked out properly, figures drawn by hand, and the small details I want to remember the next time they come up.
+          </p>
+        </div>
+
+        <div className="life-reveal grid grid-cols-1 md:grid-cols-2 gap-5">
+          {[
+            {
+              to: '/learning/circuit-design',
+              icon: Cpu,
+              label: 'Log · Active',
+              title: 'Circuit Design',
+              desc: 'Notes on analogue and mixed-signal design — bias points, small-signal models, op-amp topologies, and layout considerations. Written as I revisit the fundamentals.',
+              meta: '1 entry',
+              accent: '#d4a843',
+              live: true,
+            },
+            {
+              to: null,
+              icon: FileText,
+              label: 'Log · Planned',
+              title: 'More topics soon',
+              desc: 'Embedded firmware, VLSI, and network simulation notes will be added as they are written up.',
+              meta: 'Coming later',
+              accent: '#5a5a6a',
+              live: false,
+            },
+          ].map((card) => {
+            const Inner = (
+              <>
+                <div className="absolute left-0 top-0 bottom-0 w-[3px] scale-y-0 group-hover:scale-y-100 origin-top transition-transform duration-500" style={{ backgroundColor: card.accent }} />
+                <div className="flex items-start justify-between mb-4">
+                  <div className="w-11 h-11 rounded-full flex items-center justify-center border" style={{ backgroundColor: `${card.accent}14`, borderColor: `${card.accent}40` }}>
+                    <card.icon size={18} style={{ color: card.accent }} />
+                  </div>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 border rounded-sm inline-flex items-center gap-2" style={{ color: card.accent, borderColor: `${card.accent}40`, backgroundColor: `${card.accent}10` }}>
+                    {card.live && (
+                      <span className="relative flex w-1.5 h-1.5">
+                        <span className="animate-ping absolute inline-flex w-full h-full rounded-full opacity-60" style={{ backgroundColor: card.accent }} />
+                        <span className="relative inline-flex w-1.5 h-1.5 rounded-full" style={{ backgroundColor: card.accent }} />
+                      </span>
+                    )}
+                    {card.label}
+                  </span>
+                </div>
+                <h3 className="font-display text-xl md:text-2xl font-bold tracking-tight text-midnight-900 dark:text-white mb-3 group-hover:translate-x-0.5 transition-transform duration-300">
+                  {card.title}
+                </h3>
+                <p className="text-sm md:text-base text-midnight-600 dark:text-midnight-300 leading-relaxed font-medium mb-5">
+                  {card.desc}
+                </p>
+                <div className="flex items-center justify-between pt-4 border-t border-midnight-200 dark:border-midnight-800">
+                  <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-midnight-500 dark:text-midnight-400 font-semibold">
+                    {card.meta}
+                  </span>
+                  {card.to && (
+                    <span className="font-mono text-[11px] uppercase tracking-[0.15em] font-semibold inline-flex items-center gap-2" style={{ color: card.accent }}>
+                      Read Notes <ArrowRight size={14} />
+                    </span>
+                  )}
+                </div>
+              </>
+            );
+            const baseCls = 'relative overflow-hidden p-7 border border-midnight-200 dark:border-midnight-800 bg-white dark:bg-midnight-900/50 transition-all duration-500 group';
+            const hoverCls = card.to
+              ? 'hover:border-gold/40 dark:hover:border-gold/30 hover:-translate-y-1 cursor-pointer'
+              : 'opacity-70';
+            return card.to ? (
+              <Link key={card.title} to={card.to} className={`${baseCls} ${hoverCls}`}>{Inner}</Link>
+            ) : (
+              <div key={card.title} className={`${baseCls} ${hoverCls}`}>{Inner}</div>
+            );
+          })}
+        </div>
+      </section>
     </div>
   );
 };
@@ -1009,28 +1202,43 @@ const ContactPage = () => {
     <div>
       <section className="max-w-6xl mx-auto px-6 md:px-12 py-24">
         <div className="animate-fade-up" style={{ animationDelay: '0s' }}><SectionLabel>Contact</SectionLabel></div>
-        <div className="animate-fade-up mb-12" style={{ animationDelay: '0.05s' }}>
+        <div className="animate-fade-up mb-8" style={{ animationDelay: '0.05s' }}>
           <h2 className="font-display text-3xl md:text-4xl font-black tracking-tight text-midnight-900 dark:text-white mb-4">Let's build something.</h2>
           <p className="text-lg text-midnight-600 dark:text-midnight-300 max-w-2xl leading-relaxed font-medium">
             Whether it's a <span className="underline decoration-gold/40 decoration-2 underline-offset-4 font-semibold text-midnight-800 dark:text-white">hardware collaboration</span>, a <span className="underline decoration-violet/40 decoration-2 underline-offset-4 font-semibold text-midnight-800 dark:text-white">job opportunity</span>, or just a good coffee recommendation.
           </p>
         </div>
+        <div className="animate-fade-up mb-12 flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-xs uppercase tracking-[0.18em] text-midnight-500 dark:text-midnight-400" style={{ animationDelay: '0.08s' }}>
+          <span className="inline-flex items-center gap-2">
+            <span className="relative flex w-2 h-2">
+              <span className="animate-ping absolute inline-flex w-full h-full rounded-full bg-emerald-500 opacity-60" />
+              <span className="relative inline-flex w-2 h-2 rounded-full bg-emerald-500" />
+            </span>
+            Usually replies in 24h
+          </span>
+          <span className="w-px h-3 bg-midnight-300 dark:bg-midnight-700" />
+          <span>Manchester, UK · GMT</span>
+          <span className="w-px h-3 bg-midnight-300 dark:bg-midnight-700" />
+          <span>Open to remote & relocation</span>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {[
-            { icon: Mail, title: 'Email', sub: 'wooseongjung12@gmail.com', href: 'mailto:wooseongjung12@gmail.com', external: false, accent: '#d4a843' },
-            { icon: Linkedin, title: 'LinkedIn', sub: 'Professional network', href: 'https://www.linkedin.com/in/wooseong-jung-21b143223/', external: true, accent: '#5b9cf5' },
-            { icon: Github, title: 'GitHub', sub: 'Code & repositories', href: 'https://github.com/wooseongjung', external: true, accent: '#7c6df0' },
+            { icon: Mail, title: 'Email', sub: 'wooseongjung12@gmail.com', hint: 'Preferred for enquiries', href: 'mailto:wooseongjung12@gmail.com', external: false, accent: '#d4a843' },
+            { icon: Linkedin, title: 'LinkedIn', sub: 'Professional network', hint: 'Recruiters & peers', href: 'https://www.linkedin.com/in/wooseong-jung-21b143223/', external: true, accent: '#5b9cf5' },
+            { icon: Github, title: 'GitHub', sub: 'Code & repositories', hint: 'Public projects', href: 'https://github.com/wooseongjung', external: true, accent: '#7c6df0' },
           ].map((card, i) => (
             <a key={i} href={card.href} target={card.external ? '_blank' : undefined} rel={card.external ? 'noreferrer' : undefined}
-              className="animate-fade-up flex flex-col gap-5 p-7 border border-midnight-200 dark:border-midnight-800 bg-white dark:bg-midnight-900/50 hover:border-gold/50 dark:hover:border-gold/40 transition-all duration-300 group hover:-translate-y-2 hover:shadow-lg"
-              style={{ animationDelay: `${0.1 + i * 0.06}s` }}
+              className="animate-fade-up relative flex flex-col gap-5 p-7 border border-midnight-200 dark:border-midnight-800 bg-white dark:bg-midnight-900/50 hover:border-gold/50 dark:hover:border-gold/40 transition-all duration-300 group hover:-translate-y-2 hover:shadow-lg overflow-hidden"
+              style={{ animationDelay: `${0.12 + i * 0.06}s` }}
             >
+              <div className="absolute inset-x-0 top-0 h-[2px] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500" style={{ backgroundColor: card.accent }} />
               <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: `${card.accent}12` }}>
                 <card.icon size={22} style={{ color: card.accent }} />
               </div>
               <div>
                 <h3 className="font-display text-lg font-bold text-midnight-900 dark:text-white">{card.title}</h3>
-                <span className="text-sm text-midnight-400 font-medium">{card.sub}</span>
+                <span className="text-sm text-midnight-500 dark:text-midnight-400 font-medium block">{card.sub}</span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.15em] font-semibold mt-2 inline-block" style={{ color: card.accent }}>{card.hint}</span>
               </div>
               <ArrowUpRight size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-all mt-auto" style={{ color: card.accent }} />
             </a>
@@ -1575,6 +1783,7 @@ export default function App() {
           <Route path="/life" element={<LifePage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/project/:projectSlug" element={<ProjectDetail />} />
+          <Route path="/learning/circuit-design" element={<CircuitDesignJournal />} />
           <Route path="/record" element={<MusicPlayer user={user} />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
